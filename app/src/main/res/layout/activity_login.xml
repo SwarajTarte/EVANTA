@@ -41,7 +41,7 @@
 
         <RelativeLayout
             android:layout_width="400dp"
-            android:layout_height="580dp"
+            android:layout_height="600dp"
             android:layout_below="@+id/logo2"
             android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
@@ -209,7 +209,7 @@
                 android:layout_below="@+id/loggf"
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="50dp">
 
                 <TextView
                     android:id="@+id/dontac"
@@ -225,6 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sign Up"
+                    android:textSize="15sp"
                     android:layout_centerHorizontal="true"
                     android:textColor="#00D4FF"
                     android:fontFamily="@font/poppins_semibold"
