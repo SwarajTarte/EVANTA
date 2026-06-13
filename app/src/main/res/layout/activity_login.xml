@@ -41,8 +41,9 @@
 
         <RelativeLayout
             android:layout_width="400dp"
-            android:layout_height="600dp"
+            android:layout_height="580dp"
             android:layout_below="@+id/logo2"
+            android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
             android:background="@drawable/login_card"
             android:orientation="vertical">
@@ -126,7 +127,7 @@
                 android:text="Forgot Password?"
                 android:textColor="#00D4FF"
                 android:fontFamily="@font/poppinsreg"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:layout_below="@+id/password"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="40dp"
@@ -157,36 +158,47 @@
                 android:id="@+id/contg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="──────── Or continue with ────────"
+                android:text="Or continue with"
                 android:fontFamily="@font/poppinsreg"
                 android:layout_below="@+id/contbut"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:textColor="#7B8494">
+                android:textColor="#9AA3B2">
             </TextView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/google"
-                android:layout_width="350dp"
-                android:layout_height="56dp"
-                android:text="Continue with Google"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:fontFamily="@font/poppins_semibold"
-                android:background="@drawable/google_button"
-                app:backgroundTint="@null"
-                app:icon="@drawable/google_icon"
-                app:iconGravity="textStart"
-                app:iconPadding="12dp"
-                app:iconTint="@null"
+            <LinearLayout
+                android:id="@+id/loggf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/contg"
-                android:layout_marginTop="15dp"
-                android:layout_centerHorizontal="true"/>
+                android:layout_marginTop="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/google_button"
+                    android:src="@drawable/google_icon"
+                    android:scaleType="centerInside"
+                    android:padding="18dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/facebook"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/google_button"
+                    android:src="@drawable/facebook_icon"
+                    android:scaleType="centerInside"
+                    android:padding="18dp"
+                    android:layout_marginStart="20dp"/>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/google"
+                android:layout_below="@+id/loggf"
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp">
