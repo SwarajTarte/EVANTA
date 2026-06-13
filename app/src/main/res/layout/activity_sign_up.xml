@@ -106,7 +106,10 @@
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#80FFFFFF"
-                android:fontFamily="@font/poppinsreg"/>
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,7 +131,10 @@
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#80FFFFFF"
-                android:fontFamily="@font/poppinsreg"/>
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +158,10 @@
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#80FFFFFF"
-                android:fontFamily="@font/poppinsreg"/>
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,7 +184,10 @@
                 android:hint="Confirm Password"
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
-                android:textColorHint="#80FFFFFF"/>
+                android:textColorHint="#80FFFFFF"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

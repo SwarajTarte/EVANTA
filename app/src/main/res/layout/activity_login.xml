@@ -86,13 +86,17 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailin"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:hint="Email Address"
                     android:background="@drawable/bg_textfield"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:fontFamily="@font/poppinsreg"/>
+                    android:fontFamily="@font/poppinsreg"
+                    android:gravity="center_vertical"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,13 +114,17 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwIn"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:hint="Password"
                     android:background="@drawable/bg_textfield"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:fontFamily="@font/poppinsreg"/>
+                    android:fontFamily="@font/poppinsreg"
+                    android:gravity="center_vertical"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
