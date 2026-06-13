@@ -152,7 +152,7 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:textSize="18sp"
                 android:background="@drawable/btn_gradient"
-                app:icon="@drawable/ic_arrow_forward"
+                app:icon="@drawable/east_arrow"
                 app:iconGravity="textEnd"
                 app:iconPadding="12dp"
                 app:iconTint="#FFFFFF"
