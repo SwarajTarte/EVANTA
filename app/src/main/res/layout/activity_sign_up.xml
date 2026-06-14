@@ -100,6 +100,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameIn"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:hint="Full Name"
@@ -125,6 +126,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailin"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:hint="Email Address"
@@ -152,6 +154,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwIn"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:hint="Password"
@@ -161,7 +164,8 @@
                 android:fontFamily="@font/poppinsreg"
                 android:gravity="center_vertical"
                 android:paddingTop="0dp"
-                android:paddingBottom="0dp"/>
+                android:paddingBottom="0dp"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,6 +183,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/confpasswordin"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:hint="Confirm Password"
@@ -187,7 +192,9 @@
                 android:textColorHint="#80FFFFFF"
                 android:gravity="center_vertical"
                 android:paddingTop="0dp"
-                android:paddingBottom="0dp"/>
+                android:paddingBottom="0dp"
+                android:fontFamily="@font/poppinsreg"
+                android:inputType="textPassword"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,7 +1,11 @@
 package com.example.evanta;
 
+import static android.app.ProgressDialog.show;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,6 +21,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.lang.reflect.Parameter;
+import java.security.Policy;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -43,23 +50,10 @@ public class LoginActivity extends AppCompatActivity {
         passwIn = findViewById(R.id.passwIn);
         contbut = findViewById(R.id.contbut);
 
-        contbut.setOnClickListener(v -> {
-
-            String emailIn = emailin.getText().toString().trim();
-            String passIn = passwIn.getText().toString().trim();
-
-            String emaileg = "swaraj@gmail.com";
-            String passeg = "123456";
-
-            if(emailIn.isEmpty() || passIn.isEmpty()){
-                Toast.makeText(LoginActivity.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            else if(emailIn.equals(emaileg) && passIn.equals(passeg)){
-                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(LoginActivity.this, "Invalid Input", Toast.LENGTH_SHORT).show();
+        contbut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginuser();
             }
         });
 
@@ -70,5 +64,36 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+    }
+    private void loginuser() {
+        String email = emailin.getText().toString().trim();
+        String password = passwIn.getText().toString().trim();
+
+        if(email.isEmpty()){
+            emailin.setError("Email is required");
+            emailin.requestFocus();
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            emailin.setError("Please provide a valid email");
+            emailin.requestFocus();
+            return;
+        }
+
+        if(password.isEmpty()){
+            passwIn.setError("Password is required");
+            passwIn.requestFocus();
+            return;
+        }
+
+        String emaileg = "swaraj@gmail.com";
+        String passeg = "123456";
+
+        if(email.equals(emaileg) && password.equals(passeg)){
+            Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show();
+        }
     }
 }
