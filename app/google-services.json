@@ -12,7 +12,20 @@
           "package_name": "com.example.evanta"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "492602268309-b0eenhukc7marijkaoqdvaj4dgr440b5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.evanta",
+            "certificate_hash": "2be79d9e0f26ac6460c5012963519e5b6e177b3c"
+          }
+        },
+        {
+          "client_id": "492602268309-vhhkifceamsa27d7lq5ias8kol79djbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC_Bt8OL5hg-1Hp2aIuLKGesM3Oj86NDAI"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "492602268309-vhhkifceamsa27d7lq5ias8kol79djbj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
