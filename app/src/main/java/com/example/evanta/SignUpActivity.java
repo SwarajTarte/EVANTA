@@ -148,7 +148,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 whatsno
                         );
 
-                        api.insertUser(user).enqueue(new Callback<Void>() {
+                        api.upsertUser(user).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
 

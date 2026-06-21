@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StudentDashboard"
+    android:background="@drawable/bg_dashboard">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/wlc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome back,"
+            android:textSize="30sp"
+            android:layout_marginTop="80dp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/wlc"
+            android:text=""
+            android:textSize="30sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppinsbold"
+            android:layout_marginLeft="20dp"/>
+
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

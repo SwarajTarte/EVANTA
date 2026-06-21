@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(LoginActivity.this,
-                                MainActivity.class);
+                                StudentDashboard.class);
                         startActivity(intent);
                         finish();
 
@@ -226,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
 
-                            api.insertUser(user).enqueue(new Callback<Void>() {
+                            api.upsertUser(user).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
 
@@ -255,7 +255,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                         startActivity(new Intent(LoginActivity.this,
-                                MainActivity.class));
+                                StudentDashboard.class));
 
                         finish();
 

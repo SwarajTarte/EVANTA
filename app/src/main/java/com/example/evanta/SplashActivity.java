@@ -11,6 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +25,18 @@ public class SplashActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        if (auth.getCurrentUser() != null) {
+            // User is already logged in
+            startActivity(new Intent(this, StudentDashboard.class));
+            finish();
+        } else {
+            // User is not logged in
+            startActivity(new Intent(this, WelcomeActivity.class));
+            finish();
+        }
 
         SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
 
