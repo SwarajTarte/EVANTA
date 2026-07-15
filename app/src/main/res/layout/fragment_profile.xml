@@ -50,7 +50,28 @@
                     android:fontFamily="@font/poppinsbold"
                     android:background="@drawable/bg_avatar_circle"
                     android:includeFontPadding="false"/>
+
+                <ImageView
+                    android:id="@+id/avatar_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:scaleType="centerCrop" />
+
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/edit_avatar_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/avatar_ring"
+                android:layout_marginTop="-30dp"
+                android:layout_alignRight="@+id/avatar_ring"
+                android:layout_marginRight="-4dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_edit_camera"
+                android:background="@drawable/bg_avatar_circle"
+                app:tint="#FFFFFF" />
 
             <TextView
                 android:id="@+id/profile_full_name"

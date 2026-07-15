@@ -15,4 +15,7 @@ public interface SupabaseApi {
     Call<Void> upsertUser(@Body User user);
     @GET("rest/v1/users?select=*")
     Call<List<User>> getUserByUid(@Query("uid") String uid);
+
+    @retrofit2.http.PATCH("rest/v1/users")
+    Call<Void> updateUser(@Query("uid") String uidFilter, @Body java.util.Map<String, Object> fields);
 }

@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -32,11 +33,21 @@ public class ProfileFragment extends Fragment {
 
     private TextView avatarInitial, fullNameHeader, nameRowValue, emailRowValue, whatsappRowValue;
     private MaterialButton logoutBut;
+    private android.widget.ImageView avatarImage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            loadUserFromSupabase(currentUser.getUid());
+        }
     }
 
     @Override
@@ -51,6 +62,7 @@ public class ProfileFragment extends Fragment {
         nameRowValue = view.findViewById(R.id.value_name_row);
         emailRowValue = view.findViewById(R.id.value_email_row);
         whatsappRowValue = view.findViewById(R.id.value_whatsapp_row);
+        avatarImage = view.findViewById(R.id.avatar_image);
         logoutBut = view.findViewById(R.id.logoutbut);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -62,7 +74,14 @@ public class ProfileFragment extends Fragment {
         loadUserFromSupabase(currentUser.getUid());
 
         logoutBut.setOnClickListener(v -> logout());
+
+        View editAvatarIcon = view.findViewById(R.id.edit_avatar_icon);
+        editAvatarIcon.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), EditProfileActivity.class));
+        });
     }
+
+
 
     private void loadUserFromSupabase(String uid) {
 
@@ -112,6 +131,15 @@ public class ProfileFragment extends Fragment {
 
         if (!fullName.trim().isEmpty()) {
             avatarInitial.setText(String.valueOf(fullName.trim().charAt(0)).toUpperCase());
+        }
+
+        if (user.getPhotoUrl() != null && !user.getPhotoUrl().isEmpty()) {
+            avatarImage.setVisibility(View.VISIBLE);
+            avatarInitial.setVisibility(View.GONE);
+            Glide.with(this).load(user.getPhotoUrl()).circleCrop().into(avatarImage);
+        } else {
+            avatarImage.setVisibility(View.GONE);
+            avatarInitial.setVisibility(View.VISIBLE);
         }
     }
 

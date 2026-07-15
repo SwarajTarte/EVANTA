@@ -13,6 +13,13 @@ public class User {
             this.whatsappno = whatsappno;
         }
 
+        @com.google.gson.annotations.SerializedName("photo_url")
+        private String photoUrl;
+
+        public String getPhotoUrl() {
+        return photoUrl;
+        }
+
         public String getUid() {
             return uid;
         }
