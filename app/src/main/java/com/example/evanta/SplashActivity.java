@@ -26,47 +26,20 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-            // User is already logged in
-            startActivity(new Intent(this, StudentDashboard.class));
-            finish();
-        } else {
-            // User is not logged in
-            startActivity(new Intent(this, WelcomeActivity.class));
-            finish();
-        }
-
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
-
-        api.getUsers().enqueue(new retrofit2.Callback<java.util.List<Object>>() {
-            @Override
-            public void onResponse(retrofit2.Call<java.util.List<Object>> call,
-                                   retrofit2.Response<java.util.List<Object>> response) {
-
-                if (response.isSuccessful()) {
-                    android.util.Log.d("SUPABASE", "Connected!");
-                    android.util.Log.d("SUPABASE", response.body().toString());
-                } else {
-                    android.util.Log.e("SUPABASE",
-                            "Error Code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(retrofit2.Call<java.util.List<Object>> call,
-                                  Throwable t) {
-
-                android.util.Log.e("SUPABASE",
-                        "Connection Failed: " + t.getMessage());
-            }
-        });
-
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
+
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+
+            Intent intent;
+            if (auth.getCurrentUser() != null) {
+                intent = new Intent(SplashActivity.this, StudentDashboard.class);
+            } else {
+                intent = new Intent(SplashActivity.this, WelcomeActivity.class);
+            }
+
             startActivity(intent);
             finish();
+
         }, 2000);
     }
 }
