@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.evanta.HomeFragment" />
+
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.example.evanta.BrowseFragment" />
+
+    <fragment
+        android:id="@+id/myEventsFragment"
+        android:name="com.example.evanta.MyEventsFragment" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.evanta.ProfileFragment" />
+
+</navigation>

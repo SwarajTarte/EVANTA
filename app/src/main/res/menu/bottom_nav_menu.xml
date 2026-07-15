@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/browseFragment"
+        android:title="Browse" />
+
+    <item
+        android:id="@+id/myEventsFragment"
+        android:title="My Events" />
+
+    <item
+        android:id="@+id/profileFragment"
+        android:title="Profile" />
+
+</menu>

@@ -1,80 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StudentDashboard"
+    android:orientation="vertical"
     android:background="@drawable/bg_dashboard">
 
-    <RelativeLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
-        <TextView
-            android:id="@+id/wlc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome back,"
-            android:textSize="30sp"
-            android:layout_marginTop="80dp"
-            android:textColor="#FFFFFF"
-            android:fontFamily="@font/poppinsbold"
-            android:layout_marginLeft="20dp" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu" />
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/wlc"
-            android:text=""
-            android:textSize="30sp"
-            android:textColor="#FFFFFF"
-            android:fontFamily="@font/poppinsbold"
-            android:layout_marginLeft="20dp"/>
-
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
-            android:layout_marginTop="20dp"
-            android:text=""
-            android:textSize="16sp"
-            android:textColor="#B4BCCB"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginLeft="20dp"/>
-
-        <TextView
-            android:id="@+id/whatsapp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/email"
-            android:layout_marginTop="8dp"
-            android:text=""
-            android:textSize="16sp"
-            android:textColor="#B4BCCB"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_marginLeft="20dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/logoutbut"
-            android:layout_width="350dp"
-            android:layout_height="56dp"
-            android:text="Logout"
-            android:textColor="#FFFFFF"
-            android:textAllCaps="false"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="18sp"
-            android:background="@drawable/btn_gradient"
-            app:backgroundTint="@null"
-            android:layout_below="@+id/whatsapp"
-            android:layout_marginTop="40dp"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-
-
-
-</ScrollView>
+</LinearLayout>
