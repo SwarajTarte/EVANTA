@@ -45,6 +45,8 @@ public class StudentDashboard extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
 
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets systemGestures = insets.getInsets(WindowInsetsCompat.Type.systemGestures());
+            int bottomInset = Math.max(systemBars.bottom, systemGestures.bottom);
             v.setPadding(
                     0,
                     systemBars.top,
@@ -54,7 +56,7 @@ public class StudentDashboard extends AppCompatActivity {
 
             ViewGroup.MarginLayoutParams navParams =
                     (ViewGroup.MarginLayoutParams) bottomNavForInsets.getLayoutParams();
-            navParams.bottomMargin = systemBars.bottom + floatingBottomMargin;
+            navParams.bottomMargin = bottomInset + floatingBottomMargin;
             bottomNavForInsets.setLayoutParams(navParams);
 
             return insets;
