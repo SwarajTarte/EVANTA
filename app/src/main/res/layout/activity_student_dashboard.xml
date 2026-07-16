@@ -16,21 +16,6 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_nav_floating"
-        app:itemIconSize="20dp"
-        app:itemIconTint="@color/nav_icon_color"
-        app:itemTextColor="@color/nav_icon_color"
-        app:itemRippleColor="@color/nav_ripple_color"
-        app:elevation="8dp"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+    <include layout="@layout/layout_bottom_nav" />
 
 </LinearLayout>
