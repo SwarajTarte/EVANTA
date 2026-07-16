@@ -3,6 +3,17 @@
     <style name="Base.Theme.Evanta" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <!-- Prevent Android from drawing a dark scrim over the transparent
+             bars on API 29+, which otherwise breaks the seamless gradient. -->
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <!-- Let the gradient run all the way to the edge of a gesture-nav bar. -->
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@android:color/transparent</item>
     </style>
 
     <style name="Theme.Evanta" parent="Base.Theme.Evanta" />
