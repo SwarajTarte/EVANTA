@@ -40,10 +40,13 @@ public class StudentDashboard extends AppCompatActivity {
         // overlapped by it — the gradient itself still extends fully behind it.
         View main = findViewById(R.id.main);
         BottomNavigationView bottomNavForInsets = findViewById(R.id.bottom_nav);
+        final int floatingBottomMargin = (int) (16 * getResources().getDisplayMetrics().density);
 
         ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
 
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets systemGestures = insets.getInsets(WindowInsetsCompat.Type.systemGestures());
+            int bottomInset = Math.max(systemBars.bottom, systemGestures.bottom);
             v.setPadding(
                     0,
                     systemBars.top,
@@ -53,15 +56,8 @@ public class StudentDashboard extends AppCompatActivity {
 
             ViewGroup.MarginLayoutParams navParams =
                     (ViewGroup.MarginLayoutParams) bottomNavForInsets.getLayoutParams();
-            navParams.bottomMargin = 0;
+            navParams.bottomMargin = bottomInset + floatingBottomMargin;
             bottomNavForInsets.setLayoutParams(navParams);
-
-            bottomNavForInsets.setPadding(
-                    bottomNavForInsets.getPaddingLeft(),
-                    bottomNavForInsets.getPaddingTop(),
-                    bottomNavForInsets.getPaddingRight(),
-                    systemBars.bottom
-            );
 
             return insets;
         });
