@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipToOutline="true"
+    android:clipChildren="true"
     app:cardCornerRadius="24dp"
     app:cardBackgroundColor="@android:color/transparent"
     app:strokeWidth="0dp">
@@ -11,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_featured_card"
+        android:clipToOutline="true"
+        android:outlineProvider="background"
         android:minHeight="232dp"
         android:padding="0dp">
 
