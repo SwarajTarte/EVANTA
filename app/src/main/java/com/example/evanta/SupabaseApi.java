@@ -18,4 +18,10 @@ public interface SupabaseApi {
 
     @retrofit2.http.PATCH("rest/v1/users")
     Call<Void> updateUser(@Query("uid") String uidFilter, @Body java.util.Map<String, Object> fields);
+
+    @GET("rest/v1/events?select=*")
+    Call<List<Event>> getFeaturedEvents(
+            @Query("is_featured") String isFeatured,
+            @Query("order") String order,
+            @Query("limit") int limit);
 }
