@@ -9,6 +9,7 @@ public class Event {
     private String subtitle;
     private String description;
     private String category;
+    private double price;
 
     @SerializedName("date_start")
     private String dateStart;
@@ -38,4 +39,5 @@ public class Event {
     public String getLocation() { return location; }
     public String getImageUrl() { return imageUrl; }
     public boolean isFeatured() { return isFeatured; }
+    public double getPrice() { return price; }
 }
