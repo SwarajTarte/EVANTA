@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,13 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -32,22 +33,13 @@ public class ProfileFragment extends Fragment {
     private GoogleSignInClient googleSignInClient;
 
     private TextView avatarInitial, fullNameHeader, nameRowValue, emailRowValue, whatsappRowValue;
+    private ImageView avatarImage;
     private MaterialButton logoutBut;
-    private android.widget.ImageView avatarImage;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            loadUserFromSupabase(currentUser.getUid());
-        }
     }
 
     @Override
@@ -58,17 +50,22 @@ public class ProfileFragment extends Fragment {
         googleSignInClient = GoogleSignIn.getClient(requireContext(), GoogleSignInOptions.DEFAULT_SIGN_IN);
 
         avatarInitial = view.findViewById(R.id.avatar_initial);
+        avatarImage = view.findViewById(R.id.avatar_image);
         fullNameHeader = view.findViewById(R.id.profile_full_name);
         nameRowValue = view.findViewById(R.id.value_name_row);
         emailRowValue = view.findViewById(R.id.value_email_row);
         whatsappRowValue = view.findViewById(R.id.value_whatsapp_row);
-        avatarImage = view.findViewById(R.id.avatar_image);
         logoutBut = view.findViewById(R.id.logoutbut);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser == null) {
             return;
+        }
+
+        User cached = UserCache.get(requireContext());
+        if (cached != null) {
+            bindUser(cached);
         }
 
         loadUserFromSupabase(currentUser.getUid());
@@ -81,7 +78,15 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            loadUserFromSupabase(currentUser.getUid());
+        }
+    }
 
     private void loadUserFromSupabase(String uid) {
 
@@ -96,6 +101,7 @@ public class ProfileFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
 
                     User user = response.body().get(0);
+                    UserCache.set(requireContext(), user);
                     bindUser(user);
 
                 } else if (response.isSuccessful()) {
@@ -146,6 +152,7 @@ public class ProfileFragment extends Fragment {
     private void logout() {
 
         mAuth.signOut();
+        UserCache.clear(requireContext());
 
         googleSignInClient.signOut().addOnCompleteListener(task -> {
 

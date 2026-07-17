@@ -35,4 +35,8 @@ public class User {
         public String getWhatsappno() {
             return whatsappno;
         }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 }

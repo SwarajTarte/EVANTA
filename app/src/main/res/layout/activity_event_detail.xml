@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dashboard">
+
+    <ImageView
+        android:id="@+id/hero_image"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/launcher" />
+
+    <View
+        android:id="@+id/hero_fade_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_alignBottom="@+id/hero_image"
+        android:background="@drawable/fade_bottom_overlay" />
+
+    <RelativeLayout
+        android:id="@+id/content_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/hero_image"
+        android:layout_marginTop="-40dp"
+        android:background="@drawable/bg_content_card_top"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/category_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="13sp"
+            android:textColor="#7C4DFF"
+            android:fontFamily="@font/poppins_medium"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_category_pill" />
+
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/category_tag"
+            android:layout_marginTop="14dp"
+            android:text=""
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppinsbold" />
+
+        <TextView
+            android:id="@+id/event_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event_title"
+            android:layout_marginTop="4dp"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="#B4BCCB"
+            android:fontFamily="@font/poppins_medium" />
+
+        <TextView
+            android:id="@+id/event_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event_subtitle"
+            android:layout_marginTop="16dp"
+            android:text=""
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#9AA3B2"
+            android:fontFamily="@font/poppinsreg" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/back_arrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
+        android:padding="8dp"
+        android:src="@drawable/east_arrow"
+        android:rotation="180"
+        android:background="@drawable/bg_icon_circle_dark"
+        app:tint="#FFFFFF" />
+
+</RelativeLayout>

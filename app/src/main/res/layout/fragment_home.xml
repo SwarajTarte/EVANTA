@@ -176,21 +176,24 @@
                     android:id="@+id/featured_card_1"
                     layout="@layout/item_featured_event"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/featured_card_2"
                     layout="@layout/item_featured_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone" />
 
                 <include
                     android:id="@+id/featured_card_3"
                     layout="@layout/item_featured_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
+                    android:layout_marginTop="16dp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

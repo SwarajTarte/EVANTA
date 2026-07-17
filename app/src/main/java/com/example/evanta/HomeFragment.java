@@ -69,6 +69,12 @@ public class HomeFragment extends Fragment {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
+
+            User cached = UserCache.get(requireContext());
+            if (cached != null) {
+                bindUser(cached);
+            }
+
             loadUser(currentUser.getUid());
         }
 
@@ -88,7 +94,9 @@ public class HomeFragment extends Fragment {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    bindUser(response.body().get(0));
+                    User user = response.body().get(0);
+                    UserCache.set(requireContext(), user);
+                    bindUser(user);
                 }
             }
 
@@ -124,6 +132,11 @@ public class HomeFragment extends Fragment {
 
     private void fetchFeaturedEvents() {
 
+        List<Event> cached = EventCache.get();
+        if (cached != null) {
+            bindFeaturedEvents(cached);
+        }
+
         SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
 
         api.getFeaturedEvents("eq.true", "date_start.asc", 3).enqueue(new Callback<List<Event>>() {
@@ -133,6 +146,7 @@ public class HomeFragment extends Fragment {
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
+                    EventCache.set(response.body());
                     bindFeaturedEvents(response.body());
                 }
             }
