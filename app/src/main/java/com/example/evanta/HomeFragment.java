@@ -18,19 +18,25 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
+import android.content.Intent;
 
 public class HomeFragment extends Fragment {
 
     private TextView greetingText;
     private TextView avatarInitial;
+    private TextView statJoined;
+    private TextView statUpcoming;
+    private TextView statCertificates;
     private ImageView avatarImage;
 
     private View featuredCard1, featuredCard2, featuredCard3;
@@ -48,12 +54,18 @@ public class HomeFragment extends Fragment {
         greetingText = view.findViewById(R.id.home_greeting);
         avatarInitial = view.findViewById(R.id.home_avatar_initial);
         avatarImage = view.findViewById(R.id.home_avatar_image);
+        statJoined = view.findViewById(R.id.stat_joined);
+        statUpcoming = view.findViewById(R.id.stat_upcoming);
+        statCertificates = view.findViewById(R.id.stat_certificates);
 
         featuredCard1 = view.findViewById(R.id.featured_card_1);
         featuredCard2 = view.findViewById(R.id.featured_card_2);
         featuredCard3 = view.findViewById(R.id.featured_card_3);
 
         View viewAllEvents = view.findViewById(R.id.view_all_events);
+        view.findViewById(R.id.home_notification_icon).setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), NotificationCenterActivity.class)));
+
         viewAllEvents.setOnClickListener(v -> {
 
             NavController nav = Navigation.findNavController(v);
@@ -76,6 +88,7 @@ public class HomeFragment extends Fragment {
             }
 
             loadUser(currentUser.getUid());
+            loadStudentStats(currentUser.getUid());
         }
 
         fetchFeaturedEvents();
@@ -85,9 +98,9 @@ public class HomeFragment extends Fragment {
 
     private void loadUser(String uid) {
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        UserRepository userRepository = new UserRepository();
 
-        api.getUserByUid("eq." + uid).enqueue(new Callback<List<User>>() {
+        userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
@@ -137,9 +150,9 @@ public class HomeFragment extends Fragment {
             bindFeaturedEvents(cached);
         }
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        EventRepository eventRepository = new EventRepository();
 
-        api.getFeaturedEvents("eq.true", "date_start.asc", 3).enqueue(new Callback<List<Event>>() {
+        eventRepository.getFeaturedEvents(3).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
 
@@ -173,13 +186,124 @@ public class HomeFragment extends Fragment {
     }
 
     private void bindFeaturedCard(View card, Event event) {
+        ImageView coverImage = card.findViewById(R.id.featured_background_image);
+
         ((TextView) card.findViewById(R.id.featured_title)).setText(event.getTitle());
         ((TextView) card.findViewById(R.id.featured_subtitle)).setText(event.getSubtitle());
         ((TextView) card.findViewById(R.id.featured_date))
                 .setText(formatDateRange(event.getDateStart(), event.getDateEnd()));
         ((TextView) card.findViewById(R.id.featured_location)).setText(event.getLocation());
-        // image_url wiring comes once the admin upload flow exists — cards keep
-        // the placeholder @drawable/logo illustration for now
+
+        if (event.getImageUrl() != null && !event.getImageUrl().trim().isEmpty()) {
+            Glide.with(this)
+                    .load(event.getImageUrl())
+                    .placeholder(R.drawable.launcher)
+                    .error(R.drawable.launcher)
+                    .centerCrop()
+                    .into(coverImage);
+        } else {
+            coverImage.setImageResource(R.drawable.launcher);
+        }
+
+        card.findViewById(R.id.featured_view_details).setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), EventDetailActivity.class);
+            intent.putExtra(EventDetailActivity.EXTRA_EVENT, event);
+            startActivity(intent);
+        });
+    }
+
+    private void loadStudentStats(String uid) {
+        new RegistrationRepository().getRegistrationsForUser(uid)
+                .enqueue(new Callback<List<Registration>>() {
+                    @Override
+                    public void onResponse(Call<List<Registration>> call, Response<List<Registration>> response) {
+                        if (!isAdded()) return;
+                        if (!response.isSuccessful() || response.body() == null || response.body().isEmpty()) {
+                            bindStats(0, 0, 0);
+                            return;
+                        }
+                        loadStatsEvents(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Registration>> call, Throwable t) {
+                        if (!isAdded()) return;
+                        bindStats(0, 0, 0);
+                    }
+                });
+    }
+
+    private void loadStatsEvents(List<Registration> registrations) {
+        Map<String, Registration> registrationMap = new HashMap<>();
+        StringBuilder idsBuilder = new StringBuilder("in.(");
+        int added = 0;
+
+        for (Registration registration : registrations) {
+            if (registration.getEventId() == null) continue;
+            if (added > 0) {
+                idsBuilder.append(",");
+            }
+            idsBuilder.append(registration.getEventId());
+            registrationMap.put(registration.getEventId(), registration);
+            added++;
+        }
+        idsBuilder.append(")");
+
+        if (added == 0) {
+            bindStats(0, 0, 0);
+            return;
+        }
+
+        new EventRepository().getEventsByIds(idsBuilder.toString())
+                .enqueue(new Callback<List<Event>>() {
+                    @Override
+                    public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+                        if (!isAdded()) return;
+                        int upcoming = 0;
+                        int certificates = 0;
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            for (Event event : response.body()) {
+                                if (!isCompleted(event)) {
+                                    upcoming++;
+                                }
+                                Registration registration = registrationMap.get(event.getId());
+                                if (registration != null
+                                        && registration.getCertificateUrl() != null
+                                        && !registration.getCertificateUrl().trim().isEmpty()) {
+                                    certificates++;
+                                }
+                            }
+                        }
+                        bindStats(registrations.size(), upcoming, certificates);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Event>> call, Throwable t) {
+                        if (!isAdded()) return;
+                        bindStats(registrations.size(), 0, 0);
+                    }
+                });
+    }
+
+    private void bindStats(int joined, int upcoming, int certificates) {
+        statJoined.setText(String.valueOf(joined));
+        statUpcoming.setText(String.valueOf(upcoming));
+        statCertificates.setText(String.valueOf(certificates));
+    }
+
+    private boolean isCompleted(Event event) {
+        String dateValue = event.getDateEnd() != null && !event.getDateEnd().isEmpty()
+                ? event.getDateEnd()
+                : event.getDateStart();
+        try {
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date eventDate = input.parse(dateValue);
+            Date today = input.parse(input.format(new Date()));
+            return eventDate != null && eventDate.before(today);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private String formatDateRange(String start, String end) {

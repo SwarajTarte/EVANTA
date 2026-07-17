@@ -5,6 +5,7 @@ import java.util.List;
 public class EventCache {
 
     private static List<Event> cachedFeaturedEvents;
+    private static List<Event> cachedAllEvents;
 
     private EventCache() {}
 
@@ -16,7 +17,16 @@ public class EventCache {
         cachedFeaturedEvents = events;
     }
 
+    public static List<Event> getAllEvents() {
+        return cachedAllEvents;
+    }
+
+    public static void setAllEvents(List<Event> events) {
+        cachedAllEvents = events;
+    }
+
     public static void clear() {
         cachedFeaturedEvents = null;
+        cachedAllEvents = null;
     }
 }

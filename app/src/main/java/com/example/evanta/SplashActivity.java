@@ -27,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private boolean userLoaded = false;
     private boolean eventsLoaded = false;
+    private boolean allEventsLoaded = false;
     private boolean navigated = false;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -59,13 +60,14 @@ public class SplashActivity extends AppCompatActivity {
 
         prefetchUser(currentUser.getUid());
         prefetchFeaturedEvents();
+        prefetchBrowseEvents();
     }
 
     private void prefetchUser(String uid) {
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        UserRepository userRepository = new UserRepository();
 
-        api.getUserByUid("eq." + uid).enqueue(new Callback<List<User>>() {
+        userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
@@ -87,9 +89,9 @@ public class SplashActivity extends AppCompatActivity {
 
     private void prefetchFeaturedEvents() {
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        EventRepository eventRepository = new EventRepository();
 
-        api.getFeaturedEvents("eq.true", "date_start.asc", 3).enqueue(new Callback<List<Event>>() {
+        eventRepository.getFeaturedEvents(3).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
 
@@ -109,8 +111,32 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
+    private void prefetchBrowseEvents() {
+
+        EventRepository eventRepository = new EventRepository();
+
+        eventRepository.getAllEvents().enqueue(new Callback<List<Event>>() {
+            @Override
+            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    EventCache.setAllEvents(response.body());
+                }
+
+                allEventsLoaded = true;
+                tryFinishEarly();
+            }
+
+            @Override
+            public void onFailure(Call<List<Event>> call, Throwable t) {
+                allEventsLoaded = true;
+                tryFinishEarly();
+            }
+        });
+    }
+
     private void tryFinishEarly() {
-        if (userLoaded && eventsLoaded) {
+        if (userLoaded && eventsLoaded && allEventsLoaded) {
             navigateToDashboardIfReady();
         }
     }

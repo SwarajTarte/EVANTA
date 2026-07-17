@@ -28,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
     MaterialButton createac;
 
     private FirebaseAuth mAuth;
-    private SupabaseApi api;
+    private UserRepository userRepository;
 
 
     @Override
@@ -46,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mAuth = FirebaseAuth.getInstance();
-        api = RetrofitClient.getClient().create(SupabaseApi.class);
+        userRepository = new UserRepository();
 
         signin = findViewById(R.id.signin);
         nameIn = findViewById(R.id.nameIn);
@@ -147,7 +147,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 whatsno
                         );
 
-                        api.upsertUser(user).enqueue(new Callback<Void>() {
+                        userRepository.upsertUser(user).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
 

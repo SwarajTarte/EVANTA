@@ -81,9 +81,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void loadCurrentUser() {
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        UserRepository userRepository = new UserRepository();
 
-        api.getUserByUid("eq." + currentUid).enqueue(new Callback<List<User>>() {
+        userRepository.getUserByUid(currentUid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, retrofit2.Response<List<User>> response) {
 
@@ -187,9 +187,9 @@ public class EditProfileActivity extends AppCompatActivity {
             fields.put("photo_url", pendingPhotoUrl);
         }
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        UserRepository userRepository = new UserRepository();
 
-        api.updateUser("eq." + currentUid, fields).enqueue(new Callback<Void>() {
+        userRepository.updateUser(currentUid, fields).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
 

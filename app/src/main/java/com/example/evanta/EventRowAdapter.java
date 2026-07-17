@@ -4,14 +4,18 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import android.content.Intent;
 
 public class EventRowAdapter extends RecyclerView.Adapter<EventRowAdapter.ViewHolder> {
 
@@ -35,8 +39,19 @@ public class EventRowAdapter extends RecyclerView.Adapter<EventRowAdapter.ViewHo
         Event event = events.get(position);
         int color = CategoryColors.forCategory(event.getCategory());
 
-        holder.thumbnailText.setText(event.getTitle());
-        ((GradientDrawable) holder.thumbnail.getBackground().mutate()).setColor(color);
+        holder.thumbnailText.setVisibility(View.GONE);
+        holder.thumbnailImage.setVisibility(View.VISIBLE);
+
+        if (event.getImageUrl() != null && !event.getImageUrl().trim().isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(event.getImageUrl())
+                    .placeholder(R.drawable.launcher)
+                    .error(R.drawable.launcher)
+                    .centerCrop()
+                    .into(holder.thumbnailImage);
+        } else {
+            holder.thumbnailImage.setImageResource(R.drawable.launcher);
+        }
 
         holder.title.setText(event.getTitle());
 
@@ -55,6 +70,11 @@ public class EventRowAdapter extends RecyclerView.Adapter<EventRowAdapter.ViewHo
             holder.price.setText("\u20B9" + (int) event.getPrice());
             holder.price.setTextColor(0xFFE0568C);
         }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), EventDetailActivity.class);
+            intent.putExtra(EventDetailActivity.EXTRA_EVENT, event);
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -80,11 +100,13 @@ public class EventRowAdapter extends RecyclerView.Adapter<EventRowAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         View thumbnail;
+        ImageView thumbnailImage;
         TextView thumbnailText, title, categoryTag, date, location, price;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.event_thumbnail);
+            thumbnailImage = itemView.findViewById(R.id.event_thumbnail_image);
             thumbnailText = itemView.findViewById(R.id.event_thumbnail_text);
             title = itemView.findViewById(R.id.event_title);
             categoryTag = itemView.findViewById(R.id.event_category_tag);

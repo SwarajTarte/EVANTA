@@ -1,0 +1,5 @@
+<!-- bg_category_pill.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="20dp" />
+    <solid android:color="#261B4A" />
+</shape>

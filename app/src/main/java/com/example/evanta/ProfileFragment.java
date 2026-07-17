@@ -90,9 +90,9 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserFromSupabase(String uid) {
 
-        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        UserRepository userRepository = new UserRepository();
 
-        api.getUserByUid("eq." + uid).enqueue(new Callback<List<User>>() {
+        userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 

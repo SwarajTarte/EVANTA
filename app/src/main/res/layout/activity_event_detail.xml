@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_dashboard">
@@ -24,7 +25,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/hero_image"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-30dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/bg_content_card_top"
         android:padding="20dp">
 
@@ -32,7 +36,6 @@
             android:id="@+id/category_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
             android:textSize="13sp"
             android:textColor="#7C4DFF"
             android:fontFamily="@font/poppins_medium"
@@ -48,7 +51,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/category_tag"
             android:layout_marginTop="14dp"
-            android:text=""
             android:textSize="24sp"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/poppinsbold" />
@@ -59,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/event_title"
             android:layout_marginTop="4dp"
-            android:text=""
             android:textSize="14sp"
             android:textColor="#B4BCCB"
             android:fontFamily="@font/poppins_medium" />
@@ -70,11 +71,166 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/event_subtitle"
             android:layout_marginTop="16dp"
-            android:text=""
             android:textSize="14sp"
             android:lineSpacingExtra="4dp"
             android:textColor="#9AA3B2"
             android:fontFamily="@font/poppinsreg" />
+
+        <View
+            android:id="@+id/detail_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/event_description"
+            android:layout_marginTop="20dp"
+            android:background="#1F2438" />
+
+        <LinearLayout
+            android:id="@+id/detail_date_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_divider"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_calendar_small"
+                app:tint="#7C4DFF" />
+
+            <TextView
+                android:id="@+id/detail_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_location_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_date_row"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_location_small"
+                app:tint="#7C4DFF" />
+
+            <TextView
+                android:id="@+id/detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_seats_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_location_row"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_ticket"
+                app:tint="#7C4DFF" />
+
+            <TextView
+                android:id="@+id/detail_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_deadline_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_seats_row"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_calendar_small"
+                app:tint="#7C4DFF" />
+
+            <TextView
+                android:id="@+id/detail_deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@id/detail_deadline_row"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_gradient"
+            android:elevation="6dp"
+            android:text="Enroll Now"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:backgroundTint="@null"
+            app:strokeWidth="0dp"
+            app:rippleColor="#30FFFFFF"
+            app:icon="@drawable/ic_ticket"
+            app:iconGravity="textStart"
+            app:iconSize="35dp"
+            app:iconPadding="10dp"
+            app:iconTint="@android:color/white"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDownloadCertificate"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@id/btnRegister"
+            android:layout_marginTop="12dp"
+            android:text="Certificate Not Issued"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:backgroundTint="@null"
+            app:strokeWidth="0dp"
+            app:icon="@drawable/ic_certificate"
+            app:iconGravity="textStart"
+            app:iconSize="28dp"
+            app:iconPadding="10dp"
+            app:iconTint="@android:color/white"/>
 
     </RelativeLayout>
 

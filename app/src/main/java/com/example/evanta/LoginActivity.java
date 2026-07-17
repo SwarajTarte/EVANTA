@@ -223,9 +223,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             User user = new User(uid, name, email, "");
 
-                            SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+                            UserRepository userRepository = new UserRepository();
 
-                            api.upsertUser(user).enqueue(new Callback<Void>() {
+                            userRepository.upsertUser(user).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
 
