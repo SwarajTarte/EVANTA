@@ -13,13 +13,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +58,6 @@ public class MyEventsFragment extends Fragment {
         tabCompleted = view.findViewById(R.id.tab_completed);
         tabCertificates = view.findViewById(R.id.tab_certificates);
 
-        // 2-column Grid layout
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         adapter = new MyEventsAdapter(myEventsList);
         recyclerView.setAdapter(adapter);
@@ -69,7 +66,12 @@ public class MyEventsFragment extends Fragment {
         tabCompleted.setOnClickListener(v -> selectFilter(Filter.COMPLETED));
         tabCertificates.setOnClickListener(v -> selectFilter(Filter.CERTIFICATES));
 
-        fetchMyEvents();
+        updateTabs();
+        bindFromPrefetchCache();
+
+        if (!PrefetchCache.hasFreshMyEventsData()) {
+            fetchMyEvents();
+        }
     }
 
     private void fetchMyEvents() {
@@ -82,7 +84,6 @@ public class MyEventsFragment extends Fragment {
         showLoading(true);
         RegistrationRepository registrationRepository = new RegistrationRepository();
 
-        // Fetch all registrations for this user
         registrationRepository.getRegistrationsForUser(user.getUid()).enqueue(new Callback<List<Registration>>() {
             @Override
             public void onResponse(@NonNull Call<List<Registration>> call, @NonNull Response<List<Registration>> response) {
@@ -92,6 +93,7 @@ public class MyEventsFragment extends Fragment {
                     List<Registration> registrations = response.body();
                     fetchMatchingEvents(registrations);
                 } else {
+                    PrefetchCache.setMyEventsData(new ArrayList<>(), new ArrayList<>());
                     showEmptyState(true);
                 }
             }
@@ -105,25 +107,25 @@ public class MyEventsFragment extends Fragment {
     }
 
     private void fetchMatchingEvents(List<Registration> registrations) {
-        // Collect all event IDs and build a map of eventId -> Registration
-        Map<String, Registration> regMap = new HashMap<>();
         StringBuilder idsBuilder = new StringBuilder("in.(");
+        int added = 0;
 
-        for (int i = 0; i < registrations.size(); i++) {
-            Registration reg = registrations.get(i);
-            if (reg.getEventId() != null) {
-                regMap.put(reg.getEventId(), reg);
-                idsBuilder.append(reg.getEventId());
-                if (i < registrations.size() - 1) {
-                    idsBuilder.append(",");
-                }
-            }
+        for (Registration reg : registrations) {
+            if (reg.getEventId() == null) continue;
+            if (added > 0) idsBuilder.append(",");
+            idsBuilder.append(reg.getEventId());
+            added++;
         }
         idsBuilder.append(")");
 
-        EventRepository eventRepository = new EventRepository();
+        if (added == 0) {
+            PrefetchCache.setMyEventsData(registrations, new ArrayList<>());
+            allMyEvents.clear();
+            applyFilter();
+            return;
+        }
 
-        // Fetch details of those events
+        EventRepository eventRepository = new EventRepository();
         eventRepository.getEventsByIds(idsBuilder.toString()).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(@NonNull Call<List<Event>> call, @NonNull Response<List<Event>> response) {
@@ -131,15 +133,9 @@ public class MyEventsFragment extends Fragment {
 
                 showLoading(false);
 
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    allMyEvents.clear();
-                    for (Event event : response.body()) {
-                        Registration reg = regMap.get(event.getId());
-                        if (reg != null) {
-                            allMyEvents.add(new MyEventItem(event, reg));
-                        }
-                    }
-                    applyFilter();
+                if (response.isSuccessful() && response.body() != null) {
+                    PrefetchCache.setMyEventsData(registrations, response.body());
+                    bindFromPrefetchCache();
                 } else {
                     showEmptyState(true);
                 }
@@ -203,6 +199,16 @@ public class MyEventsFragment extends Fragment {
         }
         adapter.notifyDataSetChanged();
         showEmptyState(myEventsList.isEmpty());
+    }
+
+    private boolean bindFromPrefetchCache() {
+        List<MyEventItem> cached = PrefetchCache.getMyEventItemsFresh();
+        if (cached == null) return false;
+
+        allMyEvents.clear();
+        allMyEvents.addAll(cached);
+        applyFilter();
+        return true;
     }
 
     private boolean isCompleted(Event event) {

@@ -32,10 +32,9 @@ public class EventDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_EVENT = "extra_event";
 
-    // Button state colours
-    private static final int COLOR_REGISTERED = 0xFF27AE60;  // green
-    private static final int COLOR_DEFAULT    = 0xFF7C4DFF;  // purple
-    private static final int COLOR_DISABLED   = 0xFF555B66;  // grey
+    private static final int COLOR_REGISTERED = 0xFF27AE60;
+    private static final int COLOR_DEFAULT    = 0xFF7C4DFF;
+    private static final int COLOR_DISABLED   = 0xFF555B66;
 
     private MaterialButton btnRegister;
     private MaterialButton btnDownloadCertificate;
@@ -76,10 +75,6 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    // -------------------------------------------------------------------------
-    //  Bind event data to the UI
-    // -------------------------------------------------------------------------
-
     private void bindEvent(Event event) {
         ImageView heroImage         = findViewById(R.id.hero_image);
         TextView categoryTag        = findViewById(R.id.category_tag);
@@ -105,8 +100,6 @@ public class EventDetailActivity extends AppCompatActivity {
         locationText.setText(event.getLocation());
 
         String priceLabel = event.getPrice() <= 0 ? "Free" : "₹" + (int) event.getPrice();
-
-        // Set default button label (will be overridden by checkIfAlreadyRegistered if needed)
         btnRegister.setText("Enroll Now • " + priceLabel);
         bindDeadline(event);
 
@@ -117,15 +110,10 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    // -------------------------------------------------------------------------
-    //  Step 1 — Check if user is already registered (runs on screen open)
-    // -------------------------------------------------------------------------
-
     private void checkIfAlreadyRegistered(Event event) {
         User user = UserCache.get(this);
         if (user == null || event.getId() == null) return;
 
-        // Disable button while we check so the user can't tap during network call
         btnRegister.setEnabled(false);
 
         RegistrationRepository registrationRepository = new RegistrationRepository();
@@ -139,13 +127,10 @@ public class EventDetailActivity extends AppCompatActivity {
                         if (response.isSuccessful()
                                 && response.body() != null
                                 && !response.body().isEmpty()) {
-                            // Already registered
                             alreadyRegistered = true;
                             setButtonRegistered();
-                            // Update certificate button with fetched registration
                             updateCertificateButton(response.body().get(0));
                         } else {
-                            // Not yet registered — enable the button
                             alreadyRegistered = false;
                             setButtonDefault(event);
                             btnDownloadCertificate.setVisibility(View.GONE);
@@ -155,17 +140,12 @@ public class EventDetailActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<List<Registration>> call, Throwable t) {
                         if (!isAdded()) return;
-                        // On network failure still let them try to register
                         alreadyRegistered = false;
                         setButtonDefault(event);
                         btnDownloadCertificate.setVisibility(View.GONE);
                     }
                 });
     }
-
-    // -------------------------------------------------------------------------
-    //  Step 2 — Perform registration when user taps "Enroll Now"
-    // -------------------------------------------------------------------------
 
     private void registerForEvent(Event event) {
         User user = UserCache.get(this);
@@ -174,7 +154,6 @@ public class EventDetailActivity extends AppCompatActivity {
             return;
         }
 
-        // Loading state — prevent double-taps
         setButtonLoading();
 
         RegistrationRepository registrationRepository = new RegistrationRepository();
@@ -187,6 +166,8 @@ public class EventDetailActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     alreadyRegistered = true;
+                    PrefetchCache.clearMyEventsData();
+
                     if (registeredCount >= 0) {
                         registeredCount++;
                         bindSeats(event);
@@ -197,12 +178,10 @@ public class EventDetailActivity extends AppCompatActivity {
                         updateCertificateButton(response.body().get(0));
                     }
                 } else if (response.code() == 409) {
-                    // Duplicate — treat as already enrolled
                     alreadyRegistered = true;
                     setButtonRegistered();
                     showSnackbar("You're already enrolled in this event.", true);
                 } else {
-                    // Log full error so we can diagnose in Logcat
                     String errorBody = "";
                     try { errorBody = response.errorBody() != null ? response.errorBody().string() : "null"; }
                     catch (Exception ignored) {}
@@ -221,11 +200,6 @@ public class EventDetailActivity extends AppCompatActivity {
         });
     }
 
-    // -------------------------------------------------------------------------
-    //  Button state helpers
-    // -------------------------------------------------------------------------
-
-    /** Active purple "Enroll Now • Free / ₹XXX" state. */
     private void setButtonDefault(Event event) {
         String priceLabel = event.getPrice() <= 0 ? "Free" : "₹" + (int) event.getPrice();
         if (isRegistrationClosed(event)) {
@@ -251,14 +225,12 @@ public class EventDetailActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> registerForEvent(event));
     }
 
-    /** Spinning/disabled "Enrolling…" state shown during the network call. */
     private void setButtonLoading() {
         btnRegister.setText("Enrolling…");
         btnRegister.setIcon(null);
         btnRegister.setEnabled(false);
     }
 
-    /** Green "Already Enrolled ✓" state shown after a successful registration. */
     private void setButtonRegistered() {
         btnRegister.setText("Already Enrolled ✓");
         btnRegister.setIcon(null);
@@ -342,34 +314,28 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    /** Manages the visibility and click state of the Certificate Download button */
     private void updateCertificateButton(Registration registration) {
         btnDownloadCertificate.setVisibility(View.VISIBLE);
 
         String certUrl = registration.getCertificateUrl();
         if (certUrl == null || certUrl.trim().isEmpty()) {
-            // Certificate not issued yet
             btnDownloadCertificate.setText("Certificate Not Issued Yet");
             btnDownloadCertificate.setEnabled(false);
 
-            // Apply grey color background
             GradientDrawable bg = new GradientDrawable();
             bg.setColor(COLOR_DISABLED);
             bg.setCornerRadius(56f);
             btnDownloadCertificate.setBackground(bg);
             btnDownloadCertificate.setOnClickListener(null);
         } else {
-            // Certificate is issued! Make it active
             btnDownloadCertificate.setText("Download Certificate");
             btnDownloadCertificate.setEnabled(true);
 
-            // Apply active purple color background
             GradientDrawable bg = new GradientDrawable();
             bg.setColor(COLOR_DEFAULT);
             bg.setCornerRadius(56f);
             btnDownloadCertificate.setBackground(bg);
 
-            // Open certificate URL on tap
             btnDownloadCertificate.setOnClickListener(v -> {
                 android.content.Intent browserIntent = new android.content.Intent(
                         android.content.Intent.ACTION_VIEW, android.net.Uri.parse(certUrl));
@@ -378,21 +344,12 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Changes the solid background colour of the button. We set a simple
-     * GradientDrawable so we don't conflict with the btn_gradient drawable
-     * used for the default state.
-     */
     private void setButtonColor(int color) {
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(color);
-        bg.setCornerRadius(56f); // matches btn_gradient rounded corners
+        bg.setCornerRadius(56f);
         btnRegister.setBackground(bg);
     }
-
-    // -------------------------------------------------------------------------
-    //  Snackbar helper
-    // -------------------------------------------------------------------------
 
     private void showSnackbar(String message, boolean success) {
         Snackbar snackbar = Snackbar.make(
@@ -402,17 +359,9 @@ public class EventDetailActivity extends AppCompatActivity {
         snackbar.show();
     }
 
-    // -------------------------------------------------------------------------
-    //  Guard: check fragment-like attachment (activity not finishing)
-    // -------------------------------------------------------------------------
-
     private boolean isAdded() {
         return !isFinishing() && !isDestroyed();
     }
-
-    // -------------------------------------------------------------------------
-    //  Date formatting
-    // -------------------------------------------------------------------------
 
     private String formatDateRange(String start, String end) {
         try {

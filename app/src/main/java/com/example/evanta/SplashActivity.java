@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
     private boolean userLoaded = false;
     private boolean eventsLoaded = false;
     private boolean allEventsLoaded = false;
+    private boolean myEventsLoaded = false;
     private boolean navigated = false;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -49,32 +51,28 @@ public class SplashActivity extends AppCompatActivity {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (currentUser == null) {
-            // Nothing to prefetch — just enforce a minimum splash time, then go to Welcome.
             handler.postDelayed(this::goToWelcome, MIN_SPLASH_MS);
             return;
         }
 
-        // Safety net: if network is slow/unreachable, don't trap the user on
-        // the splash screen forever.
         handler.postDelayed(this::navigateToDashboardIfReady, SAFETY_TIMEOUT_MS);
 
-        prefetchUser(currentUser.getUid());
+        String uid = currentUser.getUid();
+        prefetchUser(uid);
         prefetchFeaturedEvents();
         prefetchBrowseEvents();
+        prefetchMyEventsData(uid);
     }
 
     private void prefetchUser(String uid) {
-
         UserRepository userRepository = new UserRepository();
 
         userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     UserCache.set(SplashActivity.this, response.body().get(0));
                 }
-
                 userLoaded = true;
                 tryFinishEarly();
             }
@@ -88,17 +86,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void prefetchFeaturedEvents() {
-
         EventRepository eventRepository = new EventRepository();
 
         eventRepository.getFeaturedEvents(3).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-
                 if (response.isSuccessful() && response.body() != null) {
                     EventCache.set(response.body());
                 }
-
                 eventsLoaded = true;
                 tryFinishEarly();
             }
@@ -112,17 +107,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void prefetchBrowseEvents() {
-
         EventRepository eventRepository = new EventRepository();
 
         eventRepository.getAllEvents().enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-
                 if (response.isSuccessful() && response.body() != null) {
                     EventCache.setAllEvents(response.body());
                 }
-
                 allEventsLoaded = true;
                 tryFinishEarly();
             }
@@ -135,14 +127,74 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
+    private void prefetchMyEventsData(String uid) {
+        RegistrationRepository registrationRepository = new RegistrationRepository();
+
+        registrationRepository.getRegistrationsForUser(uid).enqueue(new Callback<List<Registration>>() {
+            @Override
+            public void onResponse(Call<List<Registration>> call, Response<List<Registration>> response) {
+                if (!response.isSuccessful() || response.body() == null || response.body().isEmpty()) {
+                    PrefetchCache.setMyEventsData(new ArrayList<>(), new ArrayList<>());
+                    myEventsLoaded = true;
+                    tryFinishEarly();
+                    return;
+                }
+
+                List<Registration> registrations = response.body();
+
+                StringBuilder idsBuilder = new StringBuilder("in.(");
+                int added = 0;
+                for (Registration registration : registrations) {
+                    if (registration.getEventId() == null) continue;
+                    if (added > 0) idsBuilder.append(",");
+                    idsBuilder.append(registration.getEventId());
+                    added++;
+                }
+                idsBuilder.append(")");
+
+                if (added == 0) {
+                    PrefetchCache.setMyEventsData(registrations, new ArrayList<>());
+                    myEventsLoaded = true;
+                    tryFinishEarly();
+                    return;
+                }
+
+                new EventRepository().getEventsByIds(idsBuilder.toString())
+                        .enqueue(new Callback<List<Event>>() {
+                            @Override
+                            public void onResponse(Call<List<Event>> call, Response<List<Event>> eventResponse) {
+                                List<Event> events = (eventResponse.isSuccessful() && eventResponse.body() != null)
+                                        ? eventResponse.body()
+                                        : new ArrayList<>();
+                                PrefetchCache.setMyEventsData(registrations, events);
+                                myEventsLoaded = true;
+                                tryFinishEarly();
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<Event>> call, Throwable t) {
+                                PrefetchCache.setMyEventsData(registrations, new ArrayList<>());
+                                myEventsLoaded = true;
+                                tryFinishEarly();
+                            }
+                        });
+            }
+
+            @Override
+            public void onFailure(Call<List<Registration>> call, Throwable t) {
+                myEventsLoaded = true;
+                tryFinishEarly();
+            }
+        });
+    }
+
     private void tryFinishEarly() {
-        if (userLoaded && eventsLoaded && allEventsLoaded) {
+        if (userLoaded && eventsLoaded && allEventsLoaded && myEventsLoaded) {
             navigateToDashboardIfReady();
         }
     }
 
     private void navigateToDashboardIfReady() {
-
         long elapsed = System.currentTimeMillis() - startTime;
         long remaining = MIN_SPLASH_MS - elapsed;
 

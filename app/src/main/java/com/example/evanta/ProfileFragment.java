@@ -89,23 +89,19 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserFromSupabase(String uid) {
-
         UserRepository userRepository = new UserRepository();
 
         userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-
                     User user = response.body().get(0);
                     UserCache.set(requireContext(), user);
                     bindUser(user);
 
                 } else if (response.isSuccessful()) {
-
                     Toast.makeText(requireContext(),
                             "No profile row found for this account.",
                             Toast.LENGTH_LONG).show();
@@ -126,7 +122,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void bindUser(User user) {
-
         String fullName = user.getName() != null ? user.getName() : "";
         String nickname = fullName.trim().isEmpty() ? "" : fullName.trim().split(" ")[0];
 
@@ -150,12 +145,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
-
         mAuth.signOut();
         UserCache.clear(requireContext());
+        EventCache.clear();
+        PrefetchCache.clear();
 
         googleSignInClient.signOut().addOnCompleteListener(task -> {
-
             Intent intent = new Intent(requireContext(), WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

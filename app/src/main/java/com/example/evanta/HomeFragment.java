@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,13 +24,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import android.content.Intent;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import android.content.Intent;
 
 public class HomeFragment extends Fragment {
 
@@ -67,21 +67,17 @@ public class HomeFragment extends Fragment {
                 startActivity(new Intent(requireContext(), NotificationCenterActivity.class)));
 
         viewAllEvents.setOnClickListener(v -> {
-
             NavController nav = Navigation.findNavController(v);
-
             NavOptions options = new NavOptions.Builder()
                     .setLaunchSingleTop(true)
                     .setRestoreState(true)
                     .setPopUpTo(nav.getGraph().getStartDestinationId(), false, true)
                     .build();
-
             nav.navigate(R.id.browseFragment, null, options);
         });
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
-
             User cached = UserCache.get(requireContext());
             if (cached != null) {
                 bindUser(cached);
@@ -94,16 +90,12 @@ public class HomeFragment extends Fragment {
         fetchFeaturedEvents();
     }
 
-    // ---------- Greeting + avatar ----------
-
     private void loadUser(String uid) {
-
         UserRepository userRepository = new UserRepository();
 
         userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
@@ -121,11 +113,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void bindUser(User user) {
-
         String fullName = user.getName() != null ? user.getName() : "";
         String nickname = fullName.trim().isEmpty() ? "there" : fullName.trim().split(" ")[0];
 
-        greetingText.setText("Hi, " + nickname + " \uD83D\uDC4B");
+        greetingText.setText("Hi, " + nickname + " 👋");
 
         if (!fullName.trim().isEmpty()) {
             avatarInitial.setText(String.valueOf(fullName.trim().charAt(0)).toUpperCase());
@@ -141,10 +132,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    // ---------- Featured events ----------
-
     private void fetchFeaturedEvents() {
-
         List<Event> cached = EventCache.get();
         if (cached != null) {
             bindFeaturedEvents(cached);
@@ -155,7 +143,6 @@ public class HomeFragment extends Fragment {
         eventRepository.getFeaturedEvents(3).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-
                 if (!isAdded()) return;
 
                 if (response.isSuccessful() && response.body() != null) {
@@ -172,7 +159,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void bindFeaturedEvents(List<Event> events) {
-
         View[] cards = { featuredCard1, featuredCard2, featuredCard3 };
 
         for (int i = 0; i < cards.length; i++) {
@@ -213,6 +199,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadStudentStats(String uid) {
+        if (bindStatsFromPrefetch()) {
+            return;
+        }
+
         new RegistrationRepository().getRegistrationsForUser(uid)
                 .enqueue(new Callback<List<Registration>>() {
                     @Override
@@ -231,6 +221,28 @@ public class HomeFragment extends Fragment {
                         bindStats(0, 0, 0);
                     }
                 });
+    }
+
+    private boolean bindStatsFromPrefetch() {
+        List<MyEventItem> cached = PrefetchCache.getMyEventItemsFresh();
+        if (cached == null) return false;
+
+        int joined = cached.size();
+        int upcoming = 0;
+        int certificates = 0;
+
+        for (MyEventItem item : cached) {
+            if (!isCompleted(item.getEvent())) {
+                upcoming++;
+            }
+            String certUrl = item.getRegistration().getCertificateUrl();
+            if (certUrl != null && !certUrl.trim().isEmpty()) {
+                certificates++;
+            }
+        }
+
+        bindStats(joined, upcoming, certificates);
+        return true;
     }
 
     private void loadStatsEvents(List<Registration> registrations) {
@@ -263,6 +275,8 @@ public class HomeFragment extends Fragment {
                         int certificates = 0;
 
                         if (response.isSuccessful() && response.body() != null) {
+                            PrefetchCache.setMyEventsData(registrations, response.body());
+
                             for (Event event : response.body()) {
                                 if (!isCompleted(event)) {
                                     upcoming++;
