@@ -180,15 +180,21 @@ public class HomeFragment extends Fragment {
                 .setText(formatDateRange(event.getDateStart(), event.getDateEnd()));
         ((TextView) card.findViewById(R.id.featured_location)).setText(event.getLocation());
 
+        com.bumptech.glide.load.resource.bitmap.RoundedCorners rounded =
+                new com.bumptech.glide.load.resource.bitmap.RoundedCorners(56);
+
         if (event.getImageUrl() != null && !event.getImageUrl().trim().isEmpty()) {
             Glide.with(this)
                     .load(event.getImageUrl())
                     .placeholder(R.drawable.launcher)
                     .error(R.drawable.launcher)
-                    .centerCrop()
+                    .transform(new com.bumptech.glide.load.resource.bitmap.CenterCrop(), rounded)
                     .into(coverImage);
         } else {
-            coverImage.setImageResource(R.drawable.launcher);
+            Glide.with(this)
+                    .load(R.drawable.launcher)
+                    .transform(new com.bumptech.glide.load.resource.bitmap.CenterCrop(), rounded)
+                    .into(coverImage);
         }
 
         card.findViewById(R.id.featured_view_details).setOnClickListener(v -> {

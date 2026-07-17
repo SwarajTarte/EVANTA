@@ -1,23 +1,23 @@
 package com.example.evanta;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,7 +25,18 @@ import retrofit2.Response;
 
 public class NotificationCenterActivity extends AppCompatActivity {
 
-    private LinearLayout notificationList;
+    private RecyclerView recyclerView;
+    private ProgressBar loader;
+    private View emptyState;
+    private NotificationAdapter adapter;
+    private final List<Notification> notifications = new ArrayList<>();
+
+    private SupabaseApi api;
+    private String currentUid;
+
+    private int sourcesLoaded = 0;
+    private final List<Notification> derivedNotifications = new ArrayList<>();
+    private final List<Notification> pushedNotifications = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,52 +50,74 @@ public class NotificationCenterActivity extends AppCompatActivity {
             return insets;
         });
 
-        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
-        notificationList = findViewById(R.id.notification_list);
-        loadNotifications();
-    }
+        getWindow().setStatusBarColor(android.graphics.Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(android.graphics.Color.TRANSPARENT);
 
-    private void loadNotifications() {
+        findViewById(R.id.back_arrow).setOnClickListener(v -> finish());
+
+        recyclerView = findViewById(R.id.notification_recycler);
+        loader = findViewById(R.id.notification_loader);
+        emptyState = findViewById(R.id.notification_empty);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new NotificationAdapter(notifications, this::onNotificationTapped);
+        recyclerView.setAdapter(adapter);
+
+        api = RetrofitClient.getClient().create(SupabaseApi.class);
+
         User user = UserCache.get(this);
         if (user == null) {
-            addNotification("No profile loaded", "Log in again to refresh student notifications.");
+            showEmpty();
             return;
         }
 
-        new RegistrationRepository().getRegistrationsForUser(user.getUid())
+        currentUid = user.getUid();
+        showLoading();
+        loadDerivedNotifications();
+        loadPushedNotifications();
+    }
+
+    // ---------- Source 1: derived from registered events ----------
+
+    private void loadDerivedNotifications() {
+        new RegistrationRepository().getRegistrationsForUser(currentUid)
                 .enqueue(new Callback<List<Registration>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Registration>> call,
                                            @NonNull Response<List<Registration>> response) {
-                        if (!response.isSuccessful() || response.body() == null || response.body().isEmpty()) {
-                            addNotification("No notifications yet", "Your event updates will appear here.");
+                        if (isFinishing()) return;
+                        if (!response.isSuccessful() || response.body() == null
+                                || response.body().isEmpty()) {
+                            onSourceFinished();
                             return;
                         }
-                        loadRegisteredEvents(response.body());
+                        loadEventsForDerived(response.body());
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<Registration>> call, @NonNull Throwable t) {
-                        addNotification("Could not load notifications", "Check your connection and try again.");
+                    public void onFailure(@NonNull Call<List<Registration>> call,
+                                          @NonNull Throwable t) {
+                        if (!isFinishing()) onSourceFinished();
                     }
                 });
     }
 
-    private void loadRegisteredEvents(List<Registration> registrations) {
-        Map<String, Registration> registrationMap = new HashMap<>();
+    private void loadEventsForDerived(List<Registration> registrations) {
+        Map<String, Registration> regMap = new HashMap<>();
         StringBuilder ids = new StringBuilder("in.(");
         int added = 0;
-        for (Registration registration : registrations) {
-            if (registration.getEventId() == null) continue;
+
+        for (Registration reg : registrations) {
+            if (reg.getEventId() == null) continue;
             if (added > 0) ids.append(",");
-            ids.append(registration.getEventId());
-            registrationMap.put(registration.getEventId(), registration);
+            ids.append(reg.getEventId());
+            regMap.put(reg.getEventId(), reg);
             added++;
         }
         ids.append(")");
 
         if (added == 0) {
-            addNotification("No notifications yet", "Your event updates will appear here.");
+            onSourceFinished();
             return;
         }
 
@@ -93,93 +126,224 @@ public class NotificationCenterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NonNull Call<List<Event>> call,
                                            @NonNull Response<List<Event>> response) {
-                        if (!response.isSuccessful() || response.body() == null || response.body().isEmpty()) {
-                            addNotification("No notifications yet", "Your event updates will appear here.");
-                            return;
-                        }
-
-                        notificationList.removeAllViews();
-                        for (Event event : response.body()) {
-                            Registration registration = registrationMap.get(event.getId());
-                            if (registration != null && registration.getCertificateUrl() != null
-                                    && !registration.getCertificateUrl().trim().isEmpty()) {
-                                addNotification("Certificate available", event.getTitle() + " certificate is ready to download.");
-                            }
-                            if (!isCompleted(event)) {
-                                addNotification("Upcoming event", event.getTitle() + " is scheduled for " + formatDate(event.getDateStart()) + ".");
-                            }
-                            if (isRegistrationClosed(event)) {
-                                addNotification("Registration closed", event.getTitle() + " is no longer accepting registrations.");
+                        if (isFinishing()) return;
+                        if (response.isSuccessful() && response.body() != null) {
+                            for (Event event : response.body()) {
+                                Registration reg = regMap.get(event.getId());
+                                buildDerivedNotifications(event, reg);
                             }
                         }
-                        if (notificationList.getChildCount() == 0) {
-                            addNotification("No notifications yet", "Important event updates will appear here.");
-                        }
+                        onSourceFinished();
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<Event>> call, @NonNull Throwable t) {
-                        addNotification("Could not load notifications", "Check your connection and try again.");
+                    public void onFailure(@NonNull Call<List<Event>> call,
+                                          @NonNull Throwable t) {
+                        if (!isFinishing()) onSourceFinished();
                     }
                 });
     }
 
-    private void addNotification(String title, String body) {
-        TextView item = new TextView(this);
-        item.setText(title + "\n" + body);
-        item.setTextColor(Color.WHITE);
-        item.setTextSize(14);
-        item.setLineSpacing(6, 1f);
-        item.setTypeface(android.graphics.Typeface.DEFAULT_BOLD);
-        item.setBackgroundResource(R.drawable.bg_notification_item);
-        item.setPadding(dp(16), dp(14), dp(16), dp(14));
+    private void buildDerivedNotifications(Event event, Registration reg) {
+        Set<String> readKeys = getReadKeys();
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 0, 0, dp(12));
-        notificationList.addView(item, params);
+        if (reg != null && reg.getCertificateUrl() != null
+                && !reg.getCertificateUrl().trim().isEmpty()) {
+            String key = "certificate_" + event.getId();
+            Notification n = buildNotif(
+                    Notification.TYPE_CERTIFICATE,
+                    "Certificate Available",
+                    "Your certificate for " + event.getTitle() + " is ready to download.",
+                    event.getId());
+            n.setRead(readKeys.contains(key));
+            n.setId(key);
+            derivedNotifications.add(n);
+        }
+
+        if (!isCompleted(event)) {
+            String key = "upcoming_" + event.getId();
+            Notification n = buildNotif(
+                    Notification.TYPE_UPCOMING,
+                    "Upcoming Event",
+                    event.getTitle() + " is scheduled for " + event.getDateStart() + ".",
+                    event.getId());
+            n.setRead(readKeys.contains(key));
+            n.setId(key);
+            derivedNotifications.add(n);
+        }
+
+        if (isRegistrationClosed(event)) {
+            String key = "closed_" + event.getId();
+            Notification n = buildNotif(
+                    Notification.TYPE_REGISTRATION_CLOSED,
+                    "Registration Closed",
+                    event.getTitle() + " is no longer accepting registrations.",
+                    event.getId());
+            n.setRead(readKeys.contains(key));
+            n.setId(key);
+            derivedNotifications.add(n);
+        }
     }
+
+    // ---------- Source 2: admin-pushed ----------
+
+    private void loadPushedNotifications() {
+        api.getNotifications("eq." + currentUid).enqueue(new Callback<List<Notification>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Notification>> call,
+                                   @NonNull Response<List<Notification>> response) {
+                if (isFinishing()) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    pushedNotifications.addAll(response.body());
+                }
+                loadBroadcastNotifications();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Notification>> call,
+                                  @NonNull Throwable t) {
+                if (!isFinishing()) loadBroadcastNotifications();
+            }
+        });
+    }
+
+    private void loadBroadcastNotifications() {
+        api.getBroadcastNotifications("is.null").enqueue(new Callback<List<Notification>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Notification>> call,
+                                   @NonNull Response<List<Notification>> response) {
+                if (isFinishing()) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    pushedNotifications.addAll(response.body());
+                }
+                onSourceFinished();
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Notification>> call,
+                                  @NonNull Throwable t) {
+                if (!isFinishing()) onSourceFinished();
+            }
+        });
+    }
+
+    // ---------- Merge ----------
+
+    private synchronized void onSourceFinished() {
+        sourcesLoaded++;
+        if (sourcesLoaded < 2) return;
+
+        runOnUiThread(() -> {
+            notifications.clear();
+            notifications.addAll(pushedNotifications);
+            notifications.addAll(derivedNotifications);
+
+            if (notifications.isEmpty()) {
+                showEmpty();
+            } else {
+                loader.setVisibility(View.GONE);
+                emptyState.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    // ---------- Mark as read ----------
+
+    private void onNotificationTapped(Notification notif, int position) {
+        if (notif.isRead()) return;
+
+        notif.setRead(true);
+        adapter.notifyItemChanged(position);
+
+        if (notif.getId() == null) return;
+
+        if (notif.getId().startsWith("upcoming_")
+                || notif.getId().startsWith("certificate_")
+                || notif.getId().startsWith("closed_")) {
+            markKeyRead(notif.getId());
+            return;
+        }
+
+        Map<String, Object> patch = new HashMap<>();
+        patch.put("is_read", true);
+
+        api.markNotificationRead("eq." + notif.getId(), patch)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call,
+                                           @NonNull Response<Void> response) {}
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call,
+                                          @NonNull Throwable t) {}
+                });
+    }
+
+    // ---------- SharedPreferences for derived read state ----------
+
+    private Set<String> getReadKeys() {
+        return getSharedPreferences("notif_read", MODE_PRIVATE)
+                .getStringSet("read_keys", new HashSet<>());
+    }
+
+    private void markKeyRead(String key) {
+        Set<String> keys = new HashSet<>(getReadKeys());
+        keys.add(key);
+        getSharedPreferences("notif_read", MODE_PRIVATE)
+                .edit().putStringSet("read_keys", keys).apply();
+    }
+
+    // ---------- UI helpers ----------
+
+    private void showLoading() {
+        loader.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyState.setVisibility(View.GONE);
+    }
+
+    private void showEmpty() {
+        loader.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        emptyState.setVisibility(View.VISIBLE);
+    }
+
+    // ---------- Notification builder ----------
+
+    private Notification buildNotif(String type, String title, String body, String eventId) {
+        Notification n = new Notification();
+        n.setType(type);
+        n.setTitle(title);
+        n.setBody(body);
+        n.setEventId(eventId);
+        n.setRead(false);
+        return n;
+    }
+
+    // ---------- Date helpers ----------
 
     private boolean isCompleted(Event event) {
         String dateValue = event.getDateEnd() != null && !event.getDateEnd().isEmpty()
-                ? event.getDateEnd()
-                : event.getDateStart();
+                ? event.getDateEnd() : event.getDateStart();
         try {
-            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date eventDate = input.parse(dateValue);
-            Date today = input.parse(input.format(new Date()));
+            java.text.SimpleDateFormat fmt =
+                    new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+            java.util.Date eventDate = fmt.parse(dateValue);
+            java.util.Date today = fmt.parse(fmt.format(new java.util.Date()));
             return eventDate != null && eventDate.before(today);
-        } catch (Exception e) {
-            return false;
-        }
+        } catch (Exception e) { return false; }
     }
 
     private boolean isRegistrationClosed(Event event) {
-        if (event.getRegistrationDeadline() == null || event.getRegistrationDeadline().trim().isEmpty()) {
-            return false;
-        }
+        if (event.getRegistrationDeadline() == null
+                || event.getRegistrationDeadline().trim().isEmpty()) return false;
         try {
-            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            Date deadline = input.parse(event.getRegistrationDeadline());
-            Date today = input.parse(input.format(new Date()));
+            java.text.SimpleDateFormat fmt =
+                    new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault());
+            java.util.Date deadline = fmt.parse(event.getRegistrationDeadline());
+            java.util.Date today = fmt.parse(fmt.format(new java.util.Date()));
             return deadline != null && deadline.before(today);
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private String formatDate(String date) {
-        try {
-            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            SimpleDateFormat output = new SimpleDateFormat("d MMMM yyyy", Locale.getDefault());
-            return output.format(input.parse(date));
-        } catch (Exception e) {
-            return date != null ? date : "";
-        }
-    }
-
-    private int dp(int value) {
-        return (int) (value * getResources().getDisplayMetrics().density);
+        } catch (Exception e) { return false; }
     }
 }

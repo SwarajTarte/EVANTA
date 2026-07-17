@@ -67,4 +67,18 @@ public interface SupabaseApi {
     Call<List<Event>> getEventsByIds(
             @Query("id") String idsFilter,
             @Query("order") String order);
+
+    @GET("rest/v1/notifications?select=*&order=created_at.desc")
+    Call<List<Notification>> getNotifications(
+            @Query("user_uid") String userUidFilter);
+
+    @GET("rest/v1/notifications?select=*&order=created_at.desc")
+    Call<List<Notification>> getBroadcastNotifications(
+            @Query("user_uid") String isNull);
+
+    @Headers("Prefer: return=minimal")
+    @PATCH("rest/v1/notifications")
+    Call<Void> markNotificationRead(
+            @Query("id") String idFilter,
+            @Body Map<String, Object> fields);
 }

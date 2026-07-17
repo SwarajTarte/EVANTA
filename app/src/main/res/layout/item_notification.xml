@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="8dp">
+
+    <RelativeLayout
+        android:id="@+id/notif_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_notification_item"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/notif_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_notif_icon"
+            android:layout_centerVertical="true"
+            app:tint="#7C4DFF" />
+
+        <TextView
+            android:id="@+id/notif_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/notif_icon"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="2dp"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <TextView
+            android:id="@+id/notif_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notif_title"
+            android:layout_toRightOf="@+id/notif_icon"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="4dp"
+            android:textColor="#9AA3B2"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppinsreg"
+            android:lineSpacingExtra="2dp" />
+
+        <TextView
+            android:id="@+id/notif_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notif_body"
+            android:layout_toRightOf="@+id/notif_icon"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="6dp"
+            android:textColor="#555B66"
+            android:textSize="11sp"
+            android:fontFamily="@font/poppins_medium" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/notif_unread_dot"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/bg_unread_dot"
+        android:elevation="8dp"
+        android:visibility="gone" />
+
+</FrameLayout>
