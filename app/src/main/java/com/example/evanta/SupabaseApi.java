@@ -81,4 +81,22 @@ public interface SupabaseApi {
     Call<Void> markNotificationRead(
             @Query("id") String idFilter,
             @Body Map<String, Object> fields);
+
+    @GET("rest/v1/colleges?select=*&order=name.asc")
+    Call<List<College>> getColleges();
+
+    @GET("rest/v1/colleges?select=*")
+    Call<List<College>> getCollegeById(@Query("id") String idFilter);
+
+    @GET("rest/v1/events?select=*")
+    Call<List<Event>> getFeaturedEventsByCollege(
+            @Query("is_featured") String isFeatured,
+            @Query("college_id") String collegeIdFilter,
+            @Query("order") String order,
+            @Query("limit") int limit);
+
+    @GET("rest/v1/events?select=*")
+    Call<List<Event>> getEventsByCollege(
+            @Query("college_id") String collegeIdFilter,
+            @Query("order") String order);
 }

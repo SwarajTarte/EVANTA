@@ -235,6 +235,94 @@
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
+                <!-- Divider -->
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/value_whatsapp_row"
+                    android:layout_marginTop="16dp"
+                    android:background="#25FFFFFF" />
+
+                <!-- Row 4: College -->
+                <ImageView
+                    android:id="@+id/icon_college_row"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/divider3"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_building_small"
+                    app:tint="#7C4DFF" />
+
+                <TextView
+                    android:id="@+id/label_college_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/icon_college_row"
+                    android:layout_toRightOf="@+id/icon_college_row"
+                    android:layout_marginLeft="16dp"
+                    android:text="College"
+                    android:textSize="13sp"
+                    android:textColor="#B4BCCB"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:id="@+id/value_college_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/label_college_row"
+                    android:layout_toRightOf="@+id/icon_college_row"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="2dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <!-- Divider -->
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/value_college_row"
+                    android:layout_marginTop="16dp"
+                    android:background="#25FFFFFF" />
+
+                <!-- Row 5: Branch -->
+                <ImageView
+                    android:id="@+id/icon_branch_row"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/divider4"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_branch"
+                    app:tint="#7C4DFF" />
+
+                <TextView
+                    android:id="@+id/label_branch_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/icon_branch_row"
+                    android:layout_toRightOf="@+id/icon_branch_row"
+                    android:layout_marginLeft="16dp"
+                    android:text="Branch"
+                    android:textSize="13sp"
+                    android:textColor="#B4BCCB"
+                    android:fontFamily="@font/poppins_medium" />
+
+                <TextView
+                    android:id="@+id/value_branch_row"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/label_branch_row"
+                    android:layout_toRightOf="@+id/icon_branch_row"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="2dp"
+                    android:text=""
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"
+                    android:fontFamily="@font/poppins_medium" />
+
             </RelativeLayout>
 
             <com.google.android.material.button.MaterialButton

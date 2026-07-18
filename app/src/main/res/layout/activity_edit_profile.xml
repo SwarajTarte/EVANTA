@@ -124,11 +124,66 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_college_layout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_building_small"
+        app:startIconTint="#7C4DFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/edit_whatsapp_layout"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_college_input"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="College"
+            android:background="@drawable/bg_textfield"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF"
+            android:fontFamily="@font/poppinsreg"
+            android:gravity="center_vertical"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:focusable="false"
+            android:clickable="true"
+            android:cursorVisible="false"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_branch_layout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_branch"
+        app:startIconTint="#7C4DFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/edit_college_layout"
+        app:hintEnabled="false">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_branch_input"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Branch"
+            android:background="@drawable/bg_textfield"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#80FFFFFF"
+            android:fontFamily="@font/poppinsreg"
+            android:gravity="center_vertical"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/save_profile_but"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_below="@+id/edit_whatsapp_layout"
+        android:layout_below="@+id/edit_branch_layout"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"

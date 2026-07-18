@@ -43,6 +43,8 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView deadlineText;
     private View seatsRow;
     private View deadlineRow;
+    private View collegeRow;
+    private TextView collegeText;
     private int registeredCount = -1;
     private boolean alreadyRegistered = false;
 
@@ -64,6 +66,8 @@ public class EventDetailActivity extends AppCompatActivity {
         btnDownloadCertificate = findViewById(R.id.btnDownloadCertificate);
         seatsRow = findViewById(R.id.detail_seats_row);
         deadlineRow = findViewById(R.id.detail_deadline_row);
+        collegeRow = findViewById(R.id.detail_college_row);
+        collegeText = findViewById(R.id.detail_college);
         seatsText = findViewById(R.id.detail_seats);
         deadlineText = findViewById(R.id.detail_deadline);
 
@@ -99,6 +103,8 @@ public class EventDetailActivity extends AppCompatActivity {
 
         locationText.setText(event.getLocation());
 
+        bindCollege(event);
+
         String priceLabel = event.getPrice() <= 0 ? "Free" : "₹" + (int) event.getPrice();
         btnRegister.setText("Enroll Now • " + priceLabel);
         bindDeadline(event);
@@ -108,6 +114,35 @@ public class EventDetailActivity extends AppCompatActivity {
         } else {
             heroImage.setImageResource(R.drawable.launcher);
         }
+    }
+
+    private void bindCollege(Event event) {
+        String collegeId = event.getCollegeId();
+        if (collegeId == null || collegeId.trim().isEmpty()) {
+            collegeRow.setVisibility(View.GONE);
+            return;
+        }
+
+        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        api.getCollegeById("eq." + collegeId).enqueue(new Callback<List<College>>() {
+            @Override
+            public void onResponse(Call<List<College>> call, Response<List<College>> response) {
+                if (!isAdded()) return;
+                if (response.isSuccessful() && response.body() != null
+                        && !response.body().isEmpty()) {
+                    collegeText.setText(response.body().get(0).getName());
+                    collegeRow.setVisibility(View.VISIBLE);
+                } else {
+                    collegeRow.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<College>> call, Throwable t) {
+                if (!isAdded()) return;
+                collegeRow.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void checkIfAlreadyRegistered(Event event) {
@@ -314,6 +349,22 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Records that this event's certificate has been downloaded, so the
+     * certificate notification is permanently dismissed. Uses the same
+     * SharedPreferences store (notif_read / dismissed_keys) that
+     * NotificationCenterActivity reads when deciding what to show.
+     */
+    private void markCertificateDownloaded(String eventId) {
+        if (eventId == null || eventId.trim().isEmpty()) return;
+        android.content.SharedPreferences prefs =
+                getSharedPreferences("notif_read", MODE_PRIVATE);
+        java.util.Set<String> keys = new java.util.HashSet<>(
+                prefs.getStringSet("dismissed_keys", new java.util.HashSet<>()));
+        keys.add("certificate_" + eventId);
+        prefs.edit().putStringSet("dismissed_keys", keys).apply();
+    }
+
     private void updateCertificateButton(Registration registration) {
         btnDownloadCertificate.setVisibility(View.VISIBLE);
 
@@ -337,6 +388,7 @@ public class EventDetailActivity extends AppCompatActivity {
             btnDownloadCertificate.setBackground(bg);
 
             btnDownloadCertificate.setOnClickListener(v -> {
+                markCertificateDownloaded(registration.getEventId());
                 android.content.Intent browserIntent = new android.content.Intent(
                         android.content.Intent.ACTION_VIEW, android.net.Uri.parse(certUrl));
                 startActivity(browserIntent);

@@ -39,4 +39,19 @@ public class User {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    @com.google.gson.annotations.SerializedName("college_id")
+    private String collegeId;
+
+    private String branch;
+
+    public String getCollegeId() { return collegeId; }
+    public String getBranch() { return branch; }
+    public void setCollegeId(String collegeId) { this.collegeId = collegeId; }
+    public void setBranch(String branch) { this.branch = branch; }
+    @com.google.gson.annotations.SerializedName("college_name")
+    private String collegeName;
+
+    public String getCollegeName() { return collegeName; }
+    public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
 }

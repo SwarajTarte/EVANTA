@@ -35,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private TextView avatarInitial, fullNameHeader, nameRowValue, emailRowValue, whatsappRowValue;
     private ImageView avatarImage;
     private MaterialButton logoutBut;
+    private TextView collegeRowValue, branchRowValue;
 
     @Nullable
     @Override
@@ -55,6 +56,8 @@ public class ProfileFragment extends Fragment {
         nameRowValue = view.findViewById(R.id.value_name_row);
         emailRowValue = view.findViewById(R.id.value_email_row);
         whatsappRowValue = view.findViewById(R.id.value_whatsapp_row);
+        collegeRowValue = view.findViewById(R.id.value_college_row);
+        branchRowValue = view.findViewById(R.id.value_branch_row);
         logoutBut = view.findViewById(R.id.logoutbut);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -142,6 +145,45 @@ public class ProfileFragment extends Fragment {
             avatarImage.setVisibility(View.GONE);
             avatarInitial.setVisibility(View.VISIBLE);
         }
+
+        // College — prefer the linked college name, fall back to manually typed one
+        if (user.getCollegeId() != null) {
+            // Try cached college name first
+            if (user.getCollegeName() != null && !user.getCollegeName().isEmpty()) {
+                collegeRowValue.setText(user.getCollegeName());
+            } else {
+                loadCollegeName(user.getCollegeId());
+            }
+        } else if (user.getCollegeName() != null && !user.getCollegeName().isEmpty()) {
+            collegeRowValue.setText(user.getCollegeName());
+        } else {
+            collegeRowValue.setText("Not set");
+        }
+
+        // Branch
+        branchRowValue.setText(user.getBranch() != null && !user.getBranch().isEmpty()
+                ? user.getBranch() : "Not set");
+    }
+
+    private void loadCollegeName(String collegeId) {
+        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+        api.getCollegeById("eq." + collegeId).enqueue(new retrofit2.Callback<java.util.List<College>>() {
+            @Override
+            public void onResponse(retrofit2.Call<java.util.List<College>> call,
+                                   retrofit2.Response<java.util.List<College>> response) {
+                if (!isAdded()) return;
+                if (response.isSuccessful() && response.body() != null
+                        && !response.body().isEmpty()) {
+                    collegeRowValue.setText(response.body().get(0).getName());
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<java.util.List<College>> call, Throwable t) {
+                if (!isAdded()) return;
+                collegeRowValue.setText("Could not load");
+            }
+        });
     }
 
     private void logout() {

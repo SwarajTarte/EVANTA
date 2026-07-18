@@ -26,6 +26,10 @@ public class UserCache {
                 .putString(KEY_EMAIL, user.getEmail())
                 .putString(KEY_WHATSAPP, user.getWhatsappno())
                 .putString(KEY_PHOTO_URL, user.getPhotoUrl())
+                .putString("college_id", user.getCollegeId())
+                .putString("branch", user.getBranch())
+                .putString("college_name", user.getCollegeName())
+                .putString("college_name_resolved", user.getCollegeName())
                 .apply();
     }
 
@@ -49,6 +53,10 @@ public class UserCache {
         // photo_url isn't part of the constructor since it was added later —
         // set it separately via the same mechanism Gson uses (reflection isn't
         // needed here, we just need a setter).
+        user.setCollegeId(prefs.getString("college_id", null));
+        user.setBranch(prefs.getString("branch", null));
+        user.setCollegeName(prefs.getString("college_name", null));
+        user.setCollegeName(prefs.getString("college_name_resolved", null));
         user.setPhotoUrl(prefs.getString(KEY_PHOTO_URL, null));
 
         return user;

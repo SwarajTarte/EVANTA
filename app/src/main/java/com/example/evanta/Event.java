@@ -30,6 +30,9 @@ public class Event implements Parcelable {
 
     private String location;
 
+    @SerializedName("college_id")
+    private String collegeId;
+
     @SerializedName("image_url")
     private String imageUrl;
 
@@ -54,6 +57,7 @@ public class Event implements Parcelable {
         location = in.readString();
         imageUrl = in.readString();
         isFeatured = in.readByte() != 0;
+        collegeId = in.readString();
     }
 
     @Override
@@ -72,6 +76,7 @@ public class Event implements Parcelable {
         dest.writeString(location);
         dest.writeString(imageUrl);
         dest.writeByte((byte) (isFeatured ? 1 : 0));
+        dest.writeString(collegeId);
     }
 
     @Override
@@ -101,6 +106,7 @@ public class Event implements Parcelable {
     public String getTimeStart() { return timeStart; }
     public String getRegistrationDeadline() { return registrationDeadline; }
     public String getLocation() { return location; }
+    public String getCollegeId() { return collegeId; }
     public String getImageUrl() { return imageUrl; }
     public boolean isFeatured() { return isFeatured; }
     public double getPrice() { return price; }

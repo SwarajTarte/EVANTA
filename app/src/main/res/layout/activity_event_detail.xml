@@ -137,10 +137,37 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/detail_seats_row"
+            android:id="@+id/detail_college_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_location_row"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_building_small"
+                app:tint="#7C4DFF" />
+
+            <TextView
+                android:id="@+id/detail_college"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/detail_seats_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/detail_college_row"
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
@@ -176,7 +203,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_calendar_small"
+                android:src="@drawable/ic_hourglass_small"
                 app:tint="#7C4DFF" />
 
             <TextView

@@ -19,11 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import android.content.Intent;
 
 import retrofit2.Call;
@@ -138,22 +141,88 @@ public class HomeFragment extends Fragment {
             bindFeaturedEvents(cached);
         }
 
-        EventRepository eventRepository = new EventRepository();
+        User user = UserCache.get(requireContext());
+        String collegeId = user != null ? user.getCollegeId() : null;
 
-        eventRepository.getFeaturedEvents(3).enqueue(new Callback<List<Event>>() {
+        SupabaseApi api = RetrofitClient.getClient().create(SupabaseApi.class);
+
+        if (collegeId != null) {
+            // Fetch college-specific featured events first
+            api.getFeaturedEventsByCollege("eq.true", "eq." + collegeId, "date_start.asc", 3)
+                    .enqueue(new Callback<List<Event>>() {
+                        @Override
+                        public void onResponse(Call<List<Event>> call,
+                                               Response<List<Event>> response) {
+                            if (!isAdded()) return;
+
+                            List<Event> collegeEvents = new ArrayList<>();
+                            if (response.isSuccessful() && response.body() != null) {
+                                collegeEvents.addAll(response.body());
+                            }
+
+                            if (collegeEvents.size() >= 3) {
+                                // Enough college events — use them as-is
+                                EventCache.set(collegeEvents);
+                                bindFeaturedEvents(collegeEvents);
+                            } else {
+                                // Fewer than 3 — top up with platform-wide featured events
+                                topUpWithPlatformWideFeaturedEvents(collegeEvents);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Event>> call, Throwable t) {
+                            if (!isAdded()) return;
+                            topUpWithPlatformWideFeaturedEvents(new ArrayList<>());
+                        }
+                    });
+        } else {
+            topUpWithPlatformWideFeaturedEvents(new ArrayList<>());
+        }
+    }
+
+    /**
+     * Fills the featured section up to 3 events. Starts with the given
+     * college-specific events, then appends other featured events from across
+     * the platform (skipping any already present) until 3 slots are filled.
+     */
+    private void topUpWithPlatformWideFeaturedEvents(List<Event> collegeEvents) {
+        // Request enough to still have 3 after removing the college events we already hold.
+        int limit = 3 + collegeEvents.size();
+        new EventRepository().getFeaturedEvents(limit).enqueue(new Callback<List<Event>>() {
             @Override
             public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
                 if (!isAdded()) return;
 
+                List<Event> combined = new ArrayList<>(collegeEvents);
+
+                Set<String> seenIds = new HashSet<>();
+                for (Event e : collegeEvents) {
+                    if (e.getId() != null) seenIds.add(e.getId());
+                }
+
                 if (response.isSuccessful() && response.body() != null) {
-                    EventCache.set(response.body());
-                    bindFeaturedEvents(response.body());
+                    for (Event e : response.body()) {
+                        if (combined.size() >= 3) break;
+                        if (e.getId() != null && !seenIds.add(e.getId())) continue;
+                        combined.add(e);
+                    }
+                }
+
+                if (!combined.isEmpty()) {
+                    EventCache.set(combined);
+                    bindFeaturedEvents(combined);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Event>> call, Throwable t) {
-                // leave cards as-is on failure
+                if (!isAdded()) return;
+                // Network failure on top-up — still show whatever college events we have.
+                if (!collegeEvents.isEmpty()) {
+                    EventCache.set(collegeEvents);
+                    bindFeaturedEvents(collegeEvents);
+                }
             }
         });
     }

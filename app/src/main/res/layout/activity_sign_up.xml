@@ -150,7 +150,7 @@
             android:layout_marginTop="10dp"
             app:endIconMode="password_toggle"
             app:endIconTint="#FFFF"
-            android:layout_below="@+id/whatsapp"
+            android:layout_below="@+id/branch_layout"
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -221,6 +221,61 @@
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
                 android:fontFamily="@font/poppinsreg"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/college_layout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_browse"
+            app:startIconTint="#7C4DFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/whatsapp"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/college_input"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="Select College"
+                android:background="@drawable/bg_textfield"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#80FFFFFF"
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:focusable="false"
+                android:clickable="true"
+                android:cursorVisible="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/branch_layout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_my_events"
+            app:startIconTint="#7C4DFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/college_layout"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/branch_input"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="Branch (e.g. Computer Science)"
+                android:background="@drawable/bg_textfield"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#80FFFFFF"
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

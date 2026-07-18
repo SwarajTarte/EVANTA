@@ -32,4 +32,8 @@ public class EventRepository {
     public Call<List<Event>> getEventsByIds(String idsFilter) {
         return api.getEventsByIds(idsFilter, "category.asc,date_start.asc");
     }
+
+    public Call<List<Event>> getEventsByCollege(String collegeId) {
+        return api.getEventsByCollege("eq." + collegeId, "date_start.desc");
+    }
 }

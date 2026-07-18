@@ -26,6 +26,7 @@ public class Notification {
     public static final String TYPE_UPCOMING = "upcoming";
     public static final String TYPE_CERTIFICATE = "certificate";
     public static final String TYPE_REGISTRATION_CLOSED = "registration_closed";
+    public static final String TYPE_NEW_EVENT = "new_event";
     public static final String TYPE_GENERAL = "general";
 
     public String getId() { return id; }
@@ -42,4 +43,5 @@ public class Notification {
     public void setBody(String body) { this.body = body; }
     public void setEventId(String eventId) { this.eventId = eventId; }
     public void setId(String id) { this.id = id; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 }

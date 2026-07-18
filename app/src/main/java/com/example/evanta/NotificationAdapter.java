@@ -72,16 +72,25 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             case Notification.TYPE_UPCOMING:          return R.drawable.ic_notification_upcoming;
             case Notification.TYPE_CERTIFICATE:       return R.drawable.ic_notification_certificate;
             case Notification.TYPE_REGISTRATION_CLOSED: return R.drawable.ic_notification_closed;
+            case Notification.TYPE_NEW_EVENT:         return R.drawable.ic_notification_upcoming;
             default:                                  return R.drawable.ic_notification_general;
         }
     }
 
     private String formatTime(String createdAt) {
-        if (createdAt == null) return "";
+        if (createdAt == null || createdAt.trim().isEmpty()) return "";
         try {
-            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-            SimpleDateFormat output = new SimpleDateFormat("d MMM • h:mm a", Locale.getDefault());
-            Date date = input.parse(createdAt.length() > 19 ? createdAt.substring(0, 19) : createdAt);
+            // Full timestamps (admin-pushed) include a time component.
+            if (createdAt.length() > 10) {
+                SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+                SimpleDateFormat output = new SimpleDateFormat("d MMM • h:mm a", Locale.getDefault());
+                Date date = input.parse(createdAt.length() > 19 ? createdAt.substring(0, 19) : createdAt);
+                return output.format(date);
+            }
+            // Date-only values (derived notifications) show just the day.
+            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat output = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
+            Date date = input.parse(createdAt);
             return output.format(date);
         } catch (Exception e) {
             return "";
