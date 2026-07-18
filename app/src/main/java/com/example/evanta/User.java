@@ -60,4 +60,9 @@ public class User {
     public String getRole() { return role; }
 
     public void setRole(String role) { this.role = role; }
+
+    private transient String resolvedCollegeName;
+
+    public String getResolvedCollegeName() { return resolvedCollegeName; }
+    public void setResolvedCollegeName(String name) { this.resolvedCollegeName = name; }
 }

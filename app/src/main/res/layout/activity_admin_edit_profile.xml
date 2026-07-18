@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_dashboard"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/east_arrow"
+            android:rotation="180"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/back_arrow"
+            android:layout_toRightOf="@+id/back_arrow"
+            android:layout_marginLeft="16dp"
+            android:text="Edit Profile"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <RelativeLayout
+            android:id="@+id/edit_avatar_ring"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_below="@+id/back_arrow"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/bg_avatar_ring">
+
+            <TextView
+                android:id="@+id/edit_avatar_initial"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text=""
+                android:textSize="34sp"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/poppinsbold"
+                android:includeFontPadding="false"
+                android:background="@drawable/bg_avatar_circle" />
+
+            <ImageView
+                android:id="@+id/edit_avatar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:scaleType="centerCrop" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/edit_avatar_camera_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/edit_avatar_ring"
+            android:layout_marginTop="-30dp"
+            android:layout_alignRight="@+id/edit_avatar_ring"
+            android:layout_marginRight="-4dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_edit_camera"
+            android:background="@drawable/bg_avatar_circle"
+            app:tint="#FFFFFF" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_name_layout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/name_icon"
+            app:startIconTint="#7C4DFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/edit_avatar_ring"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_name_input"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="Full Name"
+                android:background="@drawable/bg_textfield"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#80FFFFFF"
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/edit_whatsapp_layout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/whatsapp_icon"
+            app:startIconTint="#7C4DFF"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/edit_name_layout"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_whatsapp_input"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:hint="WhatsApp Number"
+                android:background="@drawable/bg_textfield"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#80FFFFFF"
+                android:fontFamily="@font/poppinsreg"
+                android:gravity="center_vertical"
+                android:inputType="phone"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_profile_but"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@+id/edit_whatsapp_layout"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:text="Save Changes"
+            android:textColor="#FFFFFF"
+            android:textAllCaps="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="18sp"
+            android:background="@drawable/btn_gradient"
+            app:backgroundTint="@null" />
+
+    </RelativeLayout>
+
+</ScrollView>
