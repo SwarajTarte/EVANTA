@@ -74,12 +74,24 @@
             android:textSize="16sp"
             android:fontFamily="@font/poppinsbold" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/category_recycler"
+        <com.example.evanta.FadingEdgeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:clipToPadding="false" />
+            app:fadeTop="false"
+            app:fadeBottom="false"
+            app:fadeLeft="true"
+            app:fadeRight="true"
+            app:fadeSize="6dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/category_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingHorizontal="7dp"/>
+
+        </com.example.evanta.FadingEdgeLayout>
 
         <TextView
             android:id="@+id/section_label"
@@ -94,17 +106,25 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/events_recycler"
-        android:layout_width="match_parent"
+    <com.example.evanta.FadingEdgeLayout
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:paddingTop="4dp"
-        android:paddingBottom="100dp"
+        app:fadeTop="true"
+        app:fadeBottom="true"
         app:layout_constraintTop_toBottomOf="@id/browse_header"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/events_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="20dp"
+            android:paddingBottom="100dp" />
+
+    </com.example.evanta.FadingEdgeLayout>
 
     <ProgressBar
         android:id="@+id/browse_loader"

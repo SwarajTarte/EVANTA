@@ -274,7 +274,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadStudentStats(String uid) {
-        if (bindStatsFromPrefetch()) {
+        // Paint instantly from cache (fresh or stale). If the cache is fresh we
+        // stop here; if it was only stale we still refresh silently below.
+        bindStatsFromPrefetch();
+        if (PrefetchCache.hasFreshMyEventsData()) {
             return;
         }
 
@@ -299,7 +302,12 @@ public class HomeFragment extends Fragment {
     }
 
     private boolean bindStatsFromPrefetch() {
+        // Prefer fresh, fall back to stale so the stats paint instantly on a
+        // cold start; a background refresh updates them silently afterwards.
         List<MyEventItem> cached = PrefetchCache.getMyEventItemsFresh();
+        if (cached == null) {
+            cached = PrefetchCache.getMyEventItemsStale();
+        }
         if (cached == null) return false;
 
         int joined = cached.size();

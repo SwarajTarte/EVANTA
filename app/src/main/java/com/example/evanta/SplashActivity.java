@@ -58,10 +58,29 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(this::navigateToDashboardIfReady, SAFETY_TIMEOUT_MS);
 
         String uid = currentUser.getUid();
+
+        // Warm start: if we have data cached from a previous run, don't block on
+        // the network — show the dashboard after the minimum splash and let the
+        // prefetch below refresh the caches silently in the background.
+        if (hasWarmCache()) {
+            handler.postDelayed(this::navigateToDashboardIfReady, MIN_SPLASH_MS);
+        }
+
         prefetchUser(uid);
         prefetchFeaturedEvents();
         prefetchBrowseEvents();
         prefetchMyEventsData(uid);
+    }
+
+    /**
+     * True when enough data survives from a previous run to render the dashboard
+     * immediately. UserCache is disk-backed; EventCache and PrefetchCache now
+     * fall back to their persisted copies on a cold start.
+     */
+    private boolean hasWarmCache() {
+        boolean hasUser = UserCache.get(this) != null;
+        boolean hasEvents = EventCache.get() != null || EventCache.getAllEvents() != null;
+        return hasUser && hasEvents;
     }
 
     private void prefetchUser(String uid) {

@@ -202,7 +202,12 @@ public class MyEventsFragment extends Fragment {
     }
 
     private boolean bindFromPrefetchCache() {
+        // Prefer fresh data, but fall back to stale so the grid paints instantly
+        // on a cold start; a background refresh updates it silently afterwards.
         List<MyEventItem> cached = PrefetchCache.getMyEventItemsFresh();
+        if (cached == null) {
+            cached = PrefetchCache.getMyEventItemsStale();
+        }
         if (cached == null) return false;
 
         allMyEvents.clear();

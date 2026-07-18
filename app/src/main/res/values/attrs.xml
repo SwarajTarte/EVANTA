@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FadingEdgeLayout">
+        <attr name="fadeTop" format="boolean" />
+        <attr name="fadeBottom" format="boolean" />
+        <attr name="fadeLeft" format="boolean" />
+        <attr name="fadeRight" format="boolean" />
+        <attr name="fadeSize" format="dimension" />
+    </declare-styleable>
+</resources>

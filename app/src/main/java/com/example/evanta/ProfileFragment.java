@@ -148,11 +148,20 @@ public class ProfileFragment extends Fragment {
 
         // College — prefer the linked college name, fall back to manually typed one
         if (user.getCollegeId() != null) {
-            // Try cached college name first
             if (user.getCollegeName() != null && !user.getCollegeName().isEmpty()) {
                 collegeRowValue.setText(user.getCollegeName());
             } else {
-                loadCollegeName(user.getCollegeId());
+                // The DB user row stores college_id, not the name, so getCollegeName()
+                // is usually empty here. Show the name we resolved on a previous visit
+                // (persisted in UserCache) instantly, and only hit the network if we've
+                // never resolved it before — this avoids the visible delay on every
+                // tab switch back to Profile.
+                String resolved = UserCache.get(requireContext()).getCollegeName();
+                if (resolved != null && !resolved.isEmpty()) {
+                    collegeRowValue.setText(resolved);
+                } else {
+                    loadCollegeName(user.getCollegeId());
+                }
             }
         } else if (user.getCollegeName() != null && !user.getCollegeName().isEmpty()) {
             collegeRowValue.setText(user.getCollegeName());
@@ -174,7 +183,13 @@ public class ProfileFragment extends Fragment {
                 if (!isAdded()) return;
                 if (response.isSuccessful() && response.body() != null
                         && !response.body().isEmpty()) {
-                    collegeRowValue.setText(response.body().get(0).getName());
+                    String name = response.body().get(0).getName();
+                    collegeRowValue.setText(name);
+                    // Persist so future binds show it instantly instead of
+                    // re-fetching over the network on every tab switch.
+                    if (name != null && !name.isEmpty()) {
+                        UserCache.setCollegeNameResolved(requireContext(), name);
+                    }
                 }
             }
 
