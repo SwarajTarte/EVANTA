@@ -111,4 +111,20 @@ public class Event implements Parcelable {
     public boolean isFeatured() { return isFeatured; }
     public double getPrice() { return price; }
     public int getCapacity() { return capacity; }
+
+    // Setters — used by the admin edit card to keep the in-memory model in sync
+    // with a saved row (so a RecyclerView rebind shows the latest values).
+    public void setTitle(String title) { this.title = title; }
+    public void setSubtitle(String subtitle) { this.subtitle = subtitle; }
+    public void setDescription(String description) { this.description = description; }
+    public void setCategory(String category) { this.category = category; }
+    public void setPrice(double price) { this.price = price; }
+    public void setCapacity(int capacity) { this.capacity = capacity; }
+    public void setDateStart(String dateStart) { this.dateStart = dateStart; }
+    public void setDateEnd(String dateEnd) { this.dateEnd = dateEnd; }
+    public void setTimeStart(String timeStart) { this.timeStart = timeStart; }
+    public void setRegistrationDeadline(String registrationDeadline) { this.registrationDeadline = registrationDeadline; }
+    public void setLocation(String location) { this.location = location; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public void setFeatured(boolean featured) { isFeatured = featured; }
 }
