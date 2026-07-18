@@ -207,11 +207,13 @@ public class ProfileFragment extends Fragment {
         EventCache.clear();
         PrefetchCache.clear();
 
-        googleSignInClient.signOut().addOnCompleteListener(task -> {
-            Intent intent = new Intent(requireContext(), WelcomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            requireActivity().finish();
-        });
+        googleSignInClient.revokeAccess().addOnCompleteListener(task ->
+                googleSignInClient.signOut().addOnCompleteListener(signOutTask -> {
+                    Intent intent = new Intent(requireContext(), WelcomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    requireActivity().finish();
+                })
+        );
     }
 }

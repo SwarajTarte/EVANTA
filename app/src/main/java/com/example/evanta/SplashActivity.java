@@ -89,8 +89,20 @@ public class SplashActivity extends AppCompatActivity {
         userRepository.getUserByUid(uid).enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    UserCache.set(SplashActivity.this, response.body().get(0));
+                if (response.isSuccessful() && response.body() != null
+                        && !response.body().isEmpty()) {
+                    User user = response.body().get(0);
+                    UserCache.set(SplashActivity.this, user);
+
+                    // If admin, skip prefetching student-specific data
+                    if ("admin".equals(user.getRole())) {
+                        userLoaded = true;
+                        eventsLoaded = true;
+                        allEventsLoaded = true;
+                        myEventsLoaded = true;
+                        tryFinishEarly();
+                        return;
+                    }
                 }
                 userLoaded = true;
                 tryFinishEarly();
@@ -227,7 +239,13 @@ public class SplashActivity extends AppCompatActivity {
     private void goToDashboard() {
         if (navigated) return;
         navigated = true;
-        startActivity(new Intent(SplashActivity.this, StudentDashboard.class));
+
+        User user = UserCache.get(SplashActivity.this);
+        Class<?> destination = (user != null && "admin".equals(user.getRole()))
+                ? AdminDashboard.class
+                : StudentDashboard.class;
+
+        startActivity(new Intent(SplashActivity.this, destination));
         finish();
     }
 

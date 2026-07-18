@@ -2,10 +2,6 @@ package com.example.evanta;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Represents a single row in the Supabase `registrations` table.
- * Used both for POSTing a new registration and for reading existing ones.
- */
 public class Registration {
 
     private String id;
@@ -22,15 +18,27 @@ public class Registration {
     @SerializedName("certificate_url")
     private String certificateUrl;
 
-    /** Constructor used when creating a new registration (POST body). */
+    private String status;
+
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_APPROVED = "approved";
+    public static final String STATUS_REJECTED = "rejected";
+
     public Registration(String userUid, String eventId) {
         this.userUid = userUid;
         this.eventId = eventId;
+        this.status = STATUS_PENDING;
     }
 
-    public String getId()           { return id; }
-    public String getUserUid()      { return userUid; }
-    public String getEventId()      { return eventId; }
-    public String getRegisteredAt() { return registeredAt; }
+    public String getId()             { return id; }
+    public String getUserUid()        { return userUid; }
+    public String getEventId()        { return eventId; }
+    public String getRegisteredAt()   { return registeredAt; }
     public String getCertificateUrl() { return certificateUrl; }
+    public String getStatus()         { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public boolean isPending()  { return STATUS_PENDING.equals(status); }
+    public boolean isApproved() { return STATUS_APPROVED.equals(status); }
+    public boolean isRejected() { return STATUS_REJECTED.equals(status); }
 }

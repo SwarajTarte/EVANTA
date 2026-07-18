@@ -54,4 +54,10 @@ public class User {
 
     public String getCollegeName() { return collegeName; }
     public void setCollegeName(String collegeName) { this.collegeName = collegeName; }
+
+    private String role;
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
 }

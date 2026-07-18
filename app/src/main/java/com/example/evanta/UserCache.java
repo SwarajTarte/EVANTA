@@ -28,12 +28,9 @@ public class UserCache {
                 .putString(KEY_PHOTO_URL, user.getPhotoUrl())
                 .putString("college_id", user.getCollegeId())
                 .putString("branch", user.getBranch())
-                .putString("college_name", user.getCollegeName());
+                .putString("college_name", user.getCollegeName())
+                .putString("role", user.getRole());
 
-        // The college NAME lives in the separate `colleges` table, so a user row
-        // fetched from `users` usually has collegeName == null. Only overwrite the
-        // resolved name when we actually have one — otherwise keep the value we
-        // previously looked up, so the profile shows it instantly without re-fetching.
         if (user.getCollegeName() != null && !user.getCollegeName().isEmpty()) {
             editor.putString("college_name_resolved", user.getCollegeName());
         }
@@ -58,26 +55,18 @@ public class UserCache {
                 prefs.getString(KEY_WHATSAPP, "")
         );
 
-        // photo_url isn't part of the constructor since it was added later —
-        // set it separately via the same mechanism Gson uses (reflection isn't
-        // needed here, we just need a setter).
+        user.setPhotoUrl(prefs.getString(KEY_PHOTO_URL, null));
         user.setCollegeId(prefs.getString("college_id", null));
         user.setBranch(prefs.getString("branch", null));
+        user.setRole(prefs.getString("role", "student"));
 
-        // Prefer the resolved college name (looked up from college_id), but
-        // fall back to the manually-typed name instead of overwriting with null.
         String collegeName = prefs.getString("college_name", null);
         String collegeNameResolved = prefs.getString("college_name_resolved", null);
         user.setCollegeName(collegeNameResolved != null ? collegeNameResolved : collegeName);
-        user.setPhotoUrl(prefs.getString(KEY_PHOTO_URL, null));
 
         return user;
     }
 
-    /**
-     * Persists the college name resolved from college_id so the profile can
-     * show it instantly on later binds instead of re-fetching every time.
-     */
     public static void setCollegeNameResolved(Context context, String name) {
         context.getApplicationContext()
                 .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -87,10 +76,8 @@ public class UserCache {
     }
 
     public static void clear(Context context) {
-
-        SharedPreferences prefs = context.getApplicationContext()
-                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-
-        prefs.edit().clear().apply();
+        context.getApplicationContext()
+                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                .edit().clear().apply();
     }
 }

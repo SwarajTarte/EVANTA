@@ -99,4 +99,44 @@ public interface SupabaseApi {
     Call<List<Event>> getEventsByCollege(
             @Query("college_id") String collegeIdFilter,
             @Query("order") String order);
+
+    // ---------- Admin: Events ----------
+
+    @Headers("Prefer: return=representation")
+    @POST("rest/v1/events")
+    Call<List<Event>> createEvent(@Body Map<String, Object> fields);
+
+    @PATCH("rest/v1/events")
+    Call<Void> updateEvent(@Query("id") String idFilter,
+                           @Body Map<String, Object> fields);
+
+    @retrofit2.http.DELETE("rest/v1/events")
+    Call<Void> deleteEvent(@Query("id") String idFilter);
+
+    // ---------- Admin: Registrations ----------
+
+    @GET("rest/v1/registrations?select=*")
+    Call<List<Registration>> getRegistrationsByEventId(
+            @Query("event_id") String eventIdFilter,
+            @Query("order") String order);
+
+    @PATCH("rest/v1/registrations")
+    Call<Void> updateRegistrationStatus(
+            @Query("id") String idFilter,
+            @Body Map<String, Object> fields);
+
+    // ---------- Admin: Users (for student list in approvals) ----------
+
+    @GET("rest/v1/users?select=uid,name,email,photo_url,branch")
+    Call<List<User>> getUsersByUids(@Query("uid") String uidsFilter);
+
+    // ---------- Admin: Notifications (push) ----------
+
+    @Headers("Prefer: return=minimal")
+    @POST("rest/v1/notifications")
+    Call<Void> pushNotification(@Body Map<String, Object> fields);
+
+    @Headers("Prefer: return=minimal")
+    @POST("rest/v1/notifications")
+    Call<Void> pushBroadcastNotification(@Body Map<String, Object> fields);
 }

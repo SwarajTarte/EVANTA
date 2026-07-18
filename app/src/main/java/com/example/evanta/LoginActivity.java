@@ -13,24 +13,25 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-
 import com.google.android.gms.tasks.Task;
-
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.List;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,22 +50,15 @@ public class LoginActivity extends AppCompatActivity {
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
-
                         if (result.getResultCode() == RESULT_OK) {
-
                             Task<GoogleSignInAccount> task =
                                     GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-
                             try {
-
                                 GoogleSignInAccount account =
                                         task.getResult(ApiException.class);
-
                                 firebaseAuthWithGoogle(account.getIdToken());
-
                             } catch (ApiException e) {
-                                Toast.makeText(this,
-                                        e.getMessage(),
+                                Toast.makeText(this, e.getMessage(),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -81,8 +75,7 @@ public class LoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso =
@@ -103,55 +96,36 @@ public class LoginActivity extends AppCompatActivity {
 
         google.setOnClickListener(v -> signInWithGoogle());
 
-        contbut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginuser();
-            }
-        });
+        contbut.setOnClickListener(v -> loginuser());
 
-        signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
+        signup.setOnClickListener(v ->
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class)));
 
         forgot.setOnClickListener(v -> {
-
             String email = emailin.getText().toString().trim();
-
             if (email.isEmpty()) {
                 emailin.setError("Enter your email first");
                 emailin.requestFocus();
                 return;
             }
-
             mAuth.sendPasswordResetEmail(email)
                     .addOnCompleteListener(task -> {
-
                         if (task.isSuccessful()) {
-
                             Toast.makeText(LoginActivity.this,
                                     "Password reset link sent to your email.",
                                     Toast.LENGTH_LONG).show();
-
                         } else {
-
                             Toast.makeText(LoginActivity.this,
                                     task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                         }
-
                     });
         });
-
-
     }
 
-    private void loginuser() {
+    // ---------- Email/password login ----------
 
+    private void loginuser() {
         String email = emailin.getText().toString().trim();
         String password = passwIn.getText().toString().trim();
 
@@ -175,97 +149,94 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
-
                     if (task.isSuccessful()) {
-
-                        Toast.makeText(LoginActivity.this,
-                                "Login Successful",
-                                Toast.LENGTH_SHORT).show();
-
-                        Intent intent = new Intent(LoginActivity.this,
-                                StudentDashboard.class);
-                        startActivity(intent);
-                        finish();
-
+                        String uid = mAuth.getCurrentUser().getUid();
+                        checkRoleAndNavigate(uid);
                     } else {
-
                         Toast.makeText(LoginActivity.this,
                                 task.getException().getMessage(),
                                 Toast.LENGTH_LONG).show();
-
                     }
-
                 });
     }
 
+    // ---------- Google Sign-In ----------
+
     private void signInWithGoogle() {
-        Intent signInIntent = googleSignInClient.getSignInIntent();
-        googleSignInLauncher.launch(signInIntent);
+        googleSignInLauncher.launch(googleSignInClient.getSignInIntent());
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-
-        AuthCredential credential =
-                GoogleAuthProvider.getCredential(idToken, null);
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
 
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
-
                     if (task.isSuccessful()) {
-
                         FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
                         if (firebaseUser != null) {
-
                             String uid = firebaseUser.getUid();
                             String name = firebaseUser.getDisplayName();
                             String email = firebaseUser.getEmail();
 
                             User user = new User(uid, name, email, "");
+                            new UserRepository().upsertUser(user)
+                                    .enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call,
+                                                               Response<Void> response) {}
 
-                            UserRepository userRepository = new UserRepository();
+                                        @Override
+                                        public void onFailure(Call<Void> call,
+                                                              Throwable t) {}
+                                    });
 
-                            userRepository.upsertUser(user).enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(LoginActivity.this,
-                                                "User saved to Supabase",
-                                                Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(LoginActivity.this,
-                                                "Supabase Error: " + response.code(),
-                                                Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-                                    Toast.makeText(LoginActivity.this,
-                                            t.getMessage(),
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            });
+                            checkRoleAndNavigate(uid);
                         }
-
-                        Toast.makeText(this,
-                                "Google Sign-In Successful",
-                                Toast.LENGTH_SHORT).show();
-
-                        startActivity(new Intent(LoginActivity.this,
-                                StudentDashboard.class));
-
-                        finish();
-
                     } else {
-
-                        Toast.makeText(this,
-                                "Authentication Failed",
+                        Toast.makeText(this, "Authentication Failed",
                                 Toast.LENGTH_SHORT).show();
                     }
-
                 });
     }
 
+    // ---------- Role check ----------
+
+    private void checkRoleAndNavigate(String uid) {
+        new UserRepository().getUserByUid(uid).enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call,
+                                   Response<List<User>> response) {
+                if (response.isSuccessful() && response.body() != null
+                        && !response.body().isEmpty()) {
+
+                    User user = response.body().get(0);
+                    String role = user.getRole();
+
+                    Class<?> destination = "admin".equals(role)
+                            ? AdminDashboard.class
+                            : StudentDashboard.class;
+
+                    Toast.makeText(LoginActivity.this,
+                            "admin".equals(role) ? "Welcome, Admin!" : "Login Successful",
+                            Toast.LENGTH_SHORT).show();
+
+                    startActivity(new Intent(LoginActivity.this, destination));
+                    finish();
+
+                } else {
+                    // Role fetch failed — default to student dashboard
+                    startActivity(new Intent(LoginActivity.this, StudentDashboard.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                // Network failure — default to student dashboard
+                startActivity(new Intent(LoginActivity.this, StudentDashboard.class));
+                finish();
+            }
+        });
+    }
 }
