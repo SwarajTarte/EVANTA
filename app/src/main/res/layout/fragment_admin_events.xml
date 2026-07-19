@@ -150,7 +150,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Faded, scrolling list of event rows -->
-    <com.example.evanta.FadingEdgeLayout
+    <com.evanta.app.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:fadeTop="true"
@@ -168,7 +168,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="120dp" />
 
-    </com.example.evanta.FadingEdgeLayout>
+    </com.evanta.app.FadingEdgeLayout>
 
     <ProgressBar
         android:id="@+id/admin_events_loader"

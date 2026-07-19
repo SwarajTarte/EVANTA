@@ -246,7 +246,7 @@
     </LinearLayout>
 
     <!-- fragment_home.xml — wrap the ScrollView in this instead -->
-    <com.example.evanta.FadingEdgeLayout
+    <com.evanta.app.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/featured_header_row"
@@ -296,6 +296,6 @@
 
         </ScrollView>
 
-    </com.example.evanta.FadingEdgeLayout>
+    </com.evanta.app.FadingEdgeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

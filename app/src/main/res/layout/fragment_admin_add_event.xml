@@ -70,7 +70,7 @@
     </LinearLayout>
 
     <!-- ===== Scrollable form ===== -->
-    <com.example.evanta.FadingEdgeLayout
+    <com.evanta.app.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:fadeTop="true"
@@ -607,7 +607,7 @@
 
             </LinearLayout>
         </ScrollView>
-    </com.example.evanta.FadingEdgeLayout>
+    </com.evanta.app.FadingEdgeLayout>
 
     <!-- ===== Fixed Create button ===== -->
     <com.google.android.material.button.MaterialButton

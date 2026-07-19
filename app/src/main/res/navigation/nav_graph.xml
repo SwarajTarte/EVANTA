@@ -6,18 +6,18 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.evanta.HomeFragment" />
+        android:name="com.evanta.app.HomeFragment" />
 
     <fragment
         android:id="@+id/browseFragment"
-        android:name="com.example.evanta.BrowseFragment" />
+        android:name="com.evanta.app.BrowseFragment" />
 
     <fragment
         android:id="@+id/myEventsFragment"
-        android:name="com.example.evanta.MyEventsFragment" />
+        android:name="com.evanta.app.MyEventsFragment" />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.evanta.ProfileFragment" />
+        android:name="com.evanta.app.ProfileFragment" />
 
 </navigation>

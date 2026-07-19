@@ -74,7 +74,7 @@
             android:textSize="16sp"
             android:fontFamily="@font/poppinsbold" />
 
-        <com.example.evanta.FadingEdgeLayout
+        <com.evanta.app.FadingEdgeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -91,7 +91,7 @@
                 android:clipToPadding="false"
                 android:paddingHorizontal="7dp"/>
 
-        </com.example.evanta.FadingEdgeLayout>
+        </com.evanta.app.FadingEdgeLayout>
 
         <TextView
             android:id="@+id/section_label"
@@ -106,7 +106,7 @@
 
     </LinearLayout>
 
-    <com.example.evanta.FadingEdgeLayout
+    <com.evanta.app.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:fadeTop="true"
@@ -124,7 +124,7 @@
             android:paddingTop="20dp"
             android:paddingBottom="100dp" />
 
-    </com.example.evanta.FadingEdgeLayout>
+    </com.evanta.app.FadingEdgeLayout>
 
     <ProgressBar
         android:id="@+id/browse_loader"

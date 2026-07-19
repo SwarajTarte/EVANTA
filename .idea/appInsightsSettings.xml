@@ -8,8 +8,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.evanta" />
-                  <option name="mobileSdkAppId" value="1:492602268309:android:2d97dd08dfed56aadf599c" />
+                  <option name="appId" value="com.evanta.app" />
+                  <option name="mobileSdkAppId" value="1:492602268309:android:0c5cb1f47cf32ff5df599c" />
                   <option name="projectId" value="evanta-99990" />
                   <option name="projectNumber" value="492602268309" />
                 </ConnectionSetting>

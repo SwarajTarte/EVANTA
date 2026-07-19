@@ -6,14 +6,14 @@
 
     <fragment
         android:id="@+id/adminEventsFragment"
-        android:name="com.example.evanta.AdminEventsFragment" />
+        android:name="com.evanta.app.AdminEventsFragment" />
 
     <fragment
         android:id="@+id/adminAddEventFragment"
-        android:name="com.example.evanta.AdminAddEventFragment" />
+        android:name="com.evanta.app.AdminAddEventFragment" />
 
     <fragment
         android:id="@+id/adminProfileFragment"
-        android:name="com.example.evanta.AdminProfileFragment" />
+        android:name="com.evanta.app.AdminProfileFragment" />
 
 </navigation>
