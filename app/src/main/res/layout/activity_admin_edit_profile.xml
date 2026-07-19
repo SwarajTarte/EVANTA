@@ -30,7 +30,7 @@
             android:layout_toRightOf="@+id/back_arrow"
             android:layout_marginLeft="16dp"
             android:text="Edit Profile"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_display"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/poppins_semibold" />
 
@@ -91,13 +91,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_name_input"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="@dimen/button_height"
                 android:hint="Full Name"
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#80FFFFFF"
                 android:fontFamily="@font/poppinsreg"
                 android:gravity="center_vertical"
+                android:textSize="@dimen/text_body"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"/>
 
@@ -117,7 +118,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_whatsapp_input"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="@dimen/button_height"
                 android:hint="WhatsApp Number"
                 android:background="@drawable/bg_textfield"
                 android:textColor="#FFFFFF"
@@ -125,6 +126,7 @@
                 android:fontFamily="@font/poppinsreg"
                 android:gravity="center_vertical"
                 android:inputType="phone"
+                android:textSize="@dimen/text_body"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"/>
 
@@ -133,7 +135,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_profile_but"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/button_height"
             android:layout_below="@+id/edit_whatsapp_layout"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="24dp"
@@ -142,7 +144,7 @@
             android:textColor="#FFFFFF"
             android:textAllCaps="false"
             android:fontFamily="@font/poppins_semibold"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_title"
             android:background="@drawable/btn_gradient"
             app:backgroundTint="@null" />
 

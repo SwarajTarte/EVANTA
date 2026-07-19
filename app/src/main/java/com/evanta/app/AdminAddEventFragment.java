@@ -460,6 +460,11 @@ public class AdminAddEventFragment extends Fragment {
         fields.put("location", location);
         fields.put("college_id", collegeId);
         fields.put("is_featured", wantsFeatured);
+        // Stamp the creator so only this admin can later edit/approve/certify it
+        // (other admins of the college won't see it in their list).
+        if (admin.getUid() != null) {
+            fields.put("created_by", admin.getUid());
+        }
 
         setLoading(true);
 

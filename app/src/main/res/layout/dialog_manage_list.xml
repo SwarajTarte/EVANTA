@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Enrollment Requests"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="@dimen/text_title"
         android:fontFamily="@font/poppinsbold" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_marginTop="4dp"
         android:text="Approve or reject students who registered."
         android:textColor="#8A93A6"
-        android:textSize="13sp"
+        android:textSize="@dimen/text_label"
         android:fontFamily="@font/poppins_medium" />
 
     <FrameLayout
@@ -58,7 +58,7 @@
             android:paddingVertical="24dp"
             android:text="No students yet."
             android:textColor="#8A93A6"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_body"
             android:fontFamily="@font/poppins_medium"
             android:visibility="gone" />
 
@@ -68,12 +68,12 @@
         android:id="@+id/manage_close"
         style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="12dp"
         android:text="Done"
         android:textAllCaps="false"
         android:textColor="#B8A6FF"
-        android:textSize="15sp"
+        android:textSize="@dimen/text_title"
         android:fontFamily="@font/poppins_semibold" />
 
 </LinearLayout>

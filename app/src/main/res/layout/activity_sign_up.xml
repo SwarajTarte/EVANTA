@@ -60,7 +60,7 @@
                 android:text="New Account"
                 android:textAlignment="center"
                 android:textColor="#00D4FF"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_caption" />
 
             <TextView
                 android:id="@+id/welcome"
@@ -86,7 +86,7 @@
                 android:text="Create your account and start discovering campus events."
                 android:textAlignment="center"
                 android:textColor="#B4BCCB"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_body" />
 
             <!-- Input fields reduced to a compact 48dp height -->
             <com.google.android.material.textfield.TextInputLayout
@@ -102,7 +102,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameIn"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -111,7 +111,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -127,7 +127,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailin"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -136,7 +136,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -152,7 +152,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/whatsappno"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -162,7 +162,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -178,7 +178,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/college_input"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:clickable="true"
                     android:cursorVisible="false"
@@ -190,7 +190,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -206,7 +206,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/branch_input"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -215,7 +215,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -233,7 +233,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwIn"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -243,7 +243,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -261,7 +261,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/confpasswordin"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -271,22 +271,22 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/createac"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_below="@+id/confpassword"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/space_xl"
                 android:background="@drawable/btn_gradient"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Create Account"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_title"
                 app:backgroundTint="@null"
                 app:icon="@drawable/chevron_right"
                 app:iconGravity="textEnd"
@@ -310,7 +310,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Already have an account?"
                     android:textColor="#B4BCCB"
-                    android:textSize="13sp"/>
+                    android:textSize="@dimen/text_label"/>
 
                 <TextView
                     android:id="@+id/signin"
@@ -320,7 +320,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Sign In"
                     android:textColor="#00D4FF"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_body" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

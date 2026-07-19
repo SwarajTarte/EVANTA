@@ -1,0 +1,54 @@
+# =============================================================================
+# Evanta — R8 keep rules
+# AGP 9.3+ reads keep rules from files ending in `.keep` under src/main/keepRules.
+# `optimization { enable = true }` already applies the platform default rules;
+# this file adds the app-specific ones that R8 can't infer.
+# =============================================================================
+
+# --- Data models (Gson) ------------------------------------------------------
+# Retrofit + Gson map JSON to these classes by FIELD NAME. Many fields have no
+# @SerializedName (id, title, name, email, status, price, capacity, branch,
+# role, ...), so if R8 renames them, Gson maps nothing and every field is null.
+# Keep the model classes and all their members so (de)serialization is stable.
+-keep class com.evanta.app.Event { *; }
+-keep class com.evanta.app.User { *; }
+-keep class com.evanta.app.User$* { *; }
+-keep class com.evanta.app.Registration { *; }
+-keep class com.evanta.app.Notification { *; }
+-keep class com.evanta.app.College { *; }
+
+# Any field annotated with @SerializedName must keep its name (belt and braces).
+-keepclassmembers,allowobfuscation class com.evanta.app.** {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# --- Parcelable --------------------------------------------------------------
+# The framework reflects for the static CREATOR field; renaming it crashes at
+# unparcel time (e.g. passing an Event between screens).
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator CREATOR;
+}
+
+# --- Retrofit / OkHttp / Gson ------------------------------------------------
+# Keep the API interface: Retrofit reads its method + parameter annotations via
+# reflection, and generic return types (Call<List<Event>>) must survive.
+-keep interface com.evanta.app.SupabaseApi { *; }
+
+# Retain generic signatures & annotations Retrofit/Gson depend on.
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations, AnnotationDefault
+
+# Retrofit 2.11 ships consumer rules, but keep these as a safety net.
+-dontwarn retrofit2.**
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+
+# Gson TypeToken generic info.
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+
+# --- Glide -------------------------------------------------------------------
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule { <init>(...); }

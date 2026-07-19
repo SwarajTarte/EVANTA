@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".EvantaApp"
@@ -72,6 +73,27 @@
             android:name=".AdminEventEditActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+
+        <!-- Firebase Cloud Messaging: receives pushes even when the app is
+             backgrounded or closed and posts them to the status bar. -->
+        <service
+            android:name=".EvantaMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Status-bar icon + accent color used for FCM-delivered notifications. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_evanta" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/nav_selected" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="evanta_default" />
     </application>
 
 </manifest>

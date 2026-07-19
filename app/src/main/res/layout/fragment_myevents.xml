@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:text="My "
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Events"
                 android:textColor="#7C4DFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
 
         </LinearLayout>
@@ -46,7 +46,7 @@
             android:layout_marginTop="4dp"
             android:text="Track your registrations and download certificates"
             android:textColor="#8A93A6"
-            android:textSize="13sp"
+            android:textSize="@dimen/text_label"
             android:fontFamily="@font/poppins_medium" />
 
         <View
@@ -72,12 +72,12 @@
         <TextView
             android:id="@+id/tab_upcoming"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="@dimen/button_height_sm"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Upcoming"
             android:textColor="#FFFFFF"
-            android:textSize="11sp"
+            android:textSize="@dimen/text_caption"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_tab_selected"
             android:clickable="true"
@@ -86,13 +86,13 @@
         <TextView
             android:id="@+id/tab_completed"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="@dimen/button_height_sm"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Completed"
             android:textColor="#8A93A6"
-            android:textSize="11sp"
+            android:textSize="@dimen/text_caption"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_tab_unselected"
             android:clickable="true"
@@ -101,13 +101,13 @@
         <TextView
             android:id="@+id/tab_certificates"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="@dimen/button_height_sm"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Certificates"
             android:textColor="#8A93A6"
-            android:textSize="11sp"
+            android:textSize="@dimen/text_caption"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_tab_unselected"
             android:clickable="true"
@@ -116,13 +116,13 @@
         <TextView
             android:id="@+id/tab_rejected"
             android:layout_width="0dp"
-            android:layout_height="42dp"
+            android:layout_height="@dimen/button_height_sm"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Rejected"
             android:textColor="#8A93A6"
-            android:textSize="11sp"
+            android:textSize="@dimen/text_caption"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_tab_unselected"
             android:clickable="true"
@@ -179,7 +179,7 @@
             android:layout_marginTop="16dp"
             android:text="No Enrolled Events Yet"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppins_semibold" />
 
         <TextView
@@ -188,7 +188,7 @@
             android:layout_marginTop="8dp"
             android:text="Browse events on the explore tab to get started!"
             android:textColor="#8A93A6"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_body"
             android:gravity="center"
             android:fontFamily="@font/poppinsreg" />
 

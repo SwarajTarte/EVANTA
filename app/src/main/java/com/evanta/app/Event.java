@@ -39,6 +39,9 @@ public class Event implements Parcelable {
     @SerializedName("is_featured")
     private boolean isFeatured;
 
+    @SerializedName("created_by")
+    private String createdBy;
+
     public Event() {
     }
 
@@ -58,6 +61,7 @@ public class Event implements Parcelable {
         imageUrl = in.readString();
         isFeatured = in.readByte() != 0;
         collegeId = in.readString();
+        createdBy = in.readString();
     }
 
     @Override
@@ -77,6 +81,7 @@ public class Event implements Parcelable {
         dest.writeString(imageUrl);
         dest.writeByte((byte) (isFeatured ? 1 : 0));
         dest.writeString(collegeId);
+        dest.writeString(createdBy);
     }
 
     @Override
@@ -111,6 +116,10 @@ public class Event implements Parcelable {
     public boolean isFeatured() { return isFeatured; }
     public double getPrice() { return price; }
     public int getCapacity() { return capacity; }
+
+    /** Firebase UID of the admin who created this event; null for legacy events. */
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
 
     // Setters — used by the admin edit card to keep the in-memory model in sync
     // with a saved row (so a RecyclerView rebind shows the latest values).

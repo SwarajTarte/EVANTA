@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="Add New "
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="Event"
                 android:textColor="#7C4DFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
         </LinearLayout>
 
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="Fill in the details to create a new event"
             android:textColor="#8A93A6"
-            android:textSize="13sp"
+            android:textSize="@dimen/text_label"
             android:fontFamily="@font/poppins_medium" />
     </LinearLayout>
 
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@drawable/bg_form_section"
-                    android:padding="20dp">
+                    android:padding="@dimen/space_xl">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                             android:gravity="center"
                             android:text="1"
                             android:textColor="#7C4DFF"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_body"
                             android:fontFamily="@font/poppinsbold"
                             android:background="@drawable/bg_section_number" />
 
@@ -127,7 +127,7 @@
                             android:layout_marginStart="12dp"
                             android:text="Basic Information"
                             android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_title"
                             android:fontFamily="@font/poppins_semibold" />
                     </LinearLayout>
 
@@ -179,15 +179,15 @@
                     <EditText
                         android:id="@+id/input_description"
                         android:layout_width="match_parent"
-                        android:layout_height="110dp"
-                        android:layout_marginTop="6dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="@dimen/space_xs"
                         android:background="@drawable/bg_textfield"
                         android:gravity="top|start"
-                        android:padding="14dp"
+                        android:padding="@dimen/space_md"
                         android:hint="Write a long layout description of the event"
                         android:textColorHint="#5A6377"
                         android:textColor="#FFFFFF"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_body"
                         android:fontFamily="@font/poppins_medium"
                         android:inputType="textMultiLine|textCapSentences"
                         android:maxLength="200" />
@@ -197,10 +197,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="@dimen/space_xs"
                         android:text="0/200"
                         android:textColor="#5A6377"
-                        android:textSize="11sp"
+                        android:textSize="@dimen/text_caption"
                         android:fontFamily="@font/poppins_medium" />
                 </LinearLayout>
 
@@ -208,10 +208,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/space_lg"
                     android:orientation="vertical"
                     android:background="@drawable/bg_form_section"
-                    android:padding="20dp">
+                    android:padding="@dimen/space_xl">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -225,7 +225,7 @@
                             android:gravity="center"
                             android:text="2"
                             android:textColor="#7C4DFF"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_body"
                             android:fontFamily="@font/poppinsbold"
                             android:background="@drawable/bg_section_number" />
 
@@ -240,7 +240,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Event Banner"
                                 android:textColor="#FFFFFF"
-                                android:textSize="16sp"
+                                android:textSize="@dimen/text_title"
                                 android:fontFamily="@font/poppins_semibold" />
 
                             <TextView
@@ -248,7 +248,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Upload a banner image for your event"
                                 android:textColor="#8A93A6"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_caption"
                                 android:fontFamily="@font/poppins_medium" />
                         </LinearLayout>
                     </LinearLayout>
@@ -256,11 +256,11 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/space_lg"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:background="@drawable/bg_banner_upload"
-                        android:padding="18dp">
+                        android:padding="@dimen/space_lg">
 
                         <FrameLayout
                             android:layout_width="90dp"
@@ -297,7 +297,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Upload Banner Image"
                                 android:textColor="#FFFFFF"
-                                android:textSize="15sp"
+                                android:textSize="@dimen/text_title"
                                 android:fontFamily="@font/poppins_semibold" />
 
                             <TextView
@@ -306,7 +306,7 @@
                                 android:layout_marginTop="2dp"
                                 android:text="Recommended size: 16:9 ratio"
                                 android:textColor="#8A93A6"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_caption"
                                 android:fontFamily="@font/poppins_medium" />
 
                             <TextView
@@ -314,21 +314,21 @@
                                 android:layout_height="wrap_content"
                                 android:text="Max file size: 1MB"
                                 android:textColor="#8A93A6"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_caption"
                                 android:fontFamily="@font/poppins_medium" />
 
                             <TextView
                                 android:id="@+id/choose_image_button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginTop="@dimen/space_md"
                                 android:text="Choose Image"
                                 android:textColor="#7C4DFF"
-                                android:textSize="13sp"
+                                android:textSize="@dimen/text_label"
                                 android:fontFamily="@font/poppins_semibold"
                                 android:background="@drawable/btn_outline_purple"
-                                android:paddingHorizontal="20dp"
-                                android:paddingVertical="9dp"
+                                android:paddingHorizontal="@dimen/space_xl"
+                                android:paddingVertical="@dimen/space_sm"
                                 android:clickable="true"
                                 android:focusable="true" />
                         </LinearLayout>
@@ -339,10 +339,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/space_lg"
                     android:orientation="vertical"
                     android:background="@drawable/bg_form_section"
-                    android:padding="20dp">
+                    android:padding="@dimen/space_xl">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -356,7 +356,7 @@
                             android:gravity="center"
                             android:text="3"
                             android:textColor="#7C4DFF"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_body"
                             android:fontFamily="@font/poppinsbold"
                             android:background="@drawable/bg_section_number" />
 
@@ -366,7 +366,7 @@
                             android:layout_marginStart="12dp"
                             android:text="Date &amp; Time"
                             android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_title"
                             android:fontFamily="@font/poppins_semibold" />
                     </LinearLayout>
 
@@ -451,10 +451,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/space_lg"
                     android:orientation="vertical"
                     android:background="@drawable/bg_form_section"
-                    android:padding="20dp">
+                    android:padding="@dimen/space_xl">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -468,7 +468,7 @@
                             android:gravity="center"
                             android:text="4"
                             android:textColor="#7C4DFF"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_body"
                             android:fontFamily="@font/poppinsbold"
                             android:background="@drawable/bg_section_number" />
 
@@ -478,7 +478,7 @@
                             android:layout_marginStart="12dp"
                             android:text="Venue"
                             android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_title"
                             android:fontFamily="@font/poppins_semibold" />
                     </LinearLayout>
 
@@ -510,10 +510,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="@dimen/space_lg"
                     android:orientation="vertical"
                     android:background="@drawable/bg_form_section"
-                    android:padding="20dp">
+                    android:padding="@dimen/space_xl">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -527,7 +527,7 @@
                             android:gravity="center"
                             android:text="5"
                             android:textColor="#7C4DFF"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/text_body"
                             android:fontFamily="@font/poppinsbold"
                             android:background="@drawable/bg_section_number" />
 
@@ -537,7 +537,7 @@
                             android:layout_marginStart="12dp"
                             android:text="Additional Information"
                             android:textColor="#FFFFFF"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/text_title"
                             android:fontFamily="@font/poppins_semibold" />
                     </LinearLayout>
 
@@ -571,7 +571,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="@dimen/space_lg"
                         android:orientation="horizontal"
                         android:gravity="center_vertical">
 
@@ -586,7 +586,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Feature this event"
                                 android:textColor="#FFFFFF"
-                                android:textSize="14sp"
+                                android:textSize="@dimen/text_body"
                                 android:fontFamily="@font/poppins_medium" />
 
                             <TextView
@@ -594,7 +594,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Show on the home featured carousel"
                                 android:textColor="#8A93A6"
-                                android:textSize="12sp"
+                                android:textSize="@dimen/text_caption"
                                 android:fontFamily="@font/poppins_medium" />
                         </LinearLayout>
 
@@ -613,22 +613,22 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/create_event_button"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_marginHorizontal="@dimen/screen_margin"
+        android:layout_marginBottom="@dimen/space_lg"
         android:text="Create Event"
         android:textColor="#FFFFFF"
         android:textAllCaps="false"
-        android:textSize="17sp"
+        android:textSize="@dimen/text_title"
         android:fontFamily="@font/poppins_semibold"
         android:background="@drawable/btn_gradient"
         app:backgroundTint="@null"
-        app:cornerRadius="18dp"
+        app:cornerRadius="@dimen/radius_lg"
         app:icon="@drawable/ic_admin_add_event"
         app:iconGravity="textStart"
         app:iconTint="#FFFFFF"
         app:iconPadding="8dp"
-        app:iconSize="22dp"
+        app:iconSize="@dimen/icon_md"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

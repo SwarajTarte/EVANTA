@@ -72,7 +72,7 @@
                 android:text="Sign in to discover events happening around your campus."
                 android:textAlignment="center"
                 android:textColor="#B4BCCB"
-                android:textSize="14sp" />
+                android:textSize="@dimen/text_body" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email"
@@ -87,7 +87,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailin"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -96,7 +96,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -114,7 +114,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwIn"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/button_height"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -124,7 +124,7 @@
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
                     android:textColorHint="#80FFFFFF"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/text_body"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -138,21 +138,21 @@
                 android:fontFamily="@font/poppinsreg"
                 android:text="Forgot Password?"
                 android:textColor="#00D4FF"
-                android:textSize="12sp" />
+                android:textSize="@dimen/text_caption" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/contbut"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_below="@+id/forgot"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/space_lg"
                 android:background="@drawable/btn_gradient"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Continue"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_title"
                 app:backgroundTint="@null"
                 app:icon="@drawable/east_arrow"
                 app:iconGravity="textEnd"
@@ -169,7 +169,7 @@
                 android:fontFamily="@font/poppinsreg"
                 android:text="Or continue with"
                 android:textColor="#9AA3B2"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/text_label"/>
 
             <LinearLayout
                 android:id="@+id/loggf"
@@ -197,7 +197,11 @@
                     android:background="@drawable/google_button"
                     android:padding="12dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/facebook_icon" />
+                    android:src="@drawable/facebook_icon"
+                    android:visibility="gone" />
+                <!-- Facebook login not enabled for launch (requires Facebook App
+                     Review). Hidden rather than removed so it can be re-enabled
+                     later without rebuilding the layout. See LoginActivity. -->
             </LinearLayout>
 
             <LinearLayout
@@ -216,7 +220,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Don't have an account?"
                     android:textColor="#B4BCCB"
-                    android:textSize="13sp"/>
+                    android:textSize="@dimen/text_label"/>
 
                 <TextView
                     android:id="@+id/signup"
@@ -226,7 +230,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Sign Up"
                     android:textColor="#00D4FF"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/text_body" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

@@ -48,7 +48,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Home"
-                android:textSize="11sp" />
+                android:textSize="@dimen/text_caption" />
         </LinearLayout>
 
         <!-- Browse -->
@@ -79,7 +79,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Browse"
-                android:textSize="11sp" />
+                android:textSize="@dimen/text_caption" />
         </LinearLayout>
 
         <!-- My Events -->
@@ -110,7 +110,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="My Events"
-                android:textSize="11sp" />
+                android:textSize="@dimen/text_caption" />
         </LinearLayout>
 
         <!-- Profile -->
@@ -141,7 +141,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/poppins_medium"
                 android:text="Profile"
-                android:textSize="11sp" />
+                android:textSize="@dimen/text_caption" />
         </LinearLayout>
 
     </LinearLayout>

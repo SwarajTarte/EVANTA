@@ -81,6 +81,10 @@ public class AdminDashboard extends AppCompatActivity {
             return;
         }
 
+        // Ask for notification permission (Android 13+) and register this
+        // device's FCM token so the backend can push to it.
+        PushSetup.ensure(this);
+
         // Navigation setup
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()

@@ -49,17 +49,32 @@ public class LoginActivity extends AppCompatActivity {
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
-                        if (result.getResultCode() == RESULT_OK) {
-                            Task<GoogleSignInAccount> task =
-                                    GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                            try {
-                                GoogleSignInAccount account =
-                                        task.getResult(ApiException.class);
+                        // Always try to read the account/exception from the intent.
+                        // On a SHA-1 / config error Play Services returns
+                        // RESULT_CANCELED, so gating on RESULT_OK would swallow the
+                        // real error code and the whole flow would silently do nothing.
+                        Task<GoogleSignInAccount> task =
+                                GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                        try {
+                            GoogleSignInAccount account =
+                                    task.getResult(ApiException.class);
+                            if (account != null && account.getIdToken() != null) {
                                 firebaseAuthWithGoogle(account.getIdToken());
-                            } catch (ApiException e) {
-                                Toast.makeText(this, e.getMessage(),
-                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(this,
+                                        "Google sign-in returned no ID token. Check the "
+                                                + "requestIdToken web client ID and SHA-1.",
+                                        Toast.LENGTH_LONG).show();
                             }
+                        } catch (ApiException e) {
+                            // statusCode 10 = DEVELOPER_ERROR (SHA-1/config mismatch),
+                            // 12501 = cancelled by user, 12500 = sign-in failed.
+                            Toast.makeText(this,
+                                    "Google sign-in failed (code "
+                                            + e.getStatusCode() + ")",
+                                    Toast.LENGTH_LONG).show();
+                            android.util.Log.e("GoogleSignIn",
+                                    "ApiException code " + e.getStatusCode(), e);
                         }
                     });
 
@@ -91,6 +106,10 @@ public class LoginActivity extends AppCompatActivity {
         contbut = findViewById(R.id.contbut);
         forgot = findViewById(R.id.forgot);
         google = findViewById(R.id.google);
+        // Facebook login is not enabled for launch (needs Facebook App Review).
+        // The button is hidden in the layout; this reference is kept so the flow
+        // can be re-added later without touching the layout. No click listener
+        // is attached, so the hidden button does nothing.
         facebook = findViewById(R.id.facebook);
 
         google.setOnClickListener(v -> signInWithGoogle());

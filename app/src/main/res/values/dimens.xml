@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    EVANTA · universal sizing scale (single source of truth).
+    Every layout should reference these instead of hardcoding dp/sp so the UI
+    stays consistent and scales correctly on all phone sizes. Change a value
+    here once and it updates everywhere.
+-->
+<resources>
+
+    <!-- ===== Text sizes ===== -->
+    <dimen name="text_display">20sp</dimen>   <!-- screen / big titles -->
+    <dimen name="text_title">16sp</dimen>     <!-- section + card titles -->
+    <dimen name="text_body">14sp</dimen>      <!-- primary body / inputs -->
+    <dimen name="text_label">13sp</dimen>     <!-- form labels -->
+    <dimen name="text_caption">11sp</dimen>   <!-- meta / hints / tags -->
+
+    <!-- ===== Spacing scale (4dp rhythm) ===== -->
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_sm">8dp</dimen>
+    <dimen name="space_md">12dp</dimen>
+    <dimen name="space_lg">16dp</dimen>
+    <dimen name="space_xl">20dp</dimen>
+    <dimen name="space_xxl">28dp</dimen>
+
+    <!-- Standard screen edge padding -->
+    <dimen name="screen_margin">16dp</dimen>
+
+    <!-- ===== Component sizes ===== -->
+    <dimen name="field_height">44dp</dimen>       <!-- text fields / pickers -->
+    <dimen name="button_height">48dp</dimen>      <!-- primary buttons -->
+    <dimen name="button_height_sm">40dp</dimen>   <!-- secondary buttons -->
+    <dimen name="banner_height">130dp</dimen>     <!-- event banner images -->
+
+    <!-- ===== Icons ===== -->
+    <dimen name="icon_sm">16dp</dimen>
+    <dimen name="icon_md">24dp</dimen>
+    <dimen name="icon_lg">36dp</dimen>
+    <dimen name="avatar">40dp</dimen>
+
+    <!-- ===== Corner radii ===== -->
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+
+</resources>

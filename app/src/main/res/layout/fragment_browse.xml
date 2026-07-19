@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="Browse "
                 android:textColor="#FFFFFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="Events"
                 android:textColor="#7C4DFF"
-                android:textSize="24sp"
+                android:textSize="@dimen/text_display"
                 android:fontFamily="@font/poppinsbold" />
 
         </LinearLayout>
@@ -45,22 +45,22 @@
             android:layout_marginTop="4dp"
             android:text="Discover amazing events happening around you"
             android:textColor="#8A93A6"
-            android:textSize="13sp"
+            android:textSize="@dimen/text_label"
             android:fontFamily="@font/poppins_medium" />
 
         <EditText
             android:id="@+id/browse_search"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/space_xl"
             android:background="@drawable/bg_search_bar"
             android:drawableStart="@drawable/ic_search_small"
             android:drawablePadding="10dp"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="@dimen/space_lg"
             android:hint="Search events, categories, or keywords..."
             android:textColorHint="#8A93A6"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_body"
             android:fontFamily="@font/poppins_medium"
             android:singleLine="true"
             android:imeOptions="actionSearch" />
@@ -71,7 +71,7 @@
             android:layout_marginTop="24dp"
             android:text="Categories"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppinsbold" />
 
         <com.evanta.app.FadingEdgeLayout
@@ -101,7 +101,7 @@
             android:layout_marginBottom="4dp"
             android:text="All Events"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppinsbold" />
 
     </LinearLayout>
@@ -160,7 +160,7 @@
             android:layout_marginTop="16dp"
             android:text="No Events Found"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppins_semibold" />
 
         <TextView
@@ -170,7 +170,7 @@
             android:layout_marginTop="8dp"
             android:text="Try a different search or category."
             android:textColor="#8A93A6"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_body"
             android:gravity="center"
             android:fontFamily="@font/poppinsreg" />
 

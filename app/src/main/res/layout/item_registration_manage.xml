@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text=""
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppinsbold"
             android:background="@drawable/bg_avatar_circle"
             android:includeFontPadding="false" />
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:text="Student"
             android:textColor="#FFFFFF"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_body"
             android:maxLines="1"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_semibold" />
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textColor="#8A93A6"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_caption"
             android:maxLines="1"
             android:ellipsize="end"
             android:fontFamily="@font/poppins_medium" />
@@ -139,7 +139,7 @@
             android:text="Upload"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="13sp"
+            android:textSize="@dimen/text_label"
             android:fontFamily="@font/poppins_semibold"
             app:backgroundTint="@null"
             app:icon="@drawable/ic_upload"
@@ -161,7 +161,7 @@
             android:visibility="gone"
             android:text="Approved"
             android:textColor="#FFFFFF"
-            android:textSize="12sp"
+            android:textSize="@dimen/text_caption"
             android:fontFamily="@font/poppins_semibold"
             android:background="@drawable/bg_category_pill" />
 

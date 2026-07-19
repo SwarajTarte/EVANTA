@@ -14,3 +14,17 @@
 .cxx
 local.properties
 /admin-creator/
+/evanta-99990-firebase-adminsdk-fbsvc-4863037e02.json
+
+# Release signing — never commit the keystore or its passwords.
+keystore.properties
+*.jks
+*.keystore
+
+# Build outputs — don't commit compiled apps (attach them to a GitHub Release instead).
+/app/release/
+*.apk
+*.aab
+
+# Junk from the Linux/FUSE mount.
+.fuse_hidden*

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome Back,"
-        android:textSize="35sp"
+        android:textSize="@dimen/text_display"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/poppinsbold"
         android:layout_marginTop="24dp"
@@ -95,7 +95,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
                 android:text=""
-                android:textSize="22sp"
+                android:textSize="@dimen/text_display"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/poppinsbold" />
 
@@ -107,7 +107,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="Student"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_label"
                 android:textColor="#FFFFFF"
                 android:fontFamily="@font/poppins_medium"
                 android:paddingLeft="16dp"
@@ -125,14 +125,14 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="@drawable/login_card"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <!-- Row 1: Full Name -->
                 <ImageView
                     android:id="@+id/icon_name_row"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="2dp"
                     android:src="@drawable/name_icon"
                     app:tint="#7C4DFF" />
 
@@ -143,7 +143,7 @@
                     android:layout_toRightOf="@+id/icon_name_row"
                     android:layout_marginLeft="16dp"
                     android:text="Full Name"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_label"
                     android:textColor="#B4BCCB"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -156,7 +156,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="2dp"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_body"
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -166,16 +166,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/value_name_row"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:background="#25FFFFFF" />
 
                 <!-- Row 2: Email -->
                 <ImageView
                     android:id="@+id/icon_email_row"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_below="@+id/divider1"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:src="@drawable/baseline_email_24"
                     app:tint="#7C4DFF" />
 
@@ -187,7 +187,7 @@
                     android:layout_toRightOf="@+id/icon_email_row"
                     android:layout_marginLeft="16dp"
                     android:text="Email Address"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_label"
                     android:textColor="#B4BCCB"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -200,7 +200,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="2dp"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_body"
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -210,16 +210,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/value_email_row"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:background="#25FFFFFF" />
 
                 <!-- Row 3: WhatsApp -->
                 <ImageView
                     android:id="@+id/icon_whatsapp_row"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_below="@+id/divider2"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:src="@drawable/whatsapp_icon"
                     app:tint="#7C4DFF" />
 
@@ -231,7 +231,7 @@
                     android:layout_toRightOf="@+id/icon_whatsapp_row"
                     android:layout_marginLeft="16dp"
                     android:text="WhatsApp Number"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_label"
                     android:textColor="#B4BCCB"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -244,7 +244,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="2dp"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_body"
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -254,16 +254,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/value_whatsapp_row"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:background="#25FFFFFF" />
 
                 <!-- Row 4: College -->
                 <ImageView
                     android:id="@+id/icon_college_row"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_below="@+id/divider3"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:src="@drawable/ic_building_small"
                     app:tint="#7C4DFF" />
 
@@ -275,7 +275,7 @@
                     android:layout_toRightOf="@+id/icon_college_row"
                     android:layout_marginLeft="16dp"
                     android:text="College"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_label"
                     android:textColor="#B4BCCB"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -288,7 +288,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="2dp"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_body"
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -298,16 +298,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/value_college_row"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:background="#25FFFFFF" />
 
                 <!-- Row 5: Branch -->
                 <ImageView
                     android:id="@+id/icon_branch_row"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
                     android:layout_below="@+id/divider4"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:src="@drawable/ic_branch"
                     app:tint="#7C4DFF" />
 
@@ -319,7 +319,7 @@
                     android:layout_toRightOf="@+id/icon_branch_row"
                     android:layout_marginLeft="16dp"
                     android:text="Branch"
-                    android:textSize="13sp"
+                    android:textSize="@dimen/text_label"
                     android:textColor="#B4BCCB"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -332,7 +332,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="2dp"
                     android:text=""
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_body"
                     android:textColor="#FFFFFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -341,7 +341,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/logoutbut"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_below="@+id/info_card"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="16dp"
@@ -350,7 +350,7 @@
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
                 android:fontFamily="@font/poppins_semibold"
-                android:textSize="18sp"
+                android:textSize="@dimen/text_title"
                 android:background="@drawable/btn_gradient"
                 app:backgroundTint="@null"
                 app:icon="@drawable/ic_logout"
@@ -366,7 +366,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:text="You will be logged out from your account"
-                android:textSize="12sp"
+                android:textSize="@dimen/text_caption"
                 android:textColor="#8A93A6"
                 android:fontFamily="@font/poppins_medium" />
 

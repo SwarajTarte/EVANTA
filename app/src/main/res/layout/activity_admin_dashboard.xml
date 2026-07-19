@@ -20,13 +20,13 @@
         android:id="@+id/admin_bottom_nav_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="18dp"
         app:cardBackgroundColor="#181C25"
-        app:cardCornerRadius="28dp"
-        app:cardElevation="8dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="6dp"
         app:strokeColor="#25FFFFFF"
         app:strokeWidth="1dp">
 
@@ -35,8 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
 
             <!-- Events Tab -->
             <LinearLayout
@@ -46,15 +46,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
                     android:id="@+id/admin_icon_events"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/ic_my_events"
                     app:tint="#7C4DFF" />
 
@@ -62,9 +62,9 @@
                     android:id="@+id/admin_label_events"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="Events"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_caption"
                     android:textColor="#7C4DFF"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -78,15 +78,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
                     android:id="@+id/admin_icon_add_event"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/ic_admin_add_event"
                     app:tint="#8A93A6" />
 
@@ -94,9 +94,9 @@
                     android:id="@+id/admin_label_add_event"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="Add Event"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_caption"
                     android:textColor="#8A93A6"
                     android:fontFamily="@font/poppins_medium" />
 
@@ -110,15 +110,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:clickable="true"
                 android:focusable="true">
 
                 <ImageView
                     android:id="@+id/admin_icon_profile"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/ic_profile"
                     app:tint="#8A93A6" />
 
@@ -126,9 +126,9 @@
                     android:id="@+id/admin_label_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:text="Profile"
-                    android:textSize="11sp"
+                    android:textSize="@dimen/text_caption"
                     android:textColor="#8A93A6"
                     android:fontFamily="@font/poppins_medium" />
 

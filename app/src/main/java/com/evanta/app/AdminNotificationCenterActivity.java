@@ -91,7 +91,12 @@ public class AdminNotificationCenterActivity extends AppCompatActivity {
                         if (isFinishing()) return;
                         if (response.isSuccessful() && response.body() != null
                                 && !response.body().isEmpty()) {
-                            loadPendingRequests(response.body());
+                            List<Event> mine = keepOwnAndLegacy(response.body());
+                            if (mine.isEmpty()) {
+                                showEmpty();
+                            } else {
+                                loadPendingRequests(mine);
+                            }
                         } else {
                             showEmpty();
                         }
@@ -103,6 +108,24 @@ public class AdminNotificationCenterActivity extends AppCompatActivity {
                         if (!isFinishing()) showEmpty();
                     }
                 });
+    }
+
+    /**
+     * Keeps only events this admin created plus legacy (null-owner) events, so
+     * the approvals feed never surfaces another admin's registrations.
+     */
+    private List<Event> keepOwnAndLegacy(List<Event> events) {
+        User me = UserCache.get(this);
+        String myUid = me != null ? me.getUid() : null;
+        List<Event> out = new ArrayList<>();
+        for (Event e : events) {
+            String owner = e.getCreatedBy();
+            if (owner == null || owner.isEmpty()
+                    || (myUid != null && myUid.equals(owner))) {
+                out.add(e);
+            }
+        }
+        return out;
     }
 
     // ---------- Step 2: pending registrations across those events ----------

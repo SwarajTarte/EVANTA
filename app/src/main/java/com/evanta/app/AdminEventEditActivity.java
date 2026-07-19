@@ -456,13 +456,26 @@ public class AdminEventEditActivity extends AppCompatActivity {
                     }
                 }
 
-                rows.clear();
-                for (Registration r : registrations) {
-                    rows.add(new RegistrationManageAdapter.RegRow(r, byUid.get(r.getUserUid())));
+                // Students who picked a college from the list have college_id
+                // set but college_name null (only "Other" free-text saves a
+                // name). Resolve those ids to names before rendering so the
+                // approval rows show the college; otherwise render immediately.
+                boolean needsCollegeNames = false;
+                for (User u : byUid.values()) {
+                    if (u.getCollegeId() != null && !u.getCollegeId().trim().isEmpty()
+                            && (u.getCollegeName() == null || u.getCollegeName().trim().isEmpty())) {
+                        needsCollegeNames = true;
+                        break;
+                    }
                 }
-                listAdapter.notifyDataSetChanged();
-                dialogLoader.setVisibility(View.GONE);
-                empty.setVisibility(View.GONE);
+
+                if (needsCollegeNames) {
+                    resolveCollegeNames(byUid, registrations, rows, listAdapter,
+                            dialogLoader, empty);
+                } else {
+                    finalizeUserRows(byUid, registrations, rows, listAdapter,
+                            dialogLoader, empty);
+                }
             }
 
             @Override
@@ -476,6 +489,62 @@ public class AdminEventEditActivity extends AppCompatActivity {
                 dialogLoader.setVisibility(View.GONE);
             }
         });
+    }
+
+    /**
+     * Fetches the colleges table once and fills in college_name on any user
+     * that only had a college_id, then renders the rows. Falls through to
+     * rendering as-is if the fetch fails so approvals still work.
+     */
+    private void resolveCollegeNames(Map<String, User> byUid,
+                                     List<Registration> registrations,
+                                     List<RegistrationManageAdapter.RegRow> rows,
+                                     RegistrationManageAdapter listAdapter,
+                                     ProgressBar dialogLoader, TextView empty) {
+        api.getColleges().enqueue(new Callback<List<College>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<College>> call,
+                                   @NonNull Response<List<College>> response) {
+                if (isFinishing()) return;
+                if (response.isSuccessful() && response.body() != null) {
+                    Map<String, String> nameById = new HashMap<>();
+                    for (College c : response.body()) {
+                        if (c.getId() != null) nameById.put(c.getId(), c.getName());
+                    }
+                    for (User u : byUid.values()) {
+                        if (u.getCollegeId() != null
+                                && (u.getCollegeName() == null || u.getCollegeName().trim().isEmpty())) {
+                            String name = nameById.get(u.getCollegeId());
+                            if (name != null) u.setCollegeName(name);
+                        }
+                    }
+                }
+                finalizeUserRows(byUid, registrations, rows, listAdapter,
+                        dialogLoader, empty);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<College>> call, @NonNull Throwable t) {
+                if (isFinishing()) return;
+                finalizeUserRows(byUid, registrations, rows, listAdapter,
+                        dialogLoader, empty);
+            }
+        });
+    }
+
+    /** Builds the adapter rows from the resolved users and refreshes the list. */
+    private void finalizeUserRows(Map<String, User> byUid,
+                                  List<Registration> registrations,
+                                  List<RegistrationManageAdapter.RegRow> rows,
+                                  RegistrationManageAdapter listAdapter,
+                                  ProgressBar dialogLoader, TextView empty) {
+        rows.clear();
+        for (Registration r : registrations) {
+            rows.add(new RegistrationManageAdapter.RegRow(r, byUid.get(r.getUserUid())));
+        }
+        listAdapter.notifyDataSetChanged();
+        dialogLoader.setVisibility(View.GONE);
+        empty.setVisibility(View.GONE);
     }
 
     private void setStatus(RegistrationManageAdapter.RegRow row, int position, String status) {

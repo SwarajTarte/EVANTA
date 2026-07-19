@@ -22,6 +22,14 @@ public interface SupabaseApi {
     @GET("rest/v1/users?select=*")
     Call<List<User>> getUserByUid(@Query("uid") String uid);
 
+    /**
+     * Register/refresh this device's FCM push token. Upserts on the token
+     * primary key so re-registering the same device just updates its row.
+     */
+    @Headers("Prefer: resolution=merge-duplicates,return=minimal")
+    @POST("rest/v1/device_tokens")
+    Call<Void> upsertDeviceToken(@Body Map<String, Object> row);
+
     @PATCH("rest/v1/users")
     Call<Void> updateUser(@Query("uid") String uidFilter, @Body Map<String, Object> fields);
 

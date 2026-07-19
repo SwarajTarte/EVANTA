@@ -163,7 +163,7 @@ public class AdminEventsFragment extends Fragment {
 
                         if (response.isSuccessful() && response.body() != null) {
                             allEvents.clear();
-                            allEvents.addAll(response.body());
+                            allEvents.addAll(keepOwnAndLegacy(response.body()));
                             applyFilter();
 
                             if (allEvents.isEmpty()) {
@@ -185,6 +185,25 @@ public class AdminEventsFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    /**
+     * Keeps only events this admin created, plus legacy events that have no
+     * creator recorded (created_by == null) so old events aren't orphaned.
+     * Events created by other admins of the same college are filtered out.
+     */
+    private List<Event> keepOwnAndLegacy(List<Event> events) {
+        User me = UserCache.get(requireContext());
+        String myUid = me != null ? me.getUid() : null;
+        List<Event> out = new ArrayList<>();
+        for (Event e : events) {
+            String owner = e.getCreatedBy();
+            if (owner == null || owner.isEmpty()
+                    || (myUid != null && myUid.equals(owner))) {
+                out.add(e);
+            }
+        }
+        return out;
     }
 
     /** Rebuilds the visible list from the current search query and updates state. */

@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_admin_event_edit.xml — full-screen editor opened when an admin taps
-     a compact event row. Hosts the editable form plus the Approvals / Certificates
-     actions and Save / Delete. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -10,19 +7,18 @@
     android:orientation="vertical"
     android:background="@drawable/bg_dashboard">
 
-    <!-- Top bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="12dp">
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp">
 
         <ImageView
             android:id="@+id/back_arrow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:padding="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_back_chevron"
@@ -33,10 +29,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="4dp"
             android:text="Edit Event"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_title"
             android:fontFamily="@font/poppins_semibold" />
 
     </LinearLayout>
@@ -52,13 +48,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="18dp"
-            android:paddingBottom="28dp">
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="20dp">
 
-            <!-- Banner preview with overlaid admin action buttons -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp">
+                android:layout_height="@dimen/banner_height">
 
                 <ImageView
                     android:id="@+id/card_banner"
@@ -73,64 +68,63 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|start"
-                    android:layout_margin="10dp"
+                    android:layout_margin="8dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/card_btn_approvals"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
+                        android:layout_height="32dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:paddingHorizontal="14dp"
+                        android:paddingHorizontal="12dp"
                         android:background="@drawable/bg_banner_action"
                         android:text="Approvals"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_caption"
                         android:fontFamily="@font/poppins_semibold"
                         app:backgroundTint="@null"
                         app:icon="@drawable/ic_people"
                         app:iconTint="#FFFFFF"
-                        app:iconSize="16dp"
+                        app:iconSize="14dp"
                         app:iconGravity="textStart"
-                        app:iconPadding="6dp"
-                        app:cornerRadius="20dp"
+                        app:iconPadding="4dp"
+                        app:cornerRadius="16dp"
                         app:rippleColor="#40FFFFFF" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/card_btn_certificates"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="36dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="6dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:paddingHorizontal="14dp"
+                        android:paddingHorizontal="12dp"
                         android:background="@drawable/bg_banner_action"
                         android:text="Certificates"
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_caption"
                         android:fontFamily="@font/poppins_semibold"
                         app:backgroundTint="@null"
                         app:icon="@drawable/ic_certificate"
                         app:iconTint="#FFFFFF"
-                        app:iconSize="16dp"
+                        app:iconSize="14dp"
                         app:iconGravity="textStart"
-                        app:iconPadding="6dp"
-                        app:cornerRadius="20dp"
+                        app:iconPadding="4dp"
+                        app:cornerRadius="16dp"
                         app:rippleColor="#40FFFFFF" />
 
                 </LinearLayout>
 
             </FrameLayout>
 
-            <!-- Category -->
             <TextView
                 style="@style/AddEventLabel"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:text="Category" />
 
             <TextView
@@ -141,10 +135,9 @@
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:drawableEnd="@drawable/ic_chevron_down"
-                android:drawablePadding="10dp"
+                android:drawablePadding="8dp"
                 app:drawableTint="#8A93A6" />
 
-            <!-- Title -->
             <TextView style="@style/AddEventLabel" android:text="Title" />
 
             <EditText
@@ -153,7 +146,6 @@
                 android:hint="Event title"
                 android:inputType="textCapWords" />
 
-            <!-- Subtitle -->
             <TextView style="@style/AddEventLabel" android:text="Subtitle" />
 
             <EditText
@@ -162,27 +154,25 @@
                 android:hint="Short subtitle"
                 android:inputType="textCapSentences" />
 
-            <!-- Description -->
             <TextView style="@style/AddEventLabel" android:text="Description" />
 
             <EditText
                 android:id="@+id/card_description"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_marginTop="6dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="@dimen/space_xs"
                 android:background="@drawable/bg_textfield"
                 android:gravity="top|start"
-                android:padding="14dp"
+                android:padding="@dimen/space_md"
                 android:hint="Event description"
                 android:textColorHint="#5A6377"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_body"
                 android:fontFamily="@font/poppins_medium"
                 android:inputType="textMultiLine|textCapSentences"
                 android:overScrollMode="always"
                 android:scrollbars="vertical" />
 
-            <!-- Start date + time -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -204,7 +194,7 @@
                         android:focusable="false"
                         android:gravity="center_vertical"
                         android:drawableStart="@drawable/ic_calendar_small"
-                        android:drawablePadding="8dp"
+                        android:drawablePadding="6dp"
                         app:drawableTint="#8A93A6" />
                 </LinearLayout>
 
@@ -212,7 +202,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     android:orientation="vertical">
 
                     <TextView style="@style/AddEventLabel" android:text="Start Time" />
@@ -225,13 +215,12 @@
                         android:focusable="false"
                         android:gravity="center_vertical"
                         android:drawableStart="@drawable/ic_clock_small"
-                        android:drawablePadding="8dp"
+                        android:drawablePadding="6dp"
                         app:drawableTint="#8A93A6" />
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- End date -->
             <TextView style="@style/AddEventLabel" android:text="End Date" />
 
             <TextView
@@ -242,10 +231,9 @@
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_calendar_small"
-                android:drawablePadding="8dp"
+                android:drawablePadding="6dp"
                 app:drawableTint="#8A93A6" />
 
-            <!-- Registration deadline -->
             <TextView style="@style/AddEventLabel" android:text="Registration Deadline" />
 
             <TextView
@@ -256,10 +244,9 @@
                 android:focusable="false"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_calendar_small"
-                android:drawablePadding="8dp"
+                android:drawablePadding="6dp"
                 app:drawableTint="#8A93A6" />
 
-            <!-- Location -->
             <TextView style="@style/AddEventLabel" android:text="Location" />
 
             <EditText
@@ -268,11 +255,10 @@
                 android:hint="Venue / location"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_location_small"
-                android:drawablePadding="8dp"
+                android:drawablePadding="6dp"
                 app:drawableTint="#8A93A6"
                 android:inputType="textCapWords" />
 
-            <!-- Price + Capacity -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -297,7 +283,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     android:orientation="vertical">
 
                     <TextView style="@style/AddEventLabel" android:text="Capacity" />
@@ -311,11 +297,10 @@
 
             </LinearLayout>
 
-            <!-- Featured toggle -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
@@ -330,7 +315,7 @@
                         android:layout_height="wrap_content"
                         android:text="Featured Event"
                         android:textColor="#FFFFFF"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/text_label"
                         android:fontFamily="@font/poppins_medium" />
 
                     <TextView
@@ -338,7 +323,7 @@
                         android:layout_height="wrap_content"
                         android:text="Show on the home screen"
                         android:textColor="#8A93A6"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/text_caption"
                         android:fontFamily="@font/poppins_medium" />
 
                 </LinearLayout>
@@ -353,49 +338,48 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:background="#1F2438" />
 
-            <!-- Save + Delete -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="14dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/card_save_button"
                     android:layout_width="0dp"
-                    android:layout_height="52dp"
+                    android:layout_height="@dimen/button_height"
                     android:layout_weight="1"
                     android:background="@drawable/btn_gradient"
                     android:text="Save Changes"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/text_body"
                     android:fontFamily="@font/poppins_semibold"
                     app:backgroundTint="@null"
                     app:strokeWidth="0dp"
-                    app:cornerRadius="14dp"
+                    app:cornerRadius="12dp"
                     app:rippleColor="#30FFFFFF" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/card_delete_button"
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
-                    android:layout_marginStart="12dp"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginStart="8dp"
                     android:text="Delete"
                     android:textAllCaps="false"
                     android:textColor="#FF6B6B"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/text_body"
                     android:fontFamily="@font/poppins_semibold"
                     app:icon="@drawable/ic_trash"
                     app:iconTint="#FF6B6B"
-                    app:iconSize="20dp"
+                    app:iconSize="18dp"
                     app:iconGravity="textStart"
-                    app:cornerRadius="14dp"
+                    app:cornerRadius="12dp"
                     app:strokeColor="#3AFF6B6B"
                     app:strokeWidth="1dp"
                     app:rippleColor="#30FF6B6B" />
@@ -404,10 +388,10 @@
 
             <ProgressBar
                 android:id="@+id/card_progress"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:indeterminateTint="#7C4DFF"
                 android:visibility="gone" />
 
