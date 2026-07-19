@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:background="@drawable/login_gradient"
-    tools:context=".LoginActivity">
+    tools:context=".LoginActivity"
+    android:scrollbars="none">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -171,7 +172,7 @@
                 android:layout_below="@+id/whatsapp"
                 android:layout_marginTop="8dp"
                 app:hintEnabled="false"
-                app:startIconDrawable="@drawable/ic_browse"
+                app:startIconDrawable="@drawable/ic_building_small"
                 app:startIconTint="#7C4DFF">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -199,7 +200,7 @@
                 android:layout_below="@+id/college_layout"
                 android:layout_marginTop="8dp"
                 app:hintEnabled="false"
-                app:startIconDrawable="@drawable/ic_my_events"
+                app:startIconDrawable="@drawable/ic_branch"
                 app:startIconTint="#7C4DFF">
 
                 <com.google.android.material.textfield.TextInputEditText
