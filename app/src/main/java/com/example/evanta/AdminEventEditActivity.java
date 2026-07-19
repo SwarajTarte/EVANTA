@@ -769,6 +769,24 @@ public class AdminEventEditActivity extends AppCompatActivity {
         }
     }
 
+    private String extensionFor(String mime) {
+        String m = mime.toLowerCase(Locale.US);
+        if (m.contains("pdf")) return ".pdf";
+        if (m.contains("png")) return ".png";
+        if (m.contains("webp")) return ".webp";
+        if (m.contains("jpeg") || m.contains("jpg")) return ".jpg";
+        return ".bin";
+    }
+
+    private String certUploadError(int code, String body) {
+        String lower = body == null ? "" : body.toLowerCase(Locale.US);
+        if (code == 404 || lower.contains("bucket not found")) return "Certificates bucket missing";
+        if (code == 401 || code == 403 || lower.contains("policy")
+                || lower.contains("row-level security")) return "Upload not allowed";
+        if (code == 413 || lower.contains("too large")) return "File too large";
+        return "Upload failed (" + code + ")";
+    }
+
     private double parseDouble(String s) {
         try { return Double.parseDouble(s); } catch (Exception e) { return 0; }
     }
