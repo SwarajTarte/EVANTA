@@ -43,13 +43,22 @@ public class AdminEventCardAdapter extends RecyclerView.Adapter<AdminEventCardAd
         void onDeleted(int position);
     }
 
+    /** Banner action buttons — the fragment opens the management dialogs. */
+    public interface OnManageClick {
+        void onApprovals(Event event);
+        void onCertificates(Event event);
+    }
+
     private final List<Event> events;
     private final OnEventDeleted deleteCallback;
+    private final OnManageClick manageCallback;
     private final SupabaseApi api;
 
-    public AdminEventCardAdapter(List<Event> events, OnEventDeleted deleteCallback) {
+    public AdminEventCardAdapter(List<Event> events, OnEventDeleted deleteCallback,
+                                 OnManageClick manageCallback) {
         this.events = events;
         this.deleteCallback = deleteCallback;
+        this.manageCallback = manageCallback;
         this.api = RetrofitClient.getClient().create(SupabaseApi.class);
     }
 
@@ -126,6 +135,14 @@ public class AdminEventCardAdapter extends RecyclerView.Adapter<AdminEventCardAd
             h.startTime = time;
             h.startTimeView.setText(time);
         }));
+
+        // ----- Banner action buttons -----
+        h.btnApprovals.setOnClickListener(x -> {
+            if (manageCallback != null) manageCallback.onApprovals(event);
+        });
+        h.btnCertificates.setOnClickListener(x -> {
+            if (manageCallback != null) manageCallback.onCertificates(event);
+        });
 
         // ----- Save -----
         h.saveButton.setOnClickListener(x -> saveEvent(h, event));
@@ -323,6 +340,7 @@ public class AdminEventCardAdapter extends RecyclerView.Adapter<AdminEventCardAd
         EditText title, subtitle, description, location, price, capacity;
         MaterialSwitch switchFeatured;
         MaterialButton saveButton, deleteButton;
+        MaterialButton btnApprovals, btnCertificates;
         ProgressBar progress;
 
         // Transient edit state per card.
@@ -331,6 +349,8 @@ public class AdminEventCardAdapter extends RecyclerView.Adapter<AdminEventCardAd
         CardHolder(@NonNull View v) {
             super(v);
             banner = v.findViewById(R.id.card_banner);
+            btnApprovals = v.findViewById(R.id.card_btn_approvals);
+            btnCertificates = v.findViewById(R.id.card_btn_certificates);
             category = v.findViewById(R.id.card_category);
             title = v.findViewById(R.id.card_title);
             subtitle = v.findViewById(R.id.card_subtitle);

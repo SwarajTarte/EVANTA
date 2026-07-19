@@ -37,6 +37,7 @@ public class Registration {
     public String getCertificateUrl() { return certificateUrl; }
     public String getStatus()         { return status; }
     public void setStatus(String status) { this.status = status; }
+    public void setCertificateUrl(String certificateUrl) { this.certificateUrl = certificateUrl; }
 
     public boolean isPending()  { return STATUS_PENDING.equals(status); }
     public boolean isApproved() { return STATUS_APPROVED.equals(status); }

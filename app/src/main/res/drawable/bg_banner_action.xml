@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Semi-transparent dark pill used for the action buttons overlaid on the
+     admin event card banner (Approvals / Certificates). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#CC0E1220" />
+    <corners android:radius="20dp" />
+    <stroke android:width="1dp" android:color="#33FFFFFF" />
+</shape>

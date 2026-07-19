@@ -127,7 +127,7 @@ public interface SupabaseApi {
 
     // ---------- Admin: Users (for student list in approvals) ----------
 
-    @GET("rest/v1/users?select=uid,name,email,photo_url,branch")
+    @GET("rest/v1/users?select=uid,name,email,photo_url,branch,college_name,college_id")
     Call<List<User>> getUsersByUids(@Query("uid") String uidsFilter);
 
     // ---------- Admin: Notifications (push) ----------

@@ -138,7 +138,8 @@ public class HomeFragment extends Fragment {
     private void fetchFeaturedEvents() {
         List<Event> cached = EventCache.get();
         if (cached != null) {
-            bindFeaturedEvents(cached);
+            // Cache holds the raw featured list; hide any whose deadline has passed.
+            bindFeaturedEvents(EventVisibility.filterOpen(cached));
         }
 
         User user = UserCache.get(requireContext());
@@ -157,7 +158,9 @@ public class HomeFragment extends Fragment {
 
                             List<Event> collegeEvents = new ArrayList<>();
                             if (response.isSuccessful() && response.body() != null) {
-                                collegeEvents.addAll(response.body());
+                                // Only consider events whose registration is still open.
+                                collegeEvents.addAll(
+                                        EventVisibility.filterOpen(response.body()));
                             }
 
                             if (collegeEvents.size() >= 3) {
@@ -204,6 +207,7 @@ public class HomeFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     for (Event e : response.body()) {
                         if (combined.size() >= 3) break;
+                        if (!EventVisibility.isRegistrationOpen(e)) continue;
                         if (e.getId() != null && !seenIds.add(e.getId())) continue;
                         combined.add(e);
                     }

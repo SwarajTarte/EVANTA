@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_registration_manage.xml — one student row inside the Approvals /
+     Certificates dialog. Controls are toggled by mode in the adapter:
+       • Approval mode  → approve/reject buttons (pending) or a status pill.
+       • Certificate mode → upload button, plus "Sent" pill once uploaded. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="10dp">
+
+    <!-- Avatar -->
+    <FrameLayout
+        android:layout_width="44dp"
+        android:layout_height="44dp">
+
+        <TextView
+            android:id="@+id/reg_avatar_initial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppinsbold"
+            android:background="@drawable/bg_avatar_circle"
+            android:includeFontPadding="false" />
+
+        <ImageView
+            android:id="@+id/reg_avatar_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:scaleType="centerCrop"
+            android:contentDescription="Student photo" />
+
+    </FrameLayout>
+
+    <!-- Name + branch -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/reg_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Student"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <TextView
+            android:id="@+id/reg_meta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#8A93A6"
+            android:textSize="12sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_medium" />
+
+    </LinearLayout>
+
+    <!-- Trailing controls -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp">
+
+        <!-- Approve / reject (approval mode, pending) -->
+        <LinearLayout
+            android:id="@+id/reg_action_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reg_reject"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:minWidth="0dp"
+                app:icon="@drawable/ic_close"
+                app:iconTint="#FF6B6B"
+                app:iconSize="20dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:cornerRadius="21dp"
+                app:strokeColor="#3AFF6B6B"
+                app:strokeWidth="1dp"
+                app:rippleColor="#30FF6B6B" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/reg_approve"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:minWidth="0dp"
+                android:background="@drawable/btn_gradient"
+                app:backgroundTint="@null"
+                app:icon="@drawable/ic_check"
+                app:iconTint="#FFFFFF"
+                app:iconSize="20dp"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:cornerRadius="21dp"
+                app:strokeWidth="0dp"
+                app:rippleColor="#40FFFFFF" />
+
+        </LinearLayout>
+
+        <!-- Upload (certificate mode) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reg_upload"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingHorizontal="14dp"
+            android:visibility="gone"
+            android:background="@drawable/btn_gradient"
+            android:text="Upload"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_semibold"
+            app:backgroundTint="@null"
+            app:icon="@drawable/ic_upload"
+            app:iconTint="#FFFFFF"
+            app:iconSize="18dp"
+            app:iconGravity="textStart"
+            app:iconPadding="6dp"
+            app:cornerRadius="21dp"
+            app:rippleColor="#40FFFFFF" />
+
+        <!-- Status pill (approved / rejected / sent) -->
+        <TextView
+            android:id="@+id/reg_status_pill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="7dp"
+            android:visibility="gone"
+            android:text="Approved"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_semibold"
+            android:background="@drawable/bg_category_pill" />
+
+        <!-- Per-row progress -->
+        <ProgressBar
+            android:id="@+id/reg_progress"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            android:indeterminateTint="#7C4DFF" />
+
+    </FrameLayout>
+
+</LinearLayout>

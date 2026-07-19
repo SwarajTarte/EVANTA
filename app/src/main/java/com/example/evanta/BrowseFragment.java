@@ -84,11 +84,13 @@ public class BrowseFragment extends Fragment {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Load pre-fetched browse events from cache immediately for lag-free rendering
+        // Load pre-fetched browse events from cache immediately for lag-free rendering.
+        // Filter out events whose registration deadline has passed — they shouldn't
+        // be discoverable here (enrolled students still see them in My Events).
         List<Event> cached = EventCache.getAllEvents();
         if (cached != null) {
             currentEvents.clear();
-            currentEvents.addAll(cached);
+            currentEvents.addAll(EventVisibility.filterOpen(cached));
             eventAdapter.notifyDataSetChanged();
         }
 
@@ -129,11 +131,12 @@ public class BrowseFragment extends Fragment {
 
                         currentEvents.clear();
                         if (response.isSuccessful() && response.body() != null) {
-                            currentEvents.addAll(response.body());
-                            // Update cache if we fetched the full list (unfiltered)
+                            // Cache the full raw list so the deadline filter re-runs
+                            // against fresh "today" on every open; show only open ones.
                             if (isUnfilteredFetch) {
                                 EventCache.setAllEvents(response.body());
                             }
+                            currentEvents.addAll(EventVisibility.filterOpen(response.body()));
                             showEmptyState(currentEvents.isEmpty(), false);
                         } else {
                             showEmptyState(true, true);
