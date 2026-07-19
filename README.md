@@ -60,6 +60,13 @@ cloud, not checked into this repo.
   keystore are **never** committed (all gitignored). The Edge Function reads the
   service account from a Supabase secret at runtime.
 
-## License
+## License / usage
 
-Personal / educational project.
+**© 2026 Swaraj Tarte. All rights reserved.**
+
+This repository is public so the project can be **viewed** — for example as part
+of a portfolio. It is **not** open source. No permission is granted to copy,
+reuse, modify, redistribute, or publish this code or any part of it, in any
+form, without the author's prior written consent.
+
+Viewing the source is welcome. Using it is not.
