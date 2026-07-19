@@ -12,33 +12,32 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="24dp">
+        android:paddingBottom="16dp">
 
         <View
             android:id="@+id/logo_glow_view"
             android:layout_width="180dp"
             android:layout_height="180dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="1dp"
             android:background="@drawable/logo_glow" />
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="65dp"
+            android:layout_marginTop="45dp"
             android:src="@drawable/logo" />
 
         <ImageView
             android:id="@+id/logo2"
-            android:layout_width="250dp"
-            android:layout_height="100dp"
+            android:layout_width="200dp"
+            android:layout_height="75dp"
             android:layout_below="@+id/logo"
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo2" />
 
-        <!-- Card changes: Width is now match_parent with margins to scale to any screen -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,13 +45,13 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/login_card"
-            android:padding="20dp">
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/newac"
-                android:layout_width="120dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_textfield"
@@ -60,7 +59,7 @@
                 android:text="New Account"
                 android:textAlignment="center"
                 android:textColor="#00D4FF"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/welcome"
@@ -68,11 +67,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/newac"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:fontFamily="@font/poppinsbold"
                 android:text="Join EVANTA"
                 android:textColor="#FFFFFF"
-                android:textSize="30sp" />
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/des"
@@ -80,21 +79,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/welcome"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
                 android:fontFamily="@font/poppinsreg"
                 android:text="Create your account and start discovering campus events."
                 android:textAlignment="center"
                 android:textColor="#B4BCCB"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
-            <!-- Input fields now safely scale using match_parent -->
+            <!-- Input fields reduced to a compact 48dp height -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/des"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/name_icon"
                 app:startIconTint="#7C4DFF">
@@ -102,7 +101,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameIn"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -110,7 +109,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/baseline_email_24"
                 app:startIconTint="#7C4DFF">
@@ -126,7 +126,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailin"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -134,7 +134,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -142,7 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/email"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/whatsapp_icon"
                 app:startIconTint="#7C4DFF">
@@ -150,7 +151,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/whatsappno"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -159,7 +160,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -167,7 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/whatsapp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_browse"
                 app:startIconTint="#7C4DFF">
@@ -175,7 +177,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/college_input"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:clickable="true"
                     android:cursorVisible="false"
@@ -186,7 +188,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -194,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/college_layout"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:hintEnabled="false"
                 app:startIconDrawable="@drawable/ic_my_events"
                 app:startIconTint="#7C4DFF">
@@ -202,7 +205,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/branch_input"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -210,7 +213,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -218,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/branch_layout"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#FFFF"
                 app:hintEnabled="false"
@@ -228,7 +232,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwIn"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -237,7 +241,8 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -245,7 +250,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/password"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#FFFF"
                 app:hintEnabled="false"
@@ -255,7 +260,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/confpasswordin"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:background="@drawable/bg_textfield"
                     android:fontFamily="@font/poppinsreg"
                     android:gravity="center_vertical"
@@ -264,27 +269,28 @@
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
                     android:textColor="#FFFFFF"
-                    android:textColorHint="#80FFFFFF" />
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="14sp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/createac"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_below="@+id/confpassword"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_gradient"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Create Account"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:backgroundTint="@null"
                 app:icon="@drawable/chevron_right"
                 app:iconGravity="textEnd"
                 app:iconPadding="5dp"
-                app:iconSize="24dp"
+                app:iconSize="20dp"
                 app:iconTint="#FFFFFF" />
 
             <LinearLayout
@@ -292,7 +298,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/createac"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -302,17 +308,18 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Already have an account?"
-                    android:textColor="#B4BCCB" />
+                    android:textColor="#B4BCCB"
+                    android:textSize="13sp"/>
 
                 <TextView
                     android:id="@+id/signin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Sign In"
                     android:textColor="#00D4FF"
-                    android:textSize="15sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>
