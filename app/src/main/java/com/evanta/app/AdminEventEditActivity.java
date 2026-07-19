@@ -48,16 +48,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Full-screen editor for a single event, opened when an admin taps a compact
- * event row in {@link AdminEventsFragment}. Hosts the editable form (formerly the
- * always-open card) plus the Approvals / Certificates management flows and
- * Save / Delete.
- */
 public class AdminEventEditActivity extends AppCompatActivity {
 
     public static final String EXTRA_EVENT = "extra_event";
-    /** When true, the approvals sheet opens automatically (notification deep-link). */
     public static final String EXTRA_OPEN_APPROVALS = "extra_open_approvals";
 
     private static final String CERT_BUCKET = "certificates";
@@ -67,7 +60,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
     private Event event;
     private SupabaseApi api;
 
-    // Form views
     private ImageView banner;
     private TextView category, startDateView, startTimeView, endDateView, regDeadlineView;
     private EditText title, subtitle, description, location, price, capacity;
@@ -75,10 +67,8 @@ public class AdminEventEditActivity extends AppCompatActivity {
     private MaterialButton saveButton, deleteButton;
     private ProgressBar progress;
 
-    // Transient edit state
     private String selectedCategory, startDate, endDate, regDeadline, startTime;
 
-    // ----- Certificate-upload target (a file pick is asynchronous) -----
     private RegistrationManageAdapter.RegRow pendingRow;
     private int pendingPosition = -1;
     private RegistrationManageAdapter activeManageAdapter;
@@ -123,10 +113,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
             showManageDialog(RegistrationManageAdapter.MODE_APPROVAL);
         }
     }
-
-    // ==================================================================
-    //  Form binding
-    // ==================================================================
 
     private void bindViews() {
         banner = findViewById(R.id.card_banner);
@@ -223,10 +209,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
                 .show());
     }
 
-    // ==================================================================
-    //  Save / Delete
-    // ==================================================================
-
     private void saveEvent() {
         String t = title.getText().toString().trim();
         String sub = subtitle.getText().toString().trim();
@@ -237,21 +219,17 @@ public class AdminEventEditActivity extends AppCompatActivity {
 
         if (t.isEmpty()) { title.setError("Required"); return; }
         if (selectedCategory == null || selectedCategory.isEmpty()) {
-            toast("Please select a category");
-            return;
+            toast("Please select a category"); return;
         }
         if (startDate == null || startDate.isEmpty()) {
-            toast("Please select a start date");
-            return;
+            toast("Please select a start date"); return;
         }
         if (endDate != null && !endDate.isEmpty() && endDate.compareTo(startDate) < 0) {
-            toast("End date can't be before start date");
-            return;
+            toast("End date can't be before start date"); return;
         }
         if (regDeadline != null && !regDeadline.isEmpty()
                 && regDeadline.compareTo(startDate) > 0) {
-            toast("Registration deadline can't be after the start date");
-            return;
+            toast("Registration deadline can't be after the start date"); return;
         }
 
         Map<String, Object> fields = new HashMap<>();
@@ -339,10 +317,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
         deleteButton.setEnabled(!busy);
     }
 
-    // ==================================================================
-    //  Manage flows (Approvals / Certificates)
-    // ==================================================================
-
     private void showManageDialog(int mode) {
         View content = LayoutInflater.from(this)
                 .inflate(R.layout.dialog_manage_list, null, false);
@@ -382,7 +356,8 @@ public class AdminEventEditActivity extends AppCompatActivity {
         list.setAdapter(listAdapter);
         activeManageAdapter = listAdapter;
 
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
+        // ── KEY CHANGE: pass TransparentBottomSheet theme ──
+        BottomSheetDialog dialog = new BottomSheetDialog(this, R.style.TransparentBottomSheet);
         dialog.setContentView(content);
         content.findViewById(R.id.manage_close).setOnClickListener(v -> dialog.dismiss());
         dialog.setOnDismissListener(d -> {
@@ -391,20 +366,17 @@ public class AdminEventEditActivity extends AppCompatActivity {
 
         dialog.show();
 
-        // The BottomSheetDialog's own container defaults to white; make it
-        // transparent so only our rounded bg_content_card_top shows.
         View sheet = dialog.findViewById(
                 com.google.android.material.R.id.design_bottom_sheet);
         if (sheet != null) {
             sheet.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         }
 
-        // Kill the white strip the dialog window paints behind the system
-        // navigation bar: paint the whole window + nav bar our dark card color.
         android.view.Window window = dialog.getWindow();
         if (window != null) {
             window.setBackgroundDrawable(
-                    new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    new android.graphics.drawable.ColorDrawable(
+                            android.graphics.Color.TRANSPARENT));
             window.setNavigationBarColor(0xFF15161C);
         }
 
@@ -506,8 +478,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
         });
     }
 
-    // ---------- Approve / reject ----------
-
     private void setStatus(RegistrationManageAdapter.RegRow row, int position, String status) {
         final RegistrationManageAdapter listAdapter = activeManageAdapter;
         if (listAdapter != null) listAdapter.setRowBusy(position, true);
@@ -518,7 +488,8 @@ public class AdminEventEditActivity extends AppCompatActivity {
         api.updateRegistrationStatus("eq." + row.registration.getId(), fields)
                 .enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call,
+                                           @NonNull Response<Void> response) {
                         if (isFinishing()) return;
                         if (response.isSuccessful()) {
                             row.registration.setStatus(status);
@@ -533,9 +504,9 @@ public class AdminEventEditActivity extends AppCompatActivity {
                                         row.registration.getAttempts() < Registration.MAX_ATTEMPTS;
                                 String body = canRetry
                                         ? "Your enrollment for \"" + event.getTitle()
-                                            + "\" was not approved. You can reapply from the event page."
+                                          + "\" was not approved. You can reapply."
                                         : "Your enrollment for \"" + event.getTitle()
-                                            + "\" was not approved.";
+                                          + "\" was not approved.";
                                 notifyStudent(row.registration.getUserUid(), event.getId(),
                                         "Enrollment Not Approved", body,
                                         Notification.TYPE_GENERAL);
@@ -554,8 +525,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    // ---------- Certificate upload ----------
 
     private void startCertificateUpload(RegistrationManageAdapter.RegRow row, int position) {
         pendingRow = row;
@@ -603,7 +572,8 @@ public class AdminEventEditActivity extends AppCompatActivity {
         api.updateRegistrationStatus("eq." + row.registration.getId(), fields)
                 .enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call,
+                                           @NonNull Response<Void> response) {
                         if (isFinishing()) return;
                         listAdapter.setRowBusy(position, false);
                         if (response.isSuccessful()) {
@@ -719,8 +689,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
         }
     }
 
-    // ---------- Notifications ----------
-
     private void notifyStudent(String userUid, String eventId, String titleText,
                                String bodyText, String type) {
         if (userUid == null) return;
@@ -747,10 +715,6 @@ public class AdminEventEditActivity extends AppCompatActivity {
             }
         });
     }
-
-    // ==================================================================
-    //  Pickers & helpers
-    // ==================================================================
 
     private interface DateResult { void onPicked(String iso); }
     private interface TimeResult { void onPicked(String amPm); }
@@ -827,9 +791,7 @@ public class AdminEventEditActivity extends AppCompatActivity {
         pendingPosition = -1;
     }
 
-    private void runOnUi(Runnable r) {
-        runOnUiThread(r);
-    }
+    private void runOnUi(Runnable r) { runOnUiThread(r); }
 
     private void toast(String msg) {
         if (!isFinishing()) Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
