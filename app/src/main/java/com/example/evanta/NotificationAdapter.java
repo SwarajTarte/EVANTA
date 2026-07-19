@@ -73,6 +73,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             case Notification.TYPE_CERTIFICATE:       return R.drawable.ic_notification_certificate;
             case Notification.TYPE_REGISTRATION_CLOSED: return R.drawable.ic_notification_closed;
             case Notification.TYPE_NEW_EVENT:         return R.drawable.ic_notification_upcoming;
+            case Notification.TYPE_APPROVAL:          return R.drawable.ic_people;
             default:                                  return R.drawable.ic_notification_general;
         }
     }

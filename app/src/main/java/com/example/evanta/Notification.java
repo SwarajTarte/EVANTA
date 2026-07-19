@@ -28,6 +28,8 @@ public class Notification {
     public static final String TYPE_REGISTRATION_CLOSED = "registration_closed";
     public static final String TYPE_NEW_EVENT = "new_event";
     public static final String TYPE_GENERAL = "general";
+    // Admin-side: pending enrollment approvals for one of the admin's events.
+    public static final String TYPE_APPROVAL = "approval";
 
     public String getId() { return id; }
     public String getUserUid() { return userUid; }

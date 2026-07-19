@@ -125,6 +125,15 @@ public interface SupabaseApi {
             @Query("id") String idFilter,
             @Body Map<String, Object> fields);
 
+    /**
+     * Pending registrations across a set of events (admin approvals feed).
+     * eventIdsFilter uses the in.(id,id,…) form; status is fixed to pending.
+     */
+    @GET("rest/v1/registrations?select=*")
+    Call<List<Registration>> getPendingRegistrationsForEvents(
+            @Query("event_id") String eventIdsFilter,
+            @Query("status") String statusFilter);
+
     // ---------- Admin: Users (for student list in approvals) ----------
 
     @GET("rest/v1/users?select=uid,name,email,photo_url,branch,college_name,college_id")

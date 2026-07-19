@@ -112,22 +112,44 @@
 
     </LinearLayout>
 
+    <!-- Search bar (mirrors the student Browse tab) -->
+    <EditText
+        android:id="@+id/admin_events_search"
+        android:layout_width="0dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginHorizontal="20dp"
+        android:background="@drawable/bg_search_bar"
+        android:drawableStart="@drawable/ic_search_small"
+        android:drawablePadding="10dp"
+        android:paddingHorizontal="16dp"
+        android:hint="Search your events..."
+        android:textColorHint="#8A93A6"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:fontFamily="@font/poppins_medium"
+        android:singleLine="true"
+        android:imeOptions="actionSearch"
+        app:layout_constraintTop_toBottomOf="@id/admin_greeting_row"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Section label -->
     <TextView
         android:id="@+id/admin_events_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="18dp"
         android:paddingHorizontal="20dp"
         android:text="Your Events"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:fontFamily="@font/poppinsbold"
-        app:layout_constraintTop_toBottomOf="@id/admin_greeting_row"
+        app:layout_constraintTop_toBottomOf="@id/admin_events_search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Faded, scrolling list of editable event cards -->
+    <!-- Faded, scrolling list of event rows -->
     <com.example.evanta.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"

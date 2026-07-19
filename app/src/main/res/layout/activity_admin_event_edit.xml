@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_admin_event_edit.xml — full-screen editor opened when an admin taps
+     a compact event row. Hosts the editable form plus the Approvals / Certificates
+     actions and Save / Delete. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="12dp">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back_chevron"
+            android:contentDescription="Back"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="6dp"
+            android:text="Edit Event"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="@font/poppins_semibold" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="18dp"
+            android:paddingBottom="28dp">
+
+            <!-- Banner preview with overlaid admin action buttons -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp">
+
+                <ImageView
+                    android:id="@+id/card_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_textfield"
+                    android:src="@drawable/launcher"
+                    android:contentDescription="Event banner" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_margin="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/card_btn_approvals"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:background="@drawable/bg_banner_action"
+                        android:text="Approvals"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_people"
+                        app:iconTint="#FFFFFF"
+                        app:iconSize="16dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="6dp"
+                        app:cornerRadius="20dp"
+                        app:rippleColor="#40FFFFFF" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/card_btn_certificates"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="14dp"
+                        android:background="@drawable/bg_banner_action"
+                        android:text="Certificates"
+                        android:textAllCaps="false"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_semibold"
+                        app:backgroundTint="@null"
+                        app:icon="@drawable/ic_certificate"
+                        app:iconTint="#FFFFFF"
+                        app:iconSize="16dp"
+                        app:iconGravity="textStart"
+                        app:iconPadding="6dp"
+                        app:cornerRadius="20dp"
+                        app:rippleColor="#40FFFFFF" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Category -->
+            <TextView
+                style="@style/AddEventLabel"
+                android:layout_marginTop="16dp"
+                android:text="Category" />
+
+            <TextView
+                android:id="@+id/card_category"
+                style="@style/AddEventField"
+                android:hint="Select category"
+                android:clickable="true"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/ic_chevron_down"
+                android:drawablePadding="10dp"
+                app:drawableTint="#8A93A6" />
+
+            <!-- Title -->
+            <TextView style="@style/AddEventLabel" android:text="Title" />
+
+            <EditText
+                android:id="@+id/card_title"
+                style="@style/AddEventField"
+                android:hint="Event title"
+                android:inputType="textCapWords" />
+
+            <!-- Subtitle -->
+            <TextView style="@style/AddEventLabel" android:text="Subtitle" />
+
+            <EditText
+                android:id="@+id/card_subtitle"
+                style="@style/AddEventField"
+                android:hint="Short subtitle"
+                android:inputType="textCapSentences" />
+
+            <!-- Description -->
+            <TextView style="@style/AddEventLabel" android:text="Description" />
+
+            <EditText
+                android:id="@+id/card_description"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_textfield"
+                android:gravity="top|start"
+                android:padding="14dp"
+                android:hint="Event description"
+                android:textColorHint="#5A6377"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_medium"
+                android:inputType="textMultiLine|textCapSentences"
+                android:overScrollMode="always"
+                android:scrollbars="vertical" />
+
+            <!-- Start date + time -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView style="@style/AddEventLabel" android:text="Start Date" />
+
+                    <TextView
+                        android:id="@+id/card_start_date"
+                        style="@style/AddEventField"
+                        android:hint="Start date"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_calendar_small"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="#8A93A6" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView style="@style/AddEventLabel" android:text="Start Time" />
+
+                    <TextView
+                        android:id="@+id/card_start_time"
+                        style="@style/AddEventField"
+                        android:hint="Start time"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_clock_small"
+                        android:drawablePadding="8dp"
+                        app:drawableTint="#8A93A6" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- End date -->
+            <TextView style="@style/AddEventLabel" android:text="End Date" />
+
+            <TextView
+                android:id="@+id/card_end_date"
+                style="@style/AddEventField"
+                android:hint="End date"
+                android:clickable="true"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_calendar_small"
+                android:drawablePadding="8dp"
+                app:drawableTint="#8A93A6" />
+
+            <!-- Registration deadline -->
+            <TextView style="@style/AddEventLabel" android:text="Registration Deadline" />
+
+            <TextView
+                android:id="@+id/card_reg_deadline"
+                style="@style/AddEventField"
+                android:hint="Registration deadline"
+                android:clickable="true"
+                android:focusable="false"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_calendar_small"
+                android:drawablePadding="8dp"
+                app:drawableTint="#8A93A6" />
+
+            <!-- Location -->
+            <TextView style="@style/AddEventLabel" android:text="Location" />
+
+            <EditText
+                android:id="@+id/card_location"
+                style="@style/AddEventField"
+                android:hint="Venue / location"
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_location_small"
+                android:drawablePadding="8dp"
+                app:drawableTint="#8A93A6"
+                android:inputType="textCapWords" />
+
+            <!-- Price + Capacity -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView style="@style/AddEventLabel" android:text="Price (₹)" />
+
+                    <EditText
+                        android:id="@+id/card_price"
+                        style="@style/AddEventField"
+                        android:hint="0"
+                        android:inputType="number" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView style="@style/AddEventLabel" android:text="Capacity" />
+
+                    <EditText
+                        android:id="@+id/card_capacity"
+                        style="@style/AddEventField"
+                        android:hint="0"
+                        android:inputType="number" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Featured toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Featured Event"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Show on the home screen"
+                        android:textColor="#8A93A6"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/poppins_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/card_switch_featured"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="18dp"
+                android:background="#1F2438" />
+
+            <!-- Save + Delete -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_save_button"
+                    android:layout_width="0dp"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_gradient"
+                    android:text="Save Changes"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    app:backgroundTint="@null"
+                    app:strokeWidth="0dp"
+                    app:cornerRadius="14dp"
+                    app:rippleColor="#30FFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_delete_button"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="12dp"
+                    android:text="Delete"
+                    android:textAllCaps="false"
+                    android:textColor="#FF6B6B"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/poppins_semibold"
+                    app:icon="@drawable/ic_trash"
+                    app:iconTint="#FF6B6B"
+                    app:iconSize="20dp"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="14dp"
+                    app:strokeColor="#3AFF6B6B"
+                    app:strokeWidth="1dp"
+                    app:rippleColor="#30FF6B6B" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/card_progress"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:indeterminateTint="#7C4DFF"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

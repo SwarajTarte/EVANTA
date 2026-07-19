@@ -57,11 +57,19 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".AdminNotificationCenterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".AdminDashboard"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".AdminEditProfileActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".AdminEventEditActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>
