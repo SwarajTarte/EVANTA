@@ -16,11 +16,14 @@ public class RetrofitClient {
     private static OkHttpClient buildClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
+                    // apikey is always the anon key (routes the request to our
+                    // project). The Bearer token is the Firebase ID token when a
+                    // user is signed in and the flag is on, else the anon key.
                     Request request = chain.request()
                             .newBuilder()
                             .addHeader("apikey", SupabaseConfig.API_KEY)
                             .addHeader("Authorization",
-                                    "Bearer " + SupabaseConfig.API_KEY)
+                                    "Bearer " + AuthTokens.bearer())
                             .build();
                     return chain.proceed(request);
                 })

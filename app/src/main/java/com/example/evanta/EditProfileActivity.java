@@ -240,7 +240,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         .url(uploadUrl)
                         .put(body)
                         .addHeader("apikey", SupabaseConfig.API_KEY)
-                        .addHeader("Authorization", "Bearer " + SupabaseConfig.API_KEY)
+                        .addHeader("Authorization", "Bearer " + AuthTokens.bearer())
                         .addHeader("x-upsert", "true")
                         .build();
 

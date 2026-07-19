@@ -1,6 +1,7 @@
 package com.example.evanta;
 
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 
@@ -26,5 +27,16 @@ public class RegistrationRepository {
 
     public Call<List<Registration>> getRegistrationsForEvent(String eventId) {
         return api.getRegistrationsByEvent("eq." + eventId);
+    }
+
+    /**
+     * Reapply after a rejection: resets the existing row back to pending and
+     * bumps the attempt counter. Reuses the PATCH endpoint keyed by row id.
+     */
+    public Call<Void> reapply(String registrationId, int newAttempts) {
+        Map<String, Object> fields = new java.util.HashMap<>();
+        fields.put("status", Registration.STATUS_PENDING);
+        fields.put("attempts", newAttempts);
+        return api.updateRegistrationStatus("eq." + registrationId, fields);
     }
 }

@@ -28,7 +28,7 @@ public class MyEventsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProgressBar loader;
     private View emptyState;
-    private TextView tabUpcoming, tabCompleted, tabCertificates;
+    private TextView tabUpcoming, tabCompleted, tabCertificates, tabRejected;
 
     private MyEventsAdapter adapter;
     private final List<MyEventItem> allMyEvents = new ArrayList<>();
@@ -38,7 +38,8 @@ public class MyEventsFragment extends Fragment {
     private enum Filter {
         UPCOMING,
         COMPLETED,
-        CERTIFICATES
+        CERTIFICATES,
+        REJECTED
     }
 
     @Nullable
@@ -57,6 +58,7 @@ public class MyEventsFragment extends Fragment {
         tabUpcoming = view.findViewById(R.id.tab_upcoming);
         tabCompleted = view.findViewById(R.id.tab_completed);
         tabCertificates = view.findViewById(R.id.tab_certificates);
+        tabRejected = view.findViewById(R.id.tab_rejected);
 
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         adapter = new MyEventsAdapter(myEventsList);
@@ -65,6 +67,7 @@ public class MyEventsFragment extends Fragment {
         tabUpcoming.setOnClickListener(v -> selectFilter(Filter.UPCOMING));
         tabCompleted.setOnClickListener(v -> selectFilter(Filter.COMPLETED));
         tabCertificates.setOnClickListener(v -> selectFilter(Filter.CERTIFICATES));
+        tabRejected.setOnClickListener(v -> selectFilter(Filter.REJECTED));
 
         updateTabs();
         bindFromPrefetchCache();
@@ -173,6 +176,7 @@ public class MyEventsFragment extends Fragment {
         setTabState(tabUpcoming, selectedFilter == Filter.UPCOMING);
         setTabState(tabCompleted, selectedFilter == Filter.COMPLETED);
         setTabState(tabCertificates, selectedFilter == Filter.CERTIFICATES);
+        setTabState(tabRejected, selectedFilter == Filter.REJECTED);
     }
 
     private void setTabState(TextView tab, boolean selected) {
@@ -183,9 +187,26 @@ public class MyEventsFragment extends Fragment {
     private void applyFilter() {
         myEventsList.clear();
         for (MyEventItem item : allMyEvents) {
+            Registration reg = item.getRegistration();
+
+            // A rejected enrollment that has used all its attempts is gone for
+            // good — never shown in ANY tab. The DB row stays only to block a
+            // limit-bypassing re-enroll.
+            boolean finallyRejected =
+                    reg.isRejected() && reg.getAttempts() >= Registration.MAX_ATTEMPTS;
+            if (finallyRejected) {
+                continue;
+            }
+
             boolean include;
-            if (selectedFilter == Filter.CERTIFICATES) {
-                String certificateUrl = item.getRegistration().getCertificateUrl();
+            if (selectedFilter == Filter.REJECTED) {
+                // Rejected but still has reapplies left.
+                include = reg.isRejected();
+            } else if (reg.isRejected()) {
+                // Rejected events never appear in the other tabs.
+                include = false;
+            } else if (selectedFilter == Filter.CERTIFICATES) {
+                String certificateUrl = reg.getCertificateUrl();
                 include = certificateUrl != null && !certificateUrl.trim().isEmpty();
             } else if (selectedFilter == Filter.COMPLETED) {
                 include = isCompleted(item.getEvent());

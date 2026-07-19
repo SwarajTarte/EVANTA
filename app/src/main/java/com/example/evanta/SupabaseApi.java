@@ -51,7 +51,7 @@ public interface SupabaseApi {
      * Returns an empty list if not registered, or a list with one element if registered.
      * PostgREST eq. filter format: "eq.{value}"
      */
-    @GET("rest/v1/registrations?select=id,event_id,certificate_url")
+    @GET("rest/v1/registrations?select=id,event_id,certificate_url,status,attempts")
     Call<List<Registration>> checkRegistration(
             @Query("user_uid") String userUid,
             @Query("event_id") String eventId);

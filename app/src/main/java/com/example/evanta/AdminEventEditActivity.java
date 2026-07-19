@@ -392,6 +392,23 @@ public class AdminEventEditActivity extends AppCompatActivity {
 
         dialog.show();
 
+        // The BottomSheetDialog's own container defaults to white; make it
+        // transparent so only our rounded bg_content_card_top shows.
+        View sheet = dialog.findViewById(
+                com.google.android.material.R.id.design_bottom_sheet);
+        if (sheet != null) {
+            sheet.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
+
+        // Kill the white strip the dialog window paints behind the system
+        // navigation bar: paint the whole window + nav bar our dark card color.
+        android.view.Window window = dialog.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(
+                    new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
+            window.setNavigationBarColor(0xFF15161C);
+        }
+
         loadRegistrations(mode, rows, listAdapter, dialogLoader, empty);
     }
 
@@ -511,6 +528,17 @@ public class AdminEventEditActivity extends AppCompatActivity {
                                         "Enrollment Approved",
                                         "You're approved for \"" + event.getTitle()
                                                 + "\". See you there!",
+                                        Notification.TYPE_GENERAL);
+                            } else if (Registration.STATUS_REJECTED.equals(status)) {
+                                boolean canRetry =
+                                        row.registration.getAttempts() < Registration.MAX_ATTEMPTS;
+                                String body = canRetry
+                                        ? "Your enrollment for \"" + event.getTitle()
+                                            + "\" was not approved. You can reapply from the event page."
+                                        : "Your enrollment for \"" + event.getTitle()
+                                            + "\" was not approved.";
+                                notifyStudent(row.registration.getUserUid(), event.getId(),
+                                        "Enrollment Not Approved", body,
                                         Notification.TYPE_GENERAL);
                             }
                         } else {
@@ -635,7 +663,7 @@ public class AdminEventEditActivity extends AppCompatActivity {
                     .url(uploadUrl)
                     .put(body)
                     .addHeader("apikey", SupabaseConfig.API_KEY)
-                    .addHeader("Authorization", "Bearer " + SupabaseConfig.API_KEY)
+                    .addHeader("Authorization", "Bearer " + AuthTokens.bearer())
                     .addHeader("x-upsert", "true")
                     .build();
 
@@ -678,7 +706,7 @@ public class AdminEventEditActivity extends AppCompatActivity {
                     .url(deleteUrl)
                     .delete()
                     .addHeader("apikey", SupabaseConfig.API_KEY)
-                    .addHeader("Authorization", "Bearer " + SupabaseConfig.API_KEY)
+                    .addHeader("Authorization", "Bearer " + AuthTokens.bearer())
                     .build();
 
             try (okhttp3.Response response = client.newCall(request).execute()) {

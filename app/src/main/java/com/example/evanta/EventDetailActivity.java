@@ -35,6 +35,8 @@ public class EventDetailActivity extends AppCompatActivity {
     private static final int COLOR_REGISTERED = 0xFF27AE60;
     private static final int COLOR_DEFAULT    = 0xFF7C4DFF;
     private static final int COLOR_DISABLED   = 0xFF555B66;
+    private static final int COLOR_PENDING    = 0xFFF2A93B;
+    private static final int COLOR_REJECTED   = 0xFFE53935;
 
     private MaterialButton btnRegister;
     private MaterialButton btnDownloadCertificate;
@@ -47,6 +49,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView collegeText;
     private int registeredCount = -1;
     private boolean alreadyRegistered = false;
+    private Registration currentRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,8 +166,10 @@ public class EventDetailActivity extends AppCompatActivity {
                                 && response.body() != null
                                 && !response.body().isEmpty()) {
                             alreadyRegistered = true;
-                            setButtonRegistered();
-                            updateCertificateButton(response.body().get(0));
+                            Registration reg = response.body().get(0);
+                            currentRegistration = reg;
+                            setButtonForRegistration(reg.getStatus(), reg);
+                            updateCertificateButton(reg);
                         } else {
                             alreadyRegistered = false;
                             setButtonDefault(event);
@@ -207,14 +212,14 @@ public class EventDetailActivity extends AppCompatActivity {
                         registeredCount++;
                         bindSeats(event);
                     }
-                    setButtonRegistered();
-                    showSnackbar("🎉 You're enrolled in " + event.getTitle() + "!", true);
+                    setButtonForStatus(Registration.STATUS_PENDING);
+                    showSnackbar("🎉 You're enrolled in " + event.getTitle() + "! Awaiting admin approval.", true);
                     if (response.body() != null && !response.body().isEmpty()) {
                         updateCertificateButton(response.body().get(0));
                     }
                 } else if (response.code() == 409) {
                     alreadyRegistered = true;
-                    setButtonRegistered();
+                    setButtonForStatus(Registration.STATUS_PENDING);
                     showSnackbar("You're already enrolled in this event.", true);
                 } else {
                     String errorBody = "";
@@ -267,11 +272,83 @@ public class EventDetailActivity extends AppCompatActivity {
     }
 
     private void setButtonRegistered() {
-        btnRegister.setText("Already Enrolled ✓");
+        setButtonForStatus(null);
+    }
+
+    /** Back-compat: status-only entry point (fresh enroll / pending). */
+    private void setButtonForStatus(String status) {
+        setButtonForRegistration(status, null);
+    }
+
+    /**
+     * Reflects the registration's approval status on the enroll button.
+     * pending  → amber "Pending Approval"
+     * approved → green "Enrolled ✓"
+     * rejected + attempts left → amber, tappable "Reapply (n left)"
+     * rejected + no attempts   → red, locked "Not Approved"
+     * null/unknown status falls back to a neutral "Already Enrolled ✓".
+     */
+    private void setButtonForRegistration(String status, Registration reg) {
         btnRegister.setIcon(null);
-        setButtonColor(COLOR_REGISTERED);
         btnRegister.setEnabled(false);
         btnRegister.setOnClickListener(null);
+
+        if (Registration.STATUS_APPROVED.equals(status)) {
+            btnRegister.setText("Enrolled ✓");
+            setButtonColor(COLOR_REGISTERED);
+        } else if (Registration.STATUS_REJECTED.equals(status)) {
+            int attempts = reg != null ? reg.getAttempts() : Registration.MAX_ATTEMPTS;
+            int reappliesLeft = Registration.MAX_ATTEMPTS - attempts;
+            if (reg != null && reappliesLeft > 0) {
+                btnRegister.setText("Reapply (" + reappliesLeft + " left)");
+                setButtonColor(COLOR_PENDING);
+                btnRegister.setEnabled(true);
+                btnRegister.setOnClickListener(v -> reapply(reg));
+            } else {
+                btnRegister.setText("Not Approved");
+                setButtonColor(COLOR_REJECTED);
+            }
+        } else if (Registration.STATUS_PENDING.equals(status)) {
+            btnRegister.setText("Pending Approval");
+            setButtonColor(COLOR_PENDING);
+        } else {
+            btnRegister.setText("Already Enrolled ✓");
+            setButtonColor(COLOR_REGISTERED);
+        }
+    }
+
+    private void reapply(Registration reg) {
+        if (reg == null || reg.getId() == null) return;
+        btnRegister.setEnabled(false);
+        btnRegister.setOnClickListener(null);
+        btnRegister.setText("Reapplying…");
+
+        int newAttempts = reg.getAttempts() + 1;
+        new RegistrationRepository().reapply(reg.getId(), newAttempts)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!isAdded()) return;
+                        if (response.isSuccessful()) {
+                            reg.setAttempts(newAttempts);
+                            reg.setStatus(Registration.STATUS_PENDING);
+                            currentRegistration = reg;
+                            PrefetchCache.clearMyEventsData();
+                            setButtonForStatus(Registration.STATUS_PENDING);
+                            showSnackbar("Reapplied — awaiting admin approval.", true);
+                        } else {
+                            setButtonForRegistration(Registration.STATUS_REJECTED, reg);
+                            showSnackbar("Reapply failed (HTTP " + response.code() + ").", false);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        if (!isAdded()) return;
+                        setButtonForRegistration(Registration.STATUS_REJECTED, reg);
+                        showSnackbar("Network error. Try again.", false);
+                    }
+                });
     }
 
     private void loadRegistrationCount(Event event) {

@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_dashboard">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/hero_image"
         android:layout_width="match_parent"
@@ -260,6 +271,9 @@
             app:iconTint="@android:color/white"/>
 
     </RelativeLayout>
+
+        </RelativeLayout>
+    </ScrollView>
 
     <ImageView
         android:id="@+id/back_arrow"

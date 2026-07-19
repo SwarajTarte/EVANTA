@@ -286,7 +286,7 @@ public class AdminAddEventFragment extends Fragment {
                     .url(uploadUrl)
                     .put(body)
                     .addHeader("apikey", SupabaseConfig.API_KEY)
-                    .addHeader("Authorization", "Bearer " + SupabaseConfig.API_KEY)
+                    .addHeader("Authorization", "Bearer " + AuthTokens.bearer())
                     .addHeader("x-upsert", "true")
                     .build();
 
@@ -325,7 +325,7 @@ public class AdminAddEventFragment extends Fragment {
                         .url(deleteUrl)
                         .delete()
                         .addHeader("apikey", SupabaseConfig.API_KEY)
-                        .addHeader("Authorization", "Bearer " + SupabaseConfig.API_KEY)
+                        .addHeader("Authorization", "Bearer " + AuthTokens.bearer())
                         .build();
 
                 try (Response response = client.newCall(request).execute()) {
