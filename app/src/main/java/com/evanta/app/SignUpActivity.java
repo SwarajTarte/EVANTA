@@ -190,8 +190,32 @@ public class SignUpActivity extends AppCompatActivity {
             return;
         }
 
-        if (password.length() < 6) {
-            passwIn.setError("Password must be at least 6 characters");
+        if (password.length() < 8) {
+            passwIn.setError("Password must be at least 8 characters");
+            passwIn.requestFocus();
+            return;
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            passwIn.setError("Add at least one uppercase letter");
+            passwIn.requestFocus();
+            return;
+        }
+
+        if (!password.matches(".*[a-z].*")) {
+            passwIn.setError("Add at least one lowercase letter");
+            passwIn.requestFocus();
+            return;
+        }
+
+        if (!password.matches(".*\\d.*")) {
+            passwIn.setError("Add at least one number");
+            passwIn.requestFocus();
+            return;
+        }
+
+        if (!password.matches(".*[!@#$%^&*].*")) {
+            passwIn.setError("Add one special character (!@#$%^&*)");
             passwIn.requestFocus();
             return;
         }
