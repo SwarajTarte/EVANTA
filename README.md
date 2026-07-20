@@ -6,12 +6,6 @@ notifications, and issue certificates.
 
 Built with **Java + Firebase Auth + Supabase (Postgres/PostgREST) + FCM push**.
 
-## Screenshots
-
-| Login | Student dashboard | Event detail | Admin manager |
-|:---:|:---:|:---:|:---:|
-| <img src="screenshots/login.jpg" width="200"/> | <img src="screenshots/student_dashboard.jpg" width="200"/> | <img src="screenshots/event_detail.jpg" width="200"/> | <img src="screenshots/admin_manager.jpg" width="200"/> |
-
 ---
 
 ## Screenshots
