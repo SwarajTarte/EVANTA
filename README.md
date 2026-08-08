@@ -4,7 +4,7 @@ A college event-management Android app. Students discover and register for
 campus events; college admins post events, approve registrations, send push
 notifications, and issue certificates.
 
-Built with **Java + Firebase Auth + Supabase (Postgres/PostgREST) + FCM push**.
+Built with **Java + Firebase Auth + Supabase (Postgres/PostgREST) + GROQ AI + FCM push**.
 
 ## Screenshots
 
@@ -17,10 +17,10 @@ Built with **Java + Firebase Auth + Supabase (Postgres/PostgREST) + FCM push**.
 ## Features
 
 - **Students** — browse events, register, track approval status, reapply after a
-  rejection, receive certificates, and get push notifications.
+  rejection, receive certificates, and get push notifications. Get AI recommendation
 - **Admins** — create/edit events, approve or reject registrations, issue
-  certificates, and get notified when students register. Each admin owns the
-  events they create (enforced in the database via RLS).
+  certificates, and get notified when students register. Get AI generated summary of event.
+  Each admin owns the events they create (enforced in the database via RLS).
 - **Auth** — email/password and Google Sign-In (Firebase Auth).
 - **Push** — Firebase Cloud Messaging via FCM HTTP v1, triggered from Supabase.
 
