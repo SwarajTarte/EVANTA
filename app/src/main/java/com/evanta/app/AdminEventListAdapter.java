@@ -130,20 +130,25 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
                 rawQuery = customNotes;
             } else {
                 StringBuilder sb = new StringBuilder();
-                sb.append("Title: ").append(event.getTitle() != null ? event.getTitle() : "").append("\n");
-                if (event.getSubtitle() != null && !event.getSubtitle().isEmpty()) {
+                if (event.getTitle() != null && !event.getTitle().isEmpty())
+                    sb.append("Title: ").append(event.getTitle()).append("\n");
+                if (event.getSubtitle() != null && !event.getSubtitle().isEmpty())
                     sb.append("Subtitle: ").append(event.getSubtitle()).append("\n");
-                }
-                if (event.getDescription() != null && !event.getDescription().isEmpty()) {
+                if (event.getDescription() != null && !event.getDescription().isEmpty())
                     sb.append("Description: ").append(event.getDescription()).append("\n");
-                }
-                if (event.getCategory() != null) {
+                if (event.getCategory() != null && !event.getCategory().isEmpty())
                     sb.append("Category: ").append(event.getCategory()).append("\n");
-                }
-                if (event.getLocation() != null) {
+                if (event.getLocation() != null && !event.getLocation().isEmpty())
                     sb.append("Location: ").append(event.getLocation()).append("\n");
-                }
-                rawQuery = sb.toString();
+                rawQuery = sb.toString().trim();
+            }
+
+            // Guard: never send an empty query to the AI
+            if (rawQuery.isEmpty()) {
+                Toast.makeText(context,
+                        "Please add some event details or notes before generating a summary.",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
 
             holder.pbAdminAiLoading.setVisibility(View.VISIBLE);

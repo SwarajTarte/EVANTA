@@ -1,14 +1,19 @@
 package com.evanta.app;
 
+import com.google.gson.annotations.SerializedName;
+
 public class AiRequest {
-    private String user_role;
+    @SerializedName("user_role")
+    private String userRole;
+
+    @SerializedName("query")
     private String query;
 
-    public AiRequest(String user_role, String query) {
-        this.user_role = user_role;
+    public AiRequest(String userRole, String query) {
+        this.userRole = userRole;
         this.query = query;
     }
 
-    public String getUser_role() { return user_role; }
+    public String getUserRole() { return userRole; }
     public String getQuery() { return query; }
 }
