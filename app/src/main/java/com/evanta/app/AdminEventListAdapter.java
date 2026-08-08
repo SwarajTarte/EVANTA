@@ -67,25 +67,34 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
         Context context = holder.itemView.getContext();
         int color = CategoryColors.forCategory(event.getCategory());
 
-        holder.thumbnailText.setVisibility(View.GONE);
-        holder.thumbnailImage.setVisibility(View.VISIBLE);
+        if (holder.thumbnailText != null) holder.thumbnailText.setVisibility(View.GONE);
+        if (holder.thumbnailImage != null) holder.thumbnailImage.setVisibility(View.VISIBLE);
 
-        if (event.getImageUrl() != null && !event.getImageUrl().trim().isEmpty()) {
-            Glide.with(context)
-                    .load(event.getImageUrl())
-                    .placeholder(R.drawable.launcher)
-                    .error(R.drawable.launcher)
-                    .centerCrop()
-                    .into(holder.thumbnailImage);
-        } else {
-            holder.thumbnailImage.setImageResource(R.drawable.launcher);
+        if (holder.thumbnailImage != null) {
+            if (event.getImageUrl() != null && !event.getImageUrl().trim().isEmpty()) {
+                Glide.with(context)
+                        .load(event.getImageUrl())
+                        .placeholder(R.drawable.launcher)
+                        .error(R.drawable.launcher)
+                        .centerCrop()
+                        .into(holder.thumbnailImage);
+            } else {
+                holder.thumbnailImage.setImageResource(R.drawable.launcher);
+            }
         }
 
         holder.title.setText(event.getTitle());
         holder.categoryTag.setText(event.getCategory());
         holder.categoryTag.setTextColor(color);
-        ((GradientDrawable) holder.categoryTag.getBackground().mutate())
-                .setColor(adjustAlpha(color, 60));
+        try {
+            android.graphics.drawable.Drawable bg = holder.categoryTag.getBackground();
+            if (bg != null) {
+                android.graphics.drawable.Drawable mutated = bg.mutate();
+                if (mutated instanceof GradientDrawable) {
+                    ((GradientDrawable) mutated).setColor(adjustAlpha(color, 60));
+                }
+            }
+        } catch (Exception ignored) {}
 
         holder.date.setText(formatDate(event.getDateStart(), event.getTimeStart()));
         holder.location.setText(event.getLocation());

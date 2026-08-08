@@ -119,43 +119,45 @@ public class HomeFragment extends Fragment {
     }
 
     private void handleAiRecommendation() {
+        if (etAiQuery == null) return;
         String query = etAiQuery.getText().toString().trim();
 
         if (query.isEmpty()) {
-            Toast.makeText(getContext(), "Please describe what events you are looking for", Toast.LENGTH_SHORT).show();
+            if (getContext() != null)
+                Toast.makeText(getContext(), "Please describe what events you are looking for", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Show Progress Bar
-        pbAiLoading.setVisibility(View.VISIBLE);
-        tvAiResult.setVisibility(View.GONE);
-        btnGetRecommendations.setEnabled(false);
+        if (pbAiLoading != null) pbAiLoading.setVisibility(View.VISIBLE);
+        if (tvAiResult != null) tvAiResult.setVisibility(View.GONE);
+        if (btnGetRecommendations != null) btnGetRecommendations.setEnabled(false);
 
         // Call AI Repository
         aiRepository.getRecommendedEvents(query, new AiRepository.AiCallback() {
             @Override
             public void onSuccess(String result) {
-                if (getActivity() == null || !isAdded()) return;
-
-                getActivity().runOnUiThread(() -> {
-                    pbAiLoading.setVisibility(View.GONE);
-                    btnGetRecommendations.setEnabled(true);
-
-                    // Show AI output inside card
-                    tvAiResult.setText(result);
-                    tvAiResult.setVisibility(View.VISIBLE);
+                if (!isAdded() || getActivity() == null) return;
+                requireActivity().runOnUiThread(() -> {
+                    if (!isAdded()) return;
+                    if (pbAiLoading != null) pbAiLoading.setVisibility(View.GONE);
+                    if (btnGetRecommendations != null) btnGetRecommendations.setEnabled(true);
+                    if (tvAiResult != null) {
+                        tvAiResult.setText(result);
+                        tvAiResult.setVisibility(View.VISIBLE);
+                    }
                 });
             }
 
             @Override
             public void onError(String errorMessage) {
-                if (getActivity() == null || !isAdded()) return;
-
-                getActivity().runOnUiThread(() -> {
-                    pbAiLoading.setVisibility(View.GONE);
-                    btnGetRecommendations.setEnabled(true);
-
-                    Toast.makeText(getContext(), "AI Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                if (!isAdded() || getActivity() == null) return;
+                requireActivity().runOnUiThread(() -> {
+                    if (!isAdded()) return;
+                    if (pbAiLoading != null) pbAiLoading.setVisibility(View.GONE);
+                    if (btnGetRecommendations != null) btnGetRecommendations.setEnabled(true);
+                    if (getContext() != null)
+                        Toast.makeText(getContext(), "AI Error: " + errorMessage, Toast.LENGTH_LONG).show();
                 });
             }
         });

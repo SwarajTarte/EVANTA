@@ -2,10 +2,8 @@ package com.evanta.app;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
 
 /**
  * Decides which value goes in the {@code Authorization: Bearer} header.
@@ -17,9 +15,8 @@ import com.google.firebase.auth.GetTokenResult;
  * Firebase ID token so Supabase can identify the caller in RLS policies via
  * {@code auth.jwt()->>'sub'} (the Firebase UID).
  *
- * <p>Firebase ID tokens live ~1 hour. We cache the last minted token and only ask
- * Firebase for a new one when ours is near expiry, so the blocking call almost
- * never actually hits the network.
+ * <p>Token is refreshed asynchronously in the background — this method never
+ * blocks, making it safe to call from OkHttp interceptors or any thread.
  */
 public final class AuthTokens {
 
@@ -33,8 +30,9 @@ public final class AuthTokens {
     private static volatile long cachedExpiryMs;
 
     /**
-     * The Bearer token to authorize a Supabase request with, right now.
-     * Never returns null — falls back to the anon key.
+     * Returns the Bearer token for Supabase requests.
+     * NEVER blocks — always returns immediately using cached value or anon key.
+     * Safe to call from OkHttp interceptor threads.
      */
     public static String bearer() {
         if (!SupabaseConfig.USE_FIREBASE_AUTH) {
@@ -47,14 +45,10 @@ public final class AuthTokens {
             return SupabaseConfig.API_KEY;
         }
 
-        String token = idTokenFor(user);
-        return token != null ? token : SupabaseConfig.API_KEY;
-    }
-
-    private static String idTokenFor(@NonNull FirebaseUser user) {
         String uid = user.getUid();
         long now = System.currentTimeMillis();
 
+        // Return cached token if still valid
         String cached = cachedToken;
         if (cached != null
                 && uid.equals(cachedUid)
@@ -62,24 +56,38 @@ public final class AuthTokens {
             return cached;
         }
 
-        try {
-            // false = don't force-refresh; Firebase returns a cached valid token
-            // when it has one, so this is usually instant and offline-safe.
-            GetTokenResult result = Tasks.await(user.getIdToken(false));
-            String token = result.getToken();
-            long expMs = result.getExpirationTimestamp() * 1000L;
-            if (token != null) {
-                cachedToken = token;
-                cachedUid = uid;
-                cachedExpiryMs = expMs;
-                return token;
-            }
-        } catch (Exception e) {
-            // Network hiccup, cancelled task, etc. Fall back to the anon key so
-            // the request still goes out rather than crashing.
-            android.util.Log.w("AuthTokens", "ID token fetch failed: " + e.getMessage());
-        }
-        return null;
+        // Cache is stale — kick off a background refresh, return best available now
+        refreshTokenAsync(user);
+        return cached != null ? cached : SupabaseConfig.API_KEY;
+    }
+
+    /**
+     * Refreshes the Firebase ID token asynchronously in the background.
+     * Safe to call from any thread including the main thread.
+     */
+    public static void refreshTokenAsync(@NonNull FirebaseUser user) {
+        user.getIdToken(false)
+            .addOnSuccessListener(result -> {
+                String token = result.getToken();
+                long expMs = result.getExpirationTimestamp() * 1000L;
+                if (token != null) {
+                    cachedToken = token;
+                    cachedUid = user.getUid();
+                    cachedExpiryMs = expMs;
+                }
+            })
+            .addOnFailureListener(e ->
+                android.util.Log.w("AuthTokens", "ID token refresh failed: " + e.getMessage())
+            );
+    }
+
+    /**
+     * Call this after sign-in to eagerly warm up the token cache
+     * so the first API request has a valid token immediately.
+     */
+    public static void warmUp() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) refreshTokenAsync(user);
     }
 
     private static void clearCache() {
