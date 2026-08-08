@@ -1,17 +1,22 @@
 package com.evanta.app;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.NavOptions;
 
 import com.bumptech.glide.Glide;
@@ -27,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import android.content.Intent;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,6 +47,14 @@ public class HomeFragment extends Fragment {
     private ImageView avatarImage;
 
     private View featuredCard1, featuredCard2, featuredCard3;
+
+    // AI Component Views
+    private EditText etAiQuery;
+    private Button btnGetRecommendations;
+    private ProgressBar pbAiLoading;
+    private TextView tvAiResult;
+
+    private AiRepository aiRepository;
 
     @Nullable
     @Override
@@ -64,6 +76,19 @@ public class HomeFragment extends Fragment {
         featuredCard1 = view.findViewById(R.id.featured_card_1);
         featuredCard2 = view.findViewById(R.id.featured_card_2);
         featuredCard3 = view.findViewById(R.id.featured_card_3);
+
+        // Bind AI Views
+        etAiQuery = view.findViewById(R.id.et_ai_query);
+        btnGetRecommendations = view.findViewById(R.id.btn_get_recommendations);
+        pbAiLoading = view.findViewById(R.id.pb_ai_loading);
+        tvAiResult = view.findViewById(R.id.tv_ai_result);
+
+        // Initialize AiRepository
+        AiApiService apiService = RetrofitClient.getClient().create(AiApiService.class);
+        aiRepository = new AiRepository(apiService);
+
+        // AI Recommendation Button Listener
+        btnGetRecommendations.setOnClickListener(v -> handleAiRecommendation());
 
         View viewAllEvents = view.findViewById(R.id.view_all_events);
         view.findViewById(R.id.home_notification_icon).setOnClickListener(v ->
@@ -91,6 +116,49 @@ public class HomeFragment extends Fragment {
         }
 
         fetchFeaturedEvents();
+    }
+
+    private void handleAiRecommendation() {
+        String query = etAiQuery.getText().toString().trim();
+
+        if (query.isEmpty()) {
+            Toast.makeText(getContext(), "Please describe what events you are looking for", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Show Progress Bar
+        pbAiLoading.setVisibility(View.VISIBLE);
+        tvAiResult.setVisibility(View.GONE);
+        btnGetRecommendations.setEnabled(false);
+
+        // Call AI Repository
+        aiRepository.getRecommendedEvents(query, new AiRepository.AiCallback() {
+            @Override
+            public void onSuccess(String result) {
+                if (getActivity() == null || !isAdded()) return;
+
+                getActivity().runOnUiThread(() -> {
+                    pbAiLoading.setVisibility(View.GONE);
+                    btnGetRecommendations.setEnabled(true);
+
+                    // Show AI output inside card
+                    tvAiResult.setText(result);
+                    tvAiResult.setVisibility(View.VISIBLE);
+                });
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                if (getActivity() == null || !isAdded()) return;
+
+                getActivity().runOnUiThread(() -> {
+                    pbAiLoading.setVisibility(View.GONE);
+                    btnGetRecommendations.setEnabled(true);
+
+                    Toast.makeText(getContext(), "AI Error: " + errorMessage, Toast.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 
     private void loadUser(String uid) {

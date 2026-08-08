@@ -245,7 +245,7 @@
 
     </LinearLayout>
 
-    <!-- fragment_home.xml — wrap the ScrollView in this instead -->
+    <!-- Scrollable Content with Fading Edge -->
     <com.evanta.app.FadingEdgeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -268,6 +268,77 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <!-- AI RECOMMENDATION SECTION CARD -->
+                <LinearLayout
+                    android:id="@+id/ai_recommendation_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_stat_card"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AI Event Finder ✨"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppinsbold" />
+
+                    <EditText
+                        android:id="@+id/et_ai_query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:hint="What are you in the mood for? (e.g. coding, music, sports)"
+                        android:textColorHint="#8A93A6"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:background="@android:color/transparent"
+                        android:maxLines="2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="end|center_vertical"
+                        android:orientation="horizontal">
+
+                        <ProgressBar
+                            android:id="@+id/pb_ai_loading"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginEnd="12dp"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_get_recommendations"
+                            android:layout_width="wrap_content"
+                            android:layout_height="38dp"
+                            android:backgroundTint="#7C4DFF"
+                            android:text="Ask AI"
+                            android:textColor="#FFFFFF"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/poppins_medium" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_ai_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:textColor="#E0E0E0"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <!-- FEATURED CARDS -->
                 <include
                     android:layout_marginTop="15dp"
                     android:id="@+id/featured_card_1"

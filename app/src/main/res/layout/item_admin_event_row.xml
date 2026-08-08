@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginBottom="14dp"
+    android:orientation="vertical"
+    android:background="@drawable/bg_event_row">
+
+    <!-- Top Card Content -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <FrameLayout
+            android:id="@+id/event_thumbnail"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:background="@drawable/bg_thumbnail_placeholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/event_thumbnail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/event_thumbnail_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/text_label"
+                android:fontFamily="@font/poppinsbold"
+                android:maxLines="3" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/event_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_title"
+            android:fontFamily="@font/poppinsbold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toTopOf="@id/event_thumbnail"
+            app:layout_constraintStart_toEndOf="@id/event_thumbnail"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/event_category_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="6dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="3dp"
+            android:background="@drawable/bg_category_tag"
+            android:textSize="@dimen/text_caption"
+            android:fontFamily="@font/poppins_medium"
+            app:layout_constraintTop_toBottomOf="@id/event_title"
+            app:layout_constraintStart_toEndOf="@id/event_thumbnail" />
+
+        <LinearLayout
+            android:id="@+id/event_date_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/event_category_tag"
+            app:layout_constraintStart_toEndOf="@id/event_thumbnail">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_calendar_small"
+                app:tint="#8A93A6" />
+
+            <TextView
+                android:id="@+id/event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="#8A93A6"
+                android:textSize="@dimen/text_caption"
+                android:fontFamily="@font/poppins_medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_location_row"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/event_date_row"
+            app:layout_constraintStart_toEndOf="@id/event_thumbnail"
+            app:layout_constraintEnd_toStartOf="@id/event_price">
+
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_location_small"
+                app:tint="#8A93A6" />
+
+            <TextView
+                android:id="@+id/event_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="#8A93A6"
+                android:textSize="@dimen/text_caption"
+                android:fontFamily="@font/poppins_medium"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/event_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_label"
+            android:fontFamily="@font/poppinsbold"
+            app:layout_constraintBottom_toBottomOf="@id/event_thumbnail"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1F2438" />
+
+    <!-- AI Summary Action Bar -->
+    <LinearLayout
+        android:id="@+id/btn_toggle_ai_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="10dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="AI Event Summary ✨"
+            android:textColor="#B39DDB"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <ImageView
+            android:id="@+id/iv_ai_chevron"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_chevron_down"
+            app:tint="#B39DDB" />
+
+    </LinearLayout>
+
+    <!-- Expandable AI Summary Panel -->
+    <LinearLayout
+        android:id="@+id/layout_ai_summary_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="14dp"
+        android:paddingBottom="14dp"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_admin_notes"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@drawable/bg_textfield"
+            android:gravity="top|start"
+            android:padding="10dp"
+            android:hint="Paste raw notes or bullet points (optional)..."
+            android:textColorHint="#5A6377"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins_medium"
+            android:inputType="textMultiLine|textCapSentences" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="end|center_vertical"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:id="@+id/pb_admin_ai_loading"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="10dp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_generate_summary"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:backgroundTint="#7C4DFF"
+                android:text="Generate AI Summary ✨"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+        <!-- Result Container -->
+        <LinearLayout
+            android:id="@+id/layout_ai_result_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_stat_card"
+            android:padding="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_admin_ai_summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#E0E0E0"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins_medium"
+                android:textIsSelectable="true" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_copy_summary"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
+                android:text="Copy Summary"
+                android:textColor="#B39DDB"
+                android:textSize="11sp"
+                android:fontFamily="@font/poppins_medium"
+                app:strokeColor="#7C4DFF"
+                app:strokeWidth="1dp"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
